@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Force www for external requests
+    RewriteCond %{HTTP_HOST} !^www\. [NC]
+    RewriteCond %{HTTP_HOST} !^localhost [NC]
+    RewriteRule ^ https://www.vllr.lu%{REQUEST_URI} [L,R=301]
+
+    # Exclude ACME challenge directory from redirection
+    RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
+
+    # Symfony
+    RewriteCond %{REQUEST_URI} !^/node_modules/
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>

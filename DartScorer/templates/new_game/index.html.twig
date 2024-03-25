@@ -1,0 +1,17 @@
+{% extends 'base_darts.html.twig' %}
+
+{% block stylesheets %}
+    <link type="text/css" href="/css/new_game.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('newGameApp') }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div id="new-game-app">
+
+        </div>
+    </div>
+{% endblock %}

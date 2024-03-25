@@ -1,0 +1,19 @@
+@media (min-width: 1200px) {
+    body {
+        padding-left: 300px;
+    }
+}
+
+#custom-btn {
+    background: #fec236;
+    border: 0;
+    padding: 10px 24px;
+    color: black;
+    transition: 0.4s;
+    border-radius: 4px;
+}
+
+#custom-btn:hover {
+    background: #feae36ff;
+    color: white;
+}

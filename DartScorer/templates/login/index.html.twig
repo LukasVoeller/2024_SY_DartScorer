@@ -1,0 +1,107 @@
+{% extends 'base_home.html.twig' %}
+
+{% block stylesheets %}
+    <link type="text/css" href="/css/login.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block title %}RDS - Login{% endblock %}
+
+{% block body %}
+    <!-- ======= Login ======= -->
+    <div class="container" style="padding-top: 30px">
+        <div class="row justify-content-center">
+            <div class="d-flex justify-content-center"> <!-- Flex container for centering -->
+                <h1>Welcome to my Dart App!</h1>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Login</div>
+                    <div class="card-body">
+                        <form method="post" action="{{ path('login') }}">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" name="_username" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="_password" required>
+                            </div>
+                            <button id="custom-btn" type="submit" class="btn btn-primary">Login</button>
+
+                            <button id="custom-btn" class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                Info
+                            </button>
+
+                            {% if error %}
+                                <div class="alert alert-warning mt-3" role="alert">
+                                    Incorrect username or password.
+                                </div>
+                            {% endif %}
+                        </form>
+
+
+                        <div class="collapse" id="collapseExample">
+
+                                <div class="row justify-content-center">
+                                    <div class="col">
+                                        <div class="card" style="margin-top: 10px;">
+                                            <div class="card-header">
+                                                Tech Stack
+                                            </div>
+                                            <div class="card-body">
+                                                <ul style="padding-left: 15px">
+                                                    <li>Backend:</li>
+                                                    <ul>
+                                                        <li>Symfony 6.4</li>
+                                                        <li>PHP 8.2</li>
+                                                        <li>MariaDB 10.5.23</li>
+                                                    </ul>
+                                                    <li>Frontend:</li>
+                                                    <ul>
+                                                        <li>Vue.js 3.2.14</li>
+                                                        <li>Bootstrap 5.3.3</li>
+                                                    </ul>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="card" style="margin-top: 10px;">
+                                            <div class="card-header">
+                                                Features
+                                            </div>
+                                            <div class="card-body">
+                                                <ul style="padding-left: 15px">
+                                                    <li>Custom deployer php</li>
+                                                    <li>APIs secured with OAuth 2.0</li>
+                                                    <li>Custom Symfony commands</li>
+                                                    <li>User Login and Rolemanagement</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======= RDA ======= -->
+    <div class="container" style="padding-top: 30px">
+        <div class="row justify-content-center">
+            <div class="col-md-3 col-sm-6 align-self-start">
+                <p><strong>In association with:</strong></p>
+            </div>
+
+            <div class="col-md-3 col-sm-6 d-flex justify-content-end">
+                <img src="homepage/assets/img/logo-rda.png" alt="" style="width: 50%">
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

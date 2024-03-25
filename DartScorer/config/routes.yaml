@@ -1,0 +1,73 @@
+############### Routes for displaying pages ###############
+
+home:
+  path: '/'
+  controller: 'App\Controller\HomeController::index'
+
+darts:
+  path: '/darts'
+  controller: 'App\Controller\DartsController::index'
+
+new-game:
+  path: '/new-game'
+  controller: 'App\Controller\NewGameController::index'
+
+game:
+  path: '/game/{id}'
+  controller: 'App\Controller\GameController::index'
+#  methods: [ 'GET' ]
+#  requirements:
+#    id: '\d+' # Ensure that the id parameter is a digit
+
+player:
+  path: '/player'
+  controller: 'App\Controller\PlayerController::index'
+
+login:
+  path: '/login'
+  controller: 'App\Controller\LoginController::index'
+
+logout:
+  path: '/logout'
+
+# TODO: Remove
+match:
+  path: '/match'
+  controller: 'App\Controller\MatchController::index'
+
+######################## API Routes #######################
+
+############ Player
+
+api_get_players:
+  path: '/api/players'
+  controller: 'App\Controller\PlayerController::getPlayers'
+  methods: ['GET']
+
+api_post_player:
+  path: '/api/player'
+  controller: 'App\Controller\PlayerController::postPlayer'
+  methods: ['POST']
+
+api_delete_player:
+  path: '/api/player/{id}'
+  controller: 'App\Controller\PlayerController::deletePlayer'
+  methods: ['DELETE']
+
+############ Game
+
+api_get_game:
+  path: '/api/game/{id}'
+  controller: 'App\Controller\GameController::getGame'
+  methods: ['GET']
+  requirements:
+    id: '\d+' # Ensure that the id parameter is a digit
+
+api_post_game:
+  path: '/api/game'
+  controller: 'App\Controller\GameController::postGame'
+  methods: ['POST']
+
+
+
+

@@ -1,0 +1,78 @@
+{% extends 'base_darts.html.twig' %}
+
+{% block stylesheets %}
+    <link type="text/css" href="/css/darts.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block title %}RDS - Darts{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Welcome!</h1>
+        <!--
+        <a href="/gif/bobby-george-nipple-trick-iIQuVv" title="Bobby George nipple trick"><img src="https://i.makeagif.com/media/2-03-2023/iIQuVv.gif" alt="Bobby George nipple trick"></a>
+        <br>
+        <br>
+        -->
+
+        <h2>Latest games</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Result</th>
+                <th scope="col">Winner</th>
+                <th scope="col">Average</th>
+                <th scope="col">Looser</th>
+                <th scope="col">Average</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>9:0</td>
+                <td>Florian</td>
+                <td>50.8</td>
+                <td>Lukas</td>
+                <td>45.3</td>
+            </tr>
+            </tbody>
+
+        </table>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="live-circle"></div>
+                <h5 class="card-title" style="padding-left: 30px">Livegame</h5>
+
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Lukas</h5>
+                                    <h1 style="font-size: 50px">441</h1>
+                                    <h1 style="font-size: 20px">Last: 60</h1>
+                                    <h1 style="font-size: 20px">Average: 60</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2 d-flex align-items-center justify-content-center">
+                            <h1>VS</h1>
+                        </div>
+                        <div class="col-5">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Florian</h5>
+                                    <h1 style="font-size: 50px">475</h1>
+                                    <h1 style="font-size: 20px">Last: 26</h1>
+                                    <h1 style="font-size: 20px">Average: 26</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                <a id="watch-live-btn" href="#" class="btn btn-warning" style="margin-top: 10px">Watch Live</a>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

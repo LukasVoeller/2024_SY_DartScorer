@@ -1,0 +1,32 @@
+name: symfonyproject
+recipe: symfony
+
+services:
+  appserver:
+    webroot: ./DartScorer/public
+    type: 'php:8.2'
+    via: 'apache:2.4'
+    ssl: true
+    build_as_root:
+      - apt-get update
+      - apt-get install nano
+      - apt-get install nodejs npm
+
+  database:
+    overrides:
+      ports:
+        - '3306:3306'
+
+tooling:
+  console:
+    service: appserver
+    cmd: php bin/console
+    dir: /app/DartScorer
+    description: Runs console commands
+
+  node:install:
+    service: appserver
+    cmd: ./scripts/install-nodejs.sh
+    user: root
+    dir: /app/.lando
+    description: Install NodeJS
