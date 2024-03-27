@@ -1,167 +1,175 @@
 <template>
-  <div class="container">
+  <div class="container p-0">
     <h1 style="padding-top: 10px; padding-bottom: 10px;">New Game</h1>
 
-    <form @submit.prevent="submitForm">
-      <div class="row">
-        <div class="col">
-          <select class="form-select" aria-label="Default select example" v-model="selectedGameMode">
-            <option disabled value="">Game Mode</option>
-            <option value="X01">X01</option>
-            <option value="Cricket">Cricket</option>
-            <option value="Shanghai">Shanghai</option>
-          </select>
-        </div>
+    <div class="card shadow" style="padding: 20px">
+      <form @submit.prevent="submitForm">
+        <div class="row">
+          <div class="col">
+            <select class="form-select" aria-label="Default select example" v-model="selectedGameMode">
+              <option disabled value="">Game Mode</option>
+              <option value="X01">X01</option>
+              <option value="Cricket">Cricket</option>
+              <option value="Shanghai">Shanghai</option>
+            </select>
+          </div>
 
-        <div class="col" v-if="selectedGameMode === 'X01'">
-          <select class="form-select" aria-label="Default select example" v-model="selectedStartScore">
-            <option disabled value="">Score</option>
-            <option value="501">501</option>
-            <option value="401">401</option>
-            <option value="301">301</option>
-          </select>
-        </div>
+          <div class="col p-0" v-if="selectedGameMode === 'X01'">
+            <select class="form-select" aria-label="Default select example" v-model="selectedStartScore">
+              <option disabled value="">Score</option>
+              <option value="501">501</option>
+              <option value="401">401</option>
+              <option value="301">301</option>
+            </select>
+          </div>
 
-        <div class="col" v-if="selectedGameMode === 'X01'">
-          <select class="form-select" aria-label="Default select example"  v-model="selectedFinishType">
-            <option disabled value="">Finish</option>
-            <option value="Straight">Straight</option>
-            <option value="Double">Double</option>
-            <option value="Master">Master</option>
-          </select>
-        </div>
+          <div class="col-5" v-if="selectedGameMode === 'X01'">
+            <select class="form-select" aria-label="Default select example" v-model="selectedFinishType">
+              <option disabled value="">Out</option>
+              <option value="Straight">Straight</option>
+              <option value="Double">Double</option>
+              <option value="Master">Master</option>
+            </select>
+          </div>
 
-        <div class="col" v-if="selectedGameMode === 'Cricket'">
-          <select class="form-select" aria-label="Default select example" v-model="selectedStartScore">
-            <option disabled value="">Score</option>
-            <option value="15-BULL">15-BULL</option>
-            <option value="Random-5">Random 5</option>
-          </select>
-        </div>
+          <div class="col" v-if="selectedGameMode === 'Cricket'">
+            <select class="form-select" aria-label="Default select example" v-model="selectedStartScore">
+              <option disabled value="">Score</option>
+              <option value="15-BULL">15-BULL</option>
+              <option value="Random-5">Random 5</option>
+            </select>
+          </div>
 
-        <div class="col" v-if="selectedGameMode === 'Shanghai'">
-          <select class="form-select" aria-label="Default select example" v-model="selectedStartScore">
-            <option disabled value="">Score</option>
-            <option value="1-7">1-7</option>
-            <option value="1-20">1-20</option>
-          </select>
-        </div>
-      </div>
-
-      <br>
-
-      <div class="row">
-        <div class="col">
-          <select class="form-select" aria-label="Default select example"  v-model="selectedMatchMode">
-            <option disabled value="">Match Mode</option>
-            <option value="FirstToSets">First to Sets</option>
-            <option value="FirstToLegs">First to Legs</option>
-          </select>
-        </div>
-
-        <div class="col-6" v-if="selectedMatchMode === 'FirstToSets'">
-          <select class="form-select" aria-label="Default select example"  v-model="selectedMatchModeSets">
-            <option disabled value="">Sets</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-          </select>
-        </div>
-
-        <div v-if="selectedMatchMode === 'FirstToSets'">
-          <br>
-          <div class="row">
-            <div class="col-6">
-              <p>Legs needed for a Set:</p>
-            </div>
-
-            <div class="col-6">
-              <select class="form-select" aria-label="Default select example"  v-model="selectedMatchModeLegs">
-                <option disabled value="">Legs</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-              </select>
-            </div>
+          <div class="col" v-if="selectedGameMode === 'Shanghai'">
+            <select class="form-select" aria-label="Default select example" v-model="selectedStartScore">
+              <option disabled value="">Score</option>
+              <option value="1-7">1-7</option>
+              <option value="1-20">1-20</option>
+            </select>
           </div>
         </div>
 
-        <div class="col-6" v-if="selectedMatchMode === 'FirstToLegs'">
-          <select class="form-select" aria-label="Default select example"  v-model="selectedMatchModeLegs">
-            <option disabled value="">Legs</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-          </select>
-        </div>
-      </div>
-
-      <br>
-
-      <div class="row">
-        <div class="col">
-          <select class="form-select" aria-label="Default select example" v-model="selectedPlayer1">
-            <option disabled value="">Player 1</option>
-            <option v-for="player in players" :key="player.id" :value="player.id">{{ player.name }}</option>
-          </select>
-        </div>
-      </div>
-
-      <br>
-
-      <div class="row">
-        <div class="col">
-          <select class="form-select" aria-label="Default select example" v-model="selectedPlayer2" :disabled="!selectedPlayer1">
-            <option disabled value="">Player 2</option>
-            <option v-for="player in filteredPlayers" :key="player.id" :value="player.id">{{ player.name }}</option>
-          </select>
-        </div>
-      </div>
-
-      <!--
-      <div v-if="this.selectedPlayer1 && this.selectedPlayer2">
         <br>
-        <div class="row" >
+
+        <div class="row">
           <div class="col">
-            <select class="form-select" aria-label="Default select example" v-model="selectedPlayer3">
-              <option disabled value="">Player 3</option>
+            <select class="form-select" aria-label="Default select example" v-model="selectedMatchMode">
+              <option disabled value="">Match Mode</option>
+              <option value="First to Sets">First to Sets</option>
+              <option value="First to Legs">First to Legs</option>
+            </select>
+          </div>
+
+          <div class="col-5" v-if="selectedMatchMode === 'First to Sets'">
+            <select class="form-select" aria-label="Default select example" v-model="selectedMatchModeSets">
+              <option disabled value="">Sets</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div>
+
+          <div v-if="selectedMatchMode === 'First to Sets'">
+            <br>
+            <div class="row">
+              <div class="col">
+                <p>Legs needed for a Set:</p>
+              </div>
+
+              <div class="col-5">
+                <select class="form-select" aria-label="Default select example" v-model="selectedMatchModeLegs">
+                  <option disabled value="">Legs</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-5" v-if="selectedMatchMode === 'First to Legs'">
+            <select class="form-select" aria-label="Default select example" v-model="selectedMatchModeLegs">
+              <option disabled value="">Legs</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+            </select>
+          </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+          <div class="col">
+            <select class="form-select" aria-label="Default select example" v-model="selectedPlayer1">
+              <option disabled value="">Player 1</option>
+              <option v-for="player in players" :key="player.id" :value="player.id">{{ player.name }}</option>
+            </select>
+          </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+          <div class="col">
+            <select class="form-select" aria-label="Default select example" v-model="selectedPlayer2"
+                    :disabled="!selectedPlayer1">
+              <option disabled value="">Player 2</option>
               <option v-for="player in filteredPlayers" :key="player.id" :value="player.id">{{ player.name }}</option>
             </select>
           </div>
         </div>
-      </div>
-      -->
 
-      <div v-if="showPlayerWarning" class="alert alert-warning mt-3" role="alert">
-        Please select at least two players before starting the game.
-      </div>
+        <!--
+        <div v-if="this.selectedPlayer1 && this.selectedPlayer2">
+          <br>
+          <div class="row" >
+            <div class="col">
+              <select class="form-select" aria-label="Default select example" v-model="selectedPlayer3">
+                <option disabled value="">Player 3</option>
+                <option v-for="player in filteredPlayers" :key="player.id" :value="player.id">{{ player.name }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        -->
 
-      <div v-if="showGameWarning" class="alert alert-warning mt-3" role="alert">
-        Please select the Game mode correctly.
-      </div>
-
-      <br>
-
-      <div class="row">
-        <div class="col-6">
-          <select class="form-select" aria-label="Default select example" v-model="selectedPlayerStarting" :disabled="!selectedPlayer2">
-            <option disabled value="">Throw first</option>
-            <option v-for="player in filteredStartingPlayers" :key="player.id" :value="player.id">{{ player.name }}</option>
-          </select>
+        <div v-if="showPlayerWarning" class="alert alert-warning mt-3" role="alert">
+          Please select at least two players before starting the game.
         </div>
 
-        <div class="col-6">
-          <button id="custom-btn" class="btn btn-primary" type="submit" style="width: 100%">
-            Play
-          </button>
+        <div v-if="showGameWarning" class="alert alert-warning mt-3" role="alert">
+          Please select the Game mode correctly.
         </div>
-      </div>
 
-    </form>
+        <br>
+
+        <div class="row">
+          <div class="col-6">
+            <select class="form-select" aria-label="Default select example" v-model="selectedPlayerStarting"
+                    :disabled="!selectedPlayer2">
+              <option disabled value="">Throw first</option>
+              <option v-for="player in filteredStartingPlayers" :key="player.id" :value="player.id">{{
+                  player.name
+                }}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-6">
+            <button id="custom-btn" class="btn btn-primary" type="submit" style="width: 100%">
+              Play
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+
   </div>
 </template>
 
@@ -174,8 +182,8 @@ export default {
     return {
       players: [],
       selectedGameMode: "", // Initialize with an empty string
-      selectedStartScore: "", // Initialize with an empty string
-      selectedFinishType: "", // Initialize with an empty string
+      selectedStartScore: 501, // Initialize with an empty string
+      selectedFinishType: "Double", // Initialize with an empty string
       selectedMatchMode: "", // Initialize with an empty string
       selectedMatchModeSets: "", // Initialize with an empty string
       selectedMatchModeLegs: "", // Initialize with an empty string
@@ -242,10 +250,10 @@ export default {
         playerStartingId: this.selectedPlayerStarting,
       };
 
-      if (this.selectedMatchMode === 'FirstToSets') {
+      if (this.selectedMatchMode === 'First to Sets') {
         postData.matchModeSets = this.selectedMatchModeSets;
         postData.matchModeLegs = this.selectedMatchModeLegs;
-      } else if (this.selectedMatchMode === 'FirstToLegs') {
+      } else if (this.selectedMatchMode === 'First to Legs') {
         postData.matchModeSets = 0;
         postData.matchModeLegs = this.selectedMatchModeLegs;
       }

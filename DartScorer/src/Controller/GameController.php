@@ -20,7 +20,6 @@ class GameController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    // TODO: Remove passing the game
     #[Route('/game/{id}', name: 'game')]
     public function index(Request $request, int $id): Response
     {

@@ -67,21 +67,20 @@ export default {
     playerName: String,
   },
   mounted() {
-    // Your JavaScript logic here
+    // Get scoreInput
     const scoreInput = document.getElementById("scoreInput");
 
-    function handleButtonClick(buttonValue) {
-      const currentInputValue = scoreInput.value;
-      scoreInput.value = currentInputValue + buttonValue;
-    }
-
+    // CLR
     document.getElementById("btn-clr").addEventListener('click', function () {
       scoreInput.value = "";
     });
 
-    document.getElementById("btn-ok").addEventListener('click', function () {
+    // OK
+    document.getElementById("btn-ok").addEventListener('click', () => {
       if (scoreInput.value <= 180) {
-        alert("Entered value: " + scoreInput.value);
+        this.$emit('score-entered', scoreInput.value);
+        scoreInput.value = "";
+        //alert("Entered value: " + scoreInput.value);
       } else {
         const scoreInputHandle = document.getElementById("scoreInput");
         scoreInputHandle.classList.add('exceeds-limit');
@@ -98,6 +97,12 @@ export default {
         handleButtonClick(button.textContent);
       });
     });
+
+    // Handle the entered digits
+    function handleButtonClick(buttonValue) {
+      const currentInputValue = scoreInput.value;
+      scoreInput.value = currentInputValue + buttonValue;
+    }
   }
 };
 </script>

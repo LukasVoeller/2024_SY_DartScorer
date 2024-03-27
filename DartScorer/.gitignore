@@ -1,5 +1,6 @@
 ###> My ignores ###
-*.env
+.env
+.env.test
 /config/secrets/dev/dev.decrypt.private.php
 /config/secrets/dev/dev.encrypt.public.php
 ###< My ignores ###

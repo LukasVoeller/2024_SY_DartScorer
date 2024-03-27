@@ -42,3 +42,64 @@
     background-color: rgb(203,68,74);
     color: white;
 }
+
+
+
+
+
+/* Scrolling Text V2 */
+.marquee {
+    position: relative;
+    overflow: hidden;
+}
+
+
+@media (max-width: 400px) {
+    .marquee__inner {
+        display: inline-block;
+        animation: marquee__inner 7s linear infinite alternate;
+    }
+
+    .marquee__content {
+        animation: marquee__content 7s linear infinite alternate;
+        white-space: nowrap;
+        color: white;
+        padding-top: 0px;
+    }
+}
+
+@media (min-width: 401px) {
+    .marquee__inner {
+        display: inline-block;
+        animation: marquee__inner 4s linear infinite alternate;
+    }
+
+    .marquee__content {
+        animation: marquee__content 4s linear infinite alternate;
+        white-space: nowrap;
+        color: white;
+        padding-top: 0px;
+    }
+}
+
+
+
+@keyframes marquee__inner {
+    0% { margin-left:0; }
+    100% { margin-left: 100%; }
+}
+
+@keyframes marquee__content {
+    0% { margin-left:0; }
+    100% { margin-left:-100%; }
+}
+
+.paused {
+    -webkit-animation-play-state: paused;
+    -moz-animation-play-state: paused;
+    -o-animation-play-state: paused;
+    animation-play-state: paused;
+}
+
+
+
