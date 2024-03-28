@@ -53,13 +53,11 @@
 
             // Check if the content width exceeds the container width
             if (scrollContainer.offsetWidth > marqueeContent.offsetWidth) {
-                console.log("True");
                 marqueeContent.classList.add('paused'); // Ensure animation is running if needed
                 marqueeInner.classList.add('paused'); // Ensure animation is running if needed
                 scrollColumn.classList.add('d-flex', 'justify-content-center', 'align-items-center');
 
             } else {
-                console.log("False");
                 marqueeContent.classList.remove('paused'); // Pause animation if content fits within the container
                 marqueeInner.classList.remove('paused'); // Pause animation if content fits within the container
             }
@@ -98,7 +96,7 @@
             <div class="col-2 p-0">
                 <div id="game-id" style="padding-right: 5px">
                     {% if game %}
-                        <p style="color: white; text-align: left; margin: 0;">ID: 1016</p>
+                        <p style="color: white; text-align: left; margin: 0; font-size: 11pt">ID: {{ game.id }}</p>
                     {% endif %}
                 </div>
             </div>
@@ -152,7 +150,7 @@
         </div>
     </nav><!-- End Header -->
 
-    <div class="container vh-100">
+    <div class="container vh-100 disable-dbl-tap-zoom" style="padding-top: 5px">
         <div id="game-app">
 
         </div>

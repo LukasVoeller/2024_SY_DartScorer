@@ -5,7 +5,7 @@
   <!--
   <div :class="{ 'border-warning': toThrow, 'border-light': !toThrow }" id="player-1" class="card border-5" style="width: 100%; display: flex; flex-direction: column;">
   -->
-  <div id="player-1" class="card" style="width: 100%; display: flex; flex-direction: column;">
+  <div id="player-1" class="card" style="width: 100%; /*display: flex; flex-direction: column;*/">
     <div class="card-header" :style="{ backgroundColor: toThrow ? 'lightyellow' : '' }">
       <div class="row">
         <div class="col-7 p-0">
@@ -20,18 +20,15 @@
       </div>
     </div>
 
-    <ul class="list-group list-group-flush" style="flex-grow: 1;">
-      <li class="list-group-item">
+    <ul class="list-group list-group-flush" style="/*flex-grow: 1;*/ height: 120px;">
+      <li class="list-group-item p-0">
         <div class="row justify-content-center">
           <div class="col-auto">
-            <h1 :style="{ fontSize: '45px', margin: '0px', color: isBogey(score) ? 'red' : 'black' }"><strong>{{ score }}</strong></h1>
+            <h1 :style="{ fontSize: dynamicFontSize, lineHeight: '1', paddingTop: dynamicPadding, margin: '0px', color: isBogey(score) ? 'red' : 'black'}"><strong>{{ displayScore }}</strong></h1>
           </div>
         </div>
-        <div class="row justify-content-center">
-          <div class="col-auto">
-            <CalculateCheckouts :score="score"/>
-          </div>
-        </div>
+
+        <CalculateCheckouts :score="score" @checkouts-calculated="calculatedCheckouts" />
       </li>
     </ul>
 
@@ -57,6 +54,7 @@
 
 <script>
 import CalculateCheckouts from './calculate-checkouts.vue';
+import calculateCheckouts from "./calculate-checkouts.vue";
 
 export default {
   name: 'Player1CardComponent',
@@ -69,10 +67,45 @@ export default {
     toThrow: Boolean,
     dartsThrown: Number
   },
+  data() {
+    return {
+      possibleCheckouts: null // Initialize with null or appropriate default value
+    };
+  },
   methods: {
     isBogey(score) {
       const bogeyScores = [169, 168, 166, 165, 163, 162, 159];
       return bogeyScores.includes(score);
+    },
+    calculatedCheckouts(checkouts) {
+      console.log("Possible checkouts: " + checkouts);
+      this.possibleCheckouts = checkouts; // Store the checkouts in data
+    }
+  },
+  computed: {
+    calculateCheckouts() {
+      return calculateCheckouts
+    },
+    displayScore() {
+      return this.score < 0 ? "bust" : this.score;
+    },
+    dynamicPadding() {
+      if (this.possibleCheckouts === 0) {
+        return '25px'; // Font size when there are checkouts
+      } else if (this.possibleCheckouts === 1) {
+        return '18px'; // Font size when there are no checkouts
+      } else if (this.possibleCheckouts === 2 || this.possibleCheckouts === 3) {
+        return '17px'; // Font size when there are no checkouts
+      }
+    },
+    dynamicFontSize() {
+      if (this.possibleCheckouts === 0) {
+        return '85px'; // Font size when there are checkouts
+      } else if (this.possibleCheckouts === 1) {
+        return '65px'; // Font size when there are no checkouts
+      } else if (this.possibleCheckouts === 2 || this.possibleCheckouts === 3) {
+        return '45px'; // Font size when there are no checkouts
+      }
     }
   }
 };

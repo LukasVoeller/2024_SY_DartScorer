@@ -4,7 +4,7 @@
       <button type="button" class="btn btn-light custom-btn-score-row">Undo</button>
     </div>
     <div class="col p-1">
-      <input id="scoreInput" class="form-control text-center" style="height: 55px; font-size: 25px" type="text" aria-label=".form-control-lg example" readonly>
+      <input id="scoreInput" class="form-control text-center" style="height: 55px; font-size: 30px" type="text" aria-label=".form-control-lg example" readonly>
     </div>
     <div class="col p-1">
       <button type="button" class="btn btn-light custom-btn-score-row">Rest</button>
@@ -71,16 +71,16 @@ export default {
     const scoreInput = document.getElementById("scoreInput");
 
     // CLR
-    document.getElementById("btn-clr").addEventListener('click', function () {
+    document.getElementById("btn-clr").addEventListener('click', () => {
+      this.$emit('score-cleared', scoreInput.value);
       scoreInput.value = "";
     });
 
     // OK
     document.getElementById("btn-ok").addEventListener('click', () => {
       if (scoreInput.value <= 180) {
-        this.$emit('score-entered', scoreInput.value);
+        this.$emit('score-confirmed', scoreInput.value);
         scoreInput.value = "";
-        //alert("Entered value: " + scoreInput.value);
       } else {
         const scoreInputHandle = document.getElementById("scoreInput");
         scoreInputHandle.classList.add('exceeds-limit');
@@ -92,16 +92,22 @@ export default {
 
     // Attach click event listeners to number buttons
     const numberButtons = document.querySelectorAll('.custom-btn-number');
-    numberButtons.forEach(function (button) {
-      button.addEventListener('click', function () {
-        handleButtonClick(button.textContent);
+    numberButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        this.handleButtonClick(button.textContent); // Using arrow function to retain 'this' context
       });
     });
+  },
 
-    // Handle the entered digits
-    function handleButtonClick(buttonValue) {
+  methods: {
+    handleButtonClick(buttonValue) {
+      const scoreInput = document.getElementById("scoreInput");
       const currentInputValue = scoreInput.value;
-      scoreInput.value = currentInputValue + buttonValue;
+
+      if (currentInputValue.length < 3) {
+        scoreInput.value += buttonValue;
+        this.$emit('score-entered', scoreInput.value);
+      }
     }
   }
 };

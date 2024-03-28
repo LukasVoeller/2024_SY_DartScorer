@@ -3,17 +3,17 @@
       <GameHeaderComponent v-if="game" :game="game"/>
   -->
   <div class="row px-1">
-    <div class="col p-1 d-flex">
+    <div class="col p-1">
       <Player1CardComponent v-if="game" :game="game" :score="player1Score" :toThrow="player1ToThrow"
                             :dartsThrown="player1DartsThrown"/>
     </div>
-    <div class="col p-1 d-flex">
+    <div class="col p-1">
       <Player2CardComponent v-if="game" :game="game" :score="player2Score" :toThrow="player2ToThrow"
                             :dartsThrown="player2DartsThrown"/>
     </div>
   </div>
 
-  <NumberpadComponent v-if="game" @score-entered="processScore"/>
+  <NumberpadComponent v-if="game" :game="game" @score-entered="processScore" @score-cleared="clearScore" @score-confirmed="confirmScore"/>
 
 </template>
 
@@ -38,6 +38,10 @@ export default {
       loading: true,
       error: false,
 
+      player1StartScore: 0,
+      player2StartScore: 0,
+      player1TempScore: 0,
+      player2TempScore: 0,
       player1Score: 0,
       player2Score: 0,
       player1Scores: [],
@@ -61,34 +65,68 @@ export default {
     }
   },
   methods: {
-    // Game Logic
-    processScore(score) {
-      // Filter out leading zeros
+    // Game Logic ######################################################################################################
+    clearScore(score) {
       score = parseInt(score.replace(/^0+/, ''), 10);
       if (isNaN(score)) {
         score = 0;
       }
 
       if (this.player1ToThrow) {
-        this.player1Score -= score;
+        this.player1Score = this.player1TempScore;
+      } else if (this.player2ToThrow) {
+        this.player2Score = this.player2TempScore;
+      }
+    },
+
+    processScore(score) {
+      score = parseInt(score.replace(/^0+/, ''), 10);
+      if (isNaN(score)) {
+        score = 0;
+      }
+
+
+
+      if (this.player1ToThrow) {
+        this.player1Score = this.player1TempScore - score;
+      } else if (this.player2ToThrow) {
+        this.player2Score = this.player2TempScore - score;
+      }
+    },
+
+    confirmScore(score) {
+      score = parseInt(score.replace(/^0+/, ''), 10);
+      if (isNaN(score)) {
+        score = 0;
+      }
+
+      if (this.player1ToThrow) {
+        //this.player1Score -= score;
+        this.player1TempScore = this.player1Score;
         this.player1Scores.push(score);
         this.player1ToThrow = false;
         this.player2ToThrow = true;
         this.player1DartsThrown += 3;
       } else if (this.player2ToThrow) {
-        this.player2Score -= score;
+        //this.player2Score -= score;
+        this.player2TempScore = this.player2Score;
+        console.log("player2TempScore: " + this.player2TempScore )
         this.player2Scores.push(score);
         this.player2ToThrow = false;
         this.player1ToThrow = true;
         this.player2DartsThrown += 3;
       }
 
-      console.log("Entered Score: " + score);
+      console.log("--- Entered Score: " + score + " ---");
       console.log("Player1Scores: " + this.player1Scores);
       console.log("Player2Scores: " + this.player2Scores);
     },
 
-    // Persistence
+
+
+
+
+    // Persistence #####################################################################################################
     getGameIdFromUrl() {
       const pathSegments = window.location.pathname.split('/');
       const lastSegment = pathSegments[pathSegments.length - 1];
@@ -99,6 +137,10 @@ export default {
       axios.get('/api/game/' + this.gameId)
           .then(response => {
             this.game = response.data;
+            this.player1StartScore = this.game.startScore;
+            this.player2StartScore = this.game.startScore;
+            this.player1TempScore = this.game.startScore;
+            this.player2TempScore = this.game.startScore;
             this.player1Score = this.game.startScore;
             this.player2Score = this.game.startScore;
 

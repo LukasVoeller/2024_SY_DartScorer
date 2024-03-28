@@ -45,6 +45,10 @@
 
 
 
+.disable-dbl-tap-zoom {
+    touch-action: manipulation;
+}
+
 
 
 /* Scrolling Text V2 */
@@ -52,7 +56,6 @@
     position: relative;
     overflow: hidden;
 }
-
 
 @media (max-width: 400px) {
     .marquee__inner {
@@ -81,8 +84,6 @@
         padding-top: 0px;
     }
 }
-
-
 
 @keyframes marquee__inner {
     0% { margin-left:0; }
