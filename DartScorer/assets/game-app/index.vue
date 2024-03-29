@@ -4,12 +4,12 @@
   -->
   <div class="row px-1">
     <div class="col p-1">
-      <Player1CardComponent v-if="game" :game="game" :score="player1Score" :toThrow="player1ToThrow"
-                            :dartsThrown="player1CurrentDartsThrown" :sets="player1Sets" :legs="player1Legs"/>
+      <Player1CardComponent v-if="game" :game="game" :score="player1.score" :toThrow="player1.toThrow"
+                            :dartsThrown="player1.currentDartsThrown" :sets="player1.sets" :legs="player1.tempLegs"/>
     </div>
     <div class="col p-1">
-      <Player2CardComponent v-if="game" :game="game" :score="player2Score" :toThrow="player2ToThrow"
-                            :dartsThrown="player2CurrentDartsThrown"/>
+      <Player2CardComponent v-if="game" :game="game" :score="player2.score" :toThrow="player2.toThrow"
+                            :dartsThrown="player2.currentDartsThrown" :sets="player2.sets" :legs="player2.tempLegs"/>
     </div>
   </div>
 
@@ -43,26 +43,36 @@ export default {
       loading: true,
       error: false,
 
-      player1StartScore: 0,
-      player2StartScore: 0,
-      player1TempScore: 0,
-      player2TempScore: 0,
-      player1Score: 0,
-      player2Score: 0,
-      player1CurrentScores: [],
-      player2CurrentScores: [],
-      player1TotalScores: [],
-      player2TotalScores: [],
-      player1ToThrow: false,
-      player2ToThrow: false,
-      player1CurrentDartsThrown: 0,
-      player2CurrentDartsThrown: 0,
-      player1DartsPerLegThrown: [],
-      player2DartsPerLegThrown: [],
-      player1Sets: 0,
-      player2Sets: 0,
-      player1Legs: 0,
-      player2LEgs: 0,
+      player1: {
+        name: 'player1',
+        startScore: 0,
+        tempScore: 0,
+        score: 0,
+        currentScores: [],
+        totalScores: [],
+        toThrow: false,
+        currentDartsThrown: 0,
+        dartsPerLegThrown: [],
+        sets: 0,
+        legs: 0,
+        tempLegs: 0,
+      },
+
+      player2: {
+        name: 'player2',
+        startScore: 0,
+        tempScore: 0,
+        score: 0,
+        currentScores: [],
+        totalScores: [],
+        toThrow: false,
+        currentDartsThrown: 0,
+        dartsPerLegThrown: [],
+        sets: 0,
+        legs: 0,
+        tempLegs: 0,
+      },
+
       //scoreInput: 0,
       score: 0,
     };
@@ -70,32 +80,13 @@ export default {
 
   created() {
     EventBus.on('modal-confirmed', (dartsForCheckout) => {
-      const dartsThrown = parseInt(dartsForCheckout);
+      const numberOfDarts = parseInt(dartsForCheckout);
 
-      this.player1Legs += 1;
-
-      if (this.game.matchMode === "First to Sets") {
-        if (this.game.matchModeLegs === this.player1Legs) {
-          alert("Set shut by " + this.game.player1.name);
-          this.player1Legs = 0;
-          this.player1Sets += 1;
-
-          if (this.game.matchModeSets === this.player1Sets) {
-            alert("Game shut and the match by " + this.game.player1.name);
-          }
-        }
+      if (this.player1.toThrow) {
+        this.processPlayerCheckout(this.player1, numberOfDarts);
+      } else if (this.player2.toThrow) {
+        this.processPlayerCheckout(this.player2, numberOfDarts);
       }
-
-      this.player1CurrentScores.push(this.score);
-      this.player1TotalScores.push(this.player1CurrentScores.slice());
-      this.player1CurrentDartsThrown += dartsThrown;
-      this.player1DartsPerLegThrown.push(this.player1CurrentDartsThrown);
-      this.player1ToThrow = false;
-      this.player2ToThrow = true;
-
-      this.logInfo(this.score);
-
-      this.resetScores();
     });
   },
 
@@ -122,10 +113,10 @@ export default {
         score = 0;
       }
 
-      if (this.player1ToThrow) {
-        this.player1Score = this.player1TempScore;
-      } else if (this.player2ToThrow) {
-        this.player2Score = this.player2TempScore;
+      if (this.player1.toThrow) {
+        this.player1.score = this.player1.tempScore;
+      } else if (this.player2.toThrow) {
+        this.player2.score = this.player2.tempScore;
       }
     },
 
@@ -135,10 +126,10 @@ export default {
         score = 0;
       }
 
-      if (this.player1ToThrow) {
-        this.player1Score = this.player1TempScore - score;
-      } else if (this.player2ToThrow) {
-        this.player2Score = this.player2TempScore - score;
+      if (this.player1.toThrow) {
+        this.player1.score = this.player1.tempScore - score;
+      } else if (this.player2.toThrow) {
+        this.player2.score = this.player2.tempScore - score;
       }
     },
 
@@ -150,53 +141,93 @@ export default {
 
       this.score = score;
 
-      if (this.player1ToThrow) {
-        if (this.player1Score === 0) {
+      if (this.player1.toThrow) {
+        if (this.player1.score === 0) {
           EventBus.emit('show-leg-shut-modal');
         } else {
-          this.player1TempScore = this.player1Score;
-          this.player1CurrentScores.push(score);
-          this.player1ToThrow = false;
-          this.player2ToThrow = true;
-          this.player1CurrentDartsThrown += 3;
+          this.player1.tempScore = this.player1.score;
+          this.player1.currentScores.push(score);
+          this.player1.toThrow = false;
+          this.player2.toThrow = true;
+          this.player1.currentDartsThrown += 3;
         }
-      } else if (this.player2ToThrow) {
-        if (this.player2Score === 0) {
+      } else if (this.player2.toThrow) {
+        if (this.player2.score === 0) {
           EventBus.emit('show-leg-shut-modal');
         }else {
-          this.player2TempScore = this.player2Score;
-          this.player2TotalScores.push(score);
-          this.player2ToThrow = false;
-          this.player1ToThrow = true;
-          this.player2CurrentDartsThrown += 3;
+          this.player2.tempScore = this.player2.score;
+          this.player2.totalScores.push(score);
+          this.player2.toThrow = false;
+          this.player1.toThrow = true;
+          this.player2.currentDartsThrown += 3;
         }
       }
+    },
+
+    processPlayerCheckout(player, dartsThrown){
+      console.log("Leg shut");
+
+      player.tempLegs += 1;
+
+      if (this.game.matchMode === "First to Sets") {
+        if (this.game.matchModeLegs === player.tempLegs) {
+          console.log("Set shut");
+          player.tempLegs = 0;
+          player.sets += 1;
+
+          if (this.game.matchModeSets === player.sets) {
+            console.log("Game shut");
+          }
+        }
+      }
+
+      player.currentScores.push(this.score);
+      player.totalScores.push(player.currentScores.slice());
+      player.currentDartsThrown += dartsThrown;
+      player.dartsPerLegThrown.push(player.currentDartsThrown);
+
+      if (player.name === 'player2'){
+        this.player1.toThrow = false;
+        this.player2.toThrow = true;
+      } else if (player.name === 'player2') {
+        this.player1.toThrow = true;
+        this.player2.toThrow = false;
+      }
+
+      this.logInfo(player, this.score);
+
+      this.resetScores();
     },
 
     resetScores() {
-      this.player1CurrentScores = [];
-      this.player1Score = this.player1StartScore;
-      this.player1TempScore = this.player1StartScore;
-      this.player1CurrentDartsThrown = 0;
-      this.player2CurrentScores = [];
-      this.player2Score = this.player2StartScore;
-      this.player2TempScore = this.player2StartScore;
-      this.player2CurrentDartsThrown = 0;
+      this.player1.currentScores = [];
+      this.player1.score = this.player1.startScore;
+      this.player1.tempScore = this.player1.startScore;
+      this.player1.currentDartsThrown = 0;
+      this.player2.currentScores = [];
+      this.player2.score = this.player2.startScore;
+      this.player2.tempScore = this.player2.startScore;
+      this.player2.currentDartsThrown = 0;
     },
 
-    logInfo(score){
+    logInfo(player, score){
       console.log(" ");
       console.log("--- Entered Score: " + score + " ---");
-      console.log("# Player1CurrentScores: " + this.player1CurrentScores);
-      for (let i = 0; i < this.player1TotalScores.length; i++) {
+      console.log(player.name + " CurrentScores: " + player.currentScores);
+
+      /*
+      for (let i = 0; i < player.totalScores.length; i++) {
         let legName = "Leg " + (i + 1);
-        let legScores = this.player1TotalScores[i].join(", ");
+        let legScores = player.totalScores[i].join(", ");
         console.log(legName + ": " + legScores);
       }
-      console.log("player1CurrentDartsThrown: " + this.player1CurrentDartsThrown);
-      console.log("player1DartsPerLegThrown: " + this.player1DartsPerLegThrown);
-      console.log("matchModeSets: " + this.game.matchModeSets + " matchModeLegs: " + this.game.matchModeLegs );
-      console.log("player1Sets: " + this.player1Sets + " player1Legs: " + this.player1Legs );
+       */
+      console.log(player.name + " TotalScores: " + player.totalScores);
+
+      console.log(player.name + " CurrentDartsThrown: " + player.currentDartsThrown);
+      console.log(player.name + " DartsPerLegThrown: " + player.dartsPerLegThrown);
+      console.log("MatchModeSets: " + this.game.matchModeSets + " MatchModeLegs: " + this.game.matchModeLegs );
+      console.log(player.name + " Sets: " + player.sets + " " + player.name + " Legs: " + player.tempLegs );
     },
 
 
@@ -214,17 +245,17 @@ export default {
       axios.get('/api/game/' + this.gameId)
           .then(response => {
             this.game = response.data;
-            this.player1StartScore = this.game.startScore;
-            this.player2StartScore = this.game.startScore;
-            this.player1TempScore = this.game.startScore;
-            this.player2TempScore = this.game.startScore;
-            this.player1Score = this.game.startScore;
-            this.player2Score = this.game.startScore;
+            this.player1.startScore = this.game.startScore;
+            this.player2.startScore = this.game.startScore;
+            this.player1.tempScore = this.game.startScore;
+            this.player2.tempScore = this.game.startScore;
+            this.player1.score = this.game.startScore;
+            this.player2.score = this.game.startScore;
 
             if (this.game.player1.id === this.game.playerStarting.id) {
-              this.player1ToThrow = true;
+              this.player1.toThrow = true;
             } else if (this.game.player2.id === this.game.playerStarting.id) {
-              this.player2ToThrow = true;
+              this.player2.toThrow = true;
             }
 
             this.loading = false;
