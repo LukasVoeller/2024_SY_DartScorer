@@ -40,10 +40,10 @@
       <li class="list-group-item">
         <div class="row">
           <div class="col text-center p-0">
-            Sets: {{ game.player1Sets }}
+            Sets: {{ sets }}
           </div>
           <div class="col text-center p-0">
-            Legs: {{ game.player1Legs }}
+            Legs: {{ legs }}
           </div>
         </div>
       </li>
@@ -65,7 +65,9 @@ export default {
     game: Object,
     score: Number,
     toThrow: Boolean,
-    dartsThrown: Number
+    dartsThrown: Number,
+    sets: Number,
+    legs: Number
   },
   data() {
     return {
@@ -78,11 +80,12 @@ export default {
       return bogeyScores.includes(score);
     },
     calculatedCheckouts(checkouts) {
-      console.log("Possible checkouts: " + checkouts);
+      //console.log("Possible checkouts: " + checkouts);
       this.possibleCheckouts = checkouts; // Store the checkouts in data
     }
   },
   computed: {
+    // TODO: Delete
     calculateCheckouts() {
       return calculateCheckouts
     },

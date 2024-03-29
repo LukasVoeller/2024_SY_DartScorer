@@ -78,7 +78,7 @@ export default {
       return bogeyScores.includes(score);
     },
     calculatedCheckouts(checkouts) {
-      console.log("Possible checkouts: " + checkouts);
+      //console.log("Possible checkouts: " + checkouts);
       this.possibleCheckouts = checkouts; // Store the checkouts in data
     }
   },
