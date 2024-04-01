@@ -10,14 +10,17 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\GameX01;
 use App\Entity\Player;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class GameController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
+    private SerializerInterface $serializer;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, SerializerInterface $serializer)
     {
         $this->entityManager = $entityManager;
+        $this->serializer = $serializer;
     }
 
     #[Route('/game/{id}', name: 'game')]
@@ -25,9 +28,18 @@ class GameController extends AbstractController
     {
         $game = $this->entityManager->getRepository(GameX01::class)->find($id);
 
+        //$serializedGame = $this->serializer->serialize($game, 'json', ['groups' => 'api_game']);
+
+        /*
+        return new Response($serializedGame, 200, [
+            'Content-Type' => 'application/json'
+        ]);
+        */
+
         return $this->render('game/index.html.twig', [
             'game' => $game,
         ]);
+
     }
 
     #[Route('/api/game', name: 'api_post_game', methods: ['POST'])]
@@ -90,6 +102,10 @@ class GameController extends AbstractController
     public function getGame(int $id): JsonResponse
     {
         $game = $this->entityManager->getRepository(GameX01::class)->find($id);
-        return $this->json($game);
+        //return $this->json($game);
+
+        $serializedGame = $this->serializer->serialize($game, 'json', ['groups' => 'api_game']);
+
+        return new JsonResponse($serializedGame, 200, [], true);
     }
 }

@@ -23,6 +23,14 @@ player:
   path: '/player'
   controller: 'App\Controller\PlayerController::index'
 
+user:
+  path: '/user'
+  controller: 'App\Controller\UserController::index'
+
+settings:
+  path: '/settings'
+  controller: 'App\Controller\SettingsController::index'
+
 login:
   path: '/login'
   controller: 'App\Controller\LoginController::index'
@@ -35,6 +43,10 @@ match:
   path: '/match'
   controller: 'App\Controller\MatchController::index'
 
+
+
+
+
 ######################## API Routes #######################
 
 ############ Player
@@ -42,6 +54,11 @@ match:
 api_get_players:
   path: '/api/players'
   controller: 'App\Controller\PlayerController::getPlayers'
+  methods: ['GET']
+
+api_get_player:
+  path: '/api/player/{id}'
+  controller: 'App\Controller\PlayerController::getPlayer'
   methods: ['GET']
 
 api_post_player:
@@ -52,6 +69,23 @@ api_post_player:
 api_delete_player:
   path: '/api/player/{id}'
   controller: 'App\Controller\PlayerController::deletePlayer'
+  methods: ['DELETE']
+
+############ User
+
+api_get_users:
+  path: '/api/users'
+  controller: 'App\Controller\UserController::getUsers'
+  methods: ['GET']
+
+api_post_user:
+  path: '/api/user'
+  controller: 'App\Controller\UserController::postUser'
+  methods: ['POST']
+
+api_delete_user:
+  path: '/api/user/{id}'
+  controller: 'App\Controller\UserController::deleteUser'
   methods: ['DELETE']
 
 ############ Game

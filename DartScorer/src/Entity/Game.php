@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\GameRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\MappedSuperclass;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\MappedSuperclass]
 abstract class Game
@@ -17,61 +18,80 @@ abstract class Game
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["api_game"])]
     private ?int $id = null;
 
     #[ORM\Column(type: "datetime", options: ["default" => "CURRENT_TIMESTAMP"])]
+    #[Groups(["api_game"])]
     private \DateTimeInterface $date;
 
     #[ORM\ManyToOne(targetEntity: Player::class)]
+    #[Groups(["api_game"])]
     private ?Player $player1 = null;
 
     #[ORM\ManyToOne(targetEntity: Player::class)]
+    #[Groups(["api_game"])]
     private ?Player $player2 = null;
 
     // TODO: Dont reference as Player Entity?
     #[ORM\ManyToOne(targetEntity: Player::class)]
+    #[Groups(["api_game"])]
     private ?Player $playerStarting = null;
 
     #[ORM\ManyToOne(targetEntity: Player::class)]
+    #[Groups(["api_game"])]
     private ?Player $winner = null;
 
     #[ORM\ManyToOne(targetEntity: Player::class)]
+    #[Groups(["api_game"])]
     private ?Player $loser = null;
 
     #[ORM\Column(type: "json", nullable: true)]
+    #[Groups(["api_game"])]
     private ?array $player1Scores = null;
 
     #[ORM\Column(type: "json", nullable: true)]
+    #[Groups(["api_game"])]
     private ?array $player2Scores = null;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[Groups(["api_game"])]
     private ?int $player1Sets = 0;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[Groups(["api_game"])]
     private ?int $player2Sets = 0;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[Groups(["api_game"])]
     private ?int $player1Legs = 0;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[Groups(["api_game"])]
     private int $player2Legs = 0;
 
     #[ORM\Column(type: "string", nullable: true)]
+    #[Groups(["api_game"])]
     private ?string $state = null;
 
     #[ORM\Column(type: "string", nullable: true)]
+    #[Groups(["api_game"])]
     private ?string $matchMode = null;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[Groups(["api_game"])]
     private ?int $matchModeSets = 0;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[Groups(["api_game"])]
     private ?int $matchModeLegs = 0;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[Groups(["api_game"])]
     private ?int $player1Darts = 0;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[Groups(["api_game"])]
     private int $player2Darts = 0;
 
     public function getId(): ?int

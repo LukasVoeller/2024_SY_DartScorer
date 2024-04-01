@@ -1,0 +1,11 @@
+--- deploy errors ---
+
+PHP Fatal error:  Uncaught Symfony\Component\Dotenv\Exception\PathException: Unable to read the "/var/www/html/2024_SY_DartScorer/releases/2/DartScorer/.env" environment file. in /var/www/html/2024_SY_DartScorer/releases/2/DartScorer/vendor/symfony/dotenv/Dotenv.php:553
+
+composer install
+
+npm install
+
+npm run build
+
+APP_ENV=prod

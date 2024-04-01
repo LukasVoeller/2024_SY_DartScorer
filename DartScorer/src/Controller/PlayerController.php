@@ -9,14 +9,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class PlayerController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
+    private SerializerInterface $serializer;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, SerializerInterface $serializer)
     {
         $this->entityManager = $entityManager;
+        $this->serializer = $serializer;
     }
 
     #[Route('/player', name: 'player')]
@@ -28,10 +31,27 @@ class PlayerController extends AbstractController
     #[Route('/api/players', name: 'api_get_players', methods: ['GET'])]
     public function getPlayers(Request $request): JsonResponse
     {
-        // Handle GET request to fetch all players
+        //$players = $this->entityManager->getRepository(Player::class)->findAll();
+        //return $this->json($players);
+
         $players = $this->entityManager->getRepository(Player::class)->findAll();
 
-        return $this->json($players);
+        // Serialize players with 'api' serialization group
+        $data = $this->serializer->serialize($players, 'json', ['groups' => 'api_player']);
+        return new JsonResponse($data, Response::HTTP_OK, [], true);
+    }
+
+    #[Route('/api/player/{id}', name: 'api_get_player', methods: ['GET'])]
+    public function getPlayer(int $id): JsonResponse
+    {
+        //$player = $this->entityManager->getRepository(Player::class)->find($id);
+        //return $this->json($player);
+
+        $player = $this->entityManager->getRepository(Player::class)->find($id);
+
+        // Serialize player with 'api' serialization group
+        $data = $this->serializer->serialize($player, 'json', ['groups' => 'api_player']);
+        return new JsonResponse($data, Response::HTTP_OK, [], true);
     }
 
     #[Route('/api/player', name: 'api_post_player', methods: ['POST'])]
@@ -45,7 +65,11 @@ class PlayerController extends AbstractController
         $this->entityManager->persist($player);
         $this->entityManager->flush();
 
-        return $this->json($player);
+        //return $this->json($player);
+
+        // Serialize player with 'api' serialization group
+        $data = $this->serializer->serialize($player, 'json', ['groups' => 'api_player']);
+        return new JsonResponse($data, Response::HTTP_CREATED, [], true);
     }
 
     #[Route('/api/player/{id}', name: 'api_delete_player', methods: ['DELETE'])]

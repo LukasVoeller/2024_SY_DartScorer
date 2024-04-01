@@ -22,6 +22,7 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('playerApp', './assets/player-app.js')
+    .addEntry('userApp', './assets/user-app.js')
     .addEntry('newGameApp', './assets/new-game-app.js')
     .addEntry('gameApp', './assets/game-app.js')
 

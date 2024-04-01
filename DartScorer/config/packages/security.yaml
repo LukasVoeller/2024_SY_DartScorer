@@ -36,12 +36,9 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-         - { path: ^/darts, roles: ROLE_ADMIN }
-         - { path: ^/game, roles: ROLE_ADMIN }
-         - { path: ^/match, roles: ROLE_ADMIN }
-         - { path: ^/player, roles: ROLE_ADMIN }
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+         - { path: ^/darts, roles: [ROLE_ADMIN, ROLE_PLAYER, ROLE_ASSOCIATE] }
+         - { path: ^/game, roles: [ROLE_ADMIN, ROLE_PLAYER, ROLE_ASSOCIATE] }
+         - { path: ^/player, roles: [ROLE_ADMIN, ROLE_ASSOCIATE] }
 
 when@test:
     security:

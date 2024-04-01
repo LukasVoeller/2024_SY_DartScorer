@@ -5,20 +5,25 @@ namespace App\Entity;
 use App\Repository\X01Repository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity]
 class GameX01 extends Game
 {
     #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[Groups(["api_game"])]
     private ?int $startScore = 0;
 
     #[ORM\Column(type: "string", nullable: true)]
+    #[Groups(["api_game"])]
     private ?string $finishType = null;
 
     #[ORM\Column(type: "json", nullable: true)]
+    #[Groups(["api_game"])]
     private ?array $player1Averages = null;
 
     #[ORM\Column(type: "json", nullable: true)]
+    #[Groups(["api_game"])]
     private ?array $player2Averages = null;
 
     public function getStartScore(): ?int

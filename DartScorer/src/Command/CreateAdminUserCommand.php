@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsCommand(
-    name: 'app:create-admin-user',
+    name: 'make:admin',
     description: 'Creates an admin user.',
 )]
 class CreateAdminUserCommand extends Command
@@ -30,12 +30,12 @@ class CreateAdminUserCommand extends Command
     {
         // Create the admin user
         $user = new User();
-        $user->setUsername('admin');
-        $user->setRoles(['ROLE_ADMIN']);
 
-        // Encode the password
+        $user->setUsername('admin');
         $encodedPassword = $this->passwordHasher->hashPassword($user, 'admin');
         $user->setPassword($encodedPassword);
+
+        $user->setRoles(['ROLE_ADMIN']);
 
         // Save the user to the database
         $this->entityManager->persist($user);
