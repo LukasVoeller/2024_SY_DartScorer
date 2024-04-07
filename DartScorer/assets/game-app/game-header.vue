@@ -25,6 +25,10 @@
 </template>
 
 <script>
+/*
+# Unused, deprecated
+# TODO: Remove
+*/
 export default {
   name: 'GameHeaderComponent',
   props: {

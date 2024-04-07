@@ -1,11 +1,10 @@
 <template>
-  <h1 style="padding-top: 20px;">User</h1>
+  <h1 style="padding-top: 15px;">User</h1>
 
     <!-- Table to display user -->
     <table class="table table-bordered mt-4">
       <thead>
       <tr>
-        <th scope="col">ID</th>
         <th scope="col">Username</th>
         <th scope="col">Player</th>
         <th scope="col">Role</th>
@@ -14,7 +13,6 @@
       </thead>
       <tbody>
       <tr v-for="user in users" :key="user.id">
-        <td>{{ user.id }}</td>
         <td>{{ user.username }}</td>
         <td>{{ user.player ? user.player.name : "None" }}</td>
         <td>

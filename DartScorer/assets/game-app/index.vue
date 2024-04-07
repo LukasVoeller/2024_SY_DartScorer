@@ -20,6 +20,12 @@
 </template>
 
 <script>
+/*
+ #   TODO:
+ # - If I start and check, Player2 is to throw first
+ # - Don't allow input of impossible numbers blow 180
+ # - Reset score after resume on "How many darts needed?"
+ */
 import GameHeaderComponent from './game-header.vue';
 import Player1CardComponent from './player1-card.vue';
 import Player2CardComponent from './player2-card.vue';

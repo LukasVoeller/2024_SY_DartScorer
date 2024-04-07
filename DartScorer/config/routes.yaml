@@ -31,6 +31,10 @@ settings:
   path: '/settings'
   controller: 'App\Controller\SettingsController::index'
 
+profile:
+  path: '/profile'
+  controller: 'App\Controller\ProfileController::index'
+
 login:
   path: '/login'
   controller: 'App\Controller\LoginController::index'

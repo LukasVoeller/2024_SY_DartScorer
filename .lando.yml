@@ -15,7 +15,7 @@ services:
   database:
     overrides:
       ports:
-        - '3306:3306'
+        - '3306:3307'
 
 tooling:
   console:

@@ -17,7 +17,7 @@
 
         <!-- TODO: favicon -->
 
-        {# Vendro #}
+        {# Vendor #}
         <link href="/homepage/vendor/aos/aos.css" rel="stylesheet">
         <link href="/homepage/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
         <link href="/homepage/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
@@ -26,13 +26,12 @@
 
         {# Homepage #}
         <link href="/homepage/assets/css/style.css" rel="stylesheet">
-        <link type="text/css" href="/css/base_darts.css" rel="stylesheet"/>
+        <link href="/css/base_darts.css" rel="stylesheet"/>
 
-        {#
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
-        #}
+
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
@@ -51,14 +50,7 @@
                     {% endif %}
                 </div>
 
-                <nav id="navbar" class="nav-menu navbar">
-                    <ul>
-                        <li><a href="{{ path('darts') }}" class="nav-link {% if app.request.attributes.get('_route') == 'darts' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>
-                        <li><a href="{{ path('new-game') }}" class="nav-link {% if app.request.attributes.get('_route') == 'new-game' %}active{% endif %}"><i class="bx bx-home"></i> <span>New Game</span></a></li>
-                        <li><a href="{{ path('match') }}" class="nav-link {% if app.request.attributes.get('_route') == 'match' %}active{% endif %}"><i class="bx bx-play-circle"></i> <span>Match</span></a></li>
-                        <li><a href="{{ path('player') }}" class="nav-link {% if app.request.attributes.get('_route') == 'player' %}active{% endif %}"><i class="bx bx-play-circle"></i> <span>Player</span></a></li>
-                    </ul>
-                </nav>
+                {% include './util/navbar_darts.html.twig' %}
             </div>
         </header><!-- End Sidebar -->
 
@@ -91,31 +83,7 @@
                             </div>
                         </div>
 
-                        <nav id="navbar" class="nav-menu navbar">
-                            <ul>
-                                {% if 'ROLE_ADMIN' in app.user.roles %}
-                                    <li><a href="{{ path('darts') }}" class="nav-link {% if app.request.attributes.get('_route') == 'darts' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>
-                                    <li><a href="{{ path('new-game') }}" class="nav-link {% if app.request.attributes.get('_route') == 'new-game' %}active{% endif %}"><i class="bx bx-play-circle"></i> <span>New Game</span></a></li>
-                                    <li><a href="{{ path('player') }}" class="nav-link {% if app.request.attributes.get('_route') == 'player' %}active{% endif %}"><i class="bx bx-user"></i> <span>Manage Player</span></a></li>
-                                    <li><a href="{{ path('user') }}" class="nav-link {% if app.request.attributes.get('_route') == 'user' %}active{% endif %}"><i class="bx bx-user-circle"></i> <span>Manage User</span></a></li>
-                                    <li><a href="{{ path('settings') }}" class="nav-link {% if app.request.attributes.get('_route') == 'settings' %}active{% endif %}"><i class="bx bx-cog"></i> <span>Settings</span></a></li>
-                                {% endif %}
-
-                                {% if 'ROLE_ASSOCIATE' in app.user.roles %}
-                                    <li><a href="{{ path('darts') }}" class="nav-link {% if app.request.attributes.get('_route') == 'darts' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>
-                                    <li><a href="{{ path('new-game') }}" class="nav-link {% if app.request.attributes.get('_route') == 'new-game' %}active{% endif %}"><i class="bx bx-play-circle"></i> <span>New Game</span></a></li>
-                                    <li><a href="{{ path('player') }}" class="nav-link {% if app.request.attributes.get('_route') == 'player' %}active{% endif %}"><i class="bx bx-user"></i> <span>Manage Player</span></a></li>
-                                    <li><a href="{{ path('settings') }}" class="nav-link {% if app.request.attributes.get('_route') == 'settings' %}active{% endif %}"><i class="bx bx-cog"></i> <span>Settings</span></a></li>
-                                {% endif %}
-
-                                {% if 'ROLE_PLAYER' in app.user.roles %}
-                                    <li><a href="{{ path('darts') }}" class="nav-link {% if app.request.attributes.get('_route') == 'darts' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>
-                                    <li><a href="{{ path('new-game') }}" class="nav-link {% if app.request.attributes.get('_route') == 'new-game' %}active{% endif %}"><i class="bx bx-play-circle"></i> <span>New Game</span></a></li>
-                                    <li><a href="{{ path('settings') }}" class="nav-link {% if app.request.attributes.get('_route') == 'settings' %}active{% endif %}"><i class="bx bx-cog"></i> <span>Settings</span></a></li>
-                                {% endif %}
-
-                            </ul>
-                        </nav>
+                        {% include './util/navbar_darts.html.twig' %}
                     </div>
                 </div>
             </div>

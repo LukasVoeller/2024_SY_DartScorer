@@ -1,5 +1,5 @@
 <template>
-  <h1 style="padding-top: 20px;">Player</h1>
+  <h1 style="padding-top: 15px;">Player</h1>
   <!-- Table to display player -->
 
   <table class="table table-bordered mt-4">

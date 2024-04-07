@@ -1,26 +1,5 @@
 <template>
   <div>
-    <!--
-    <p v-if="calculate_checkouts(score).length > 0" style="margin: 0px;">
-      {{
-        stringify_checkout(calculate_checkouts(score)[0][0], calculate_checkouts(score)[0][1], calculate_checkouts(score)[0][2])
-      }}
-    </p>
-
-    <p v-if="calculate_checkouts(score).length > 1" style="margin: 0px;">
-      {{
-        stringify_checkout(calculate_checkouts(score)[1][0], calculate_checkouts(score)[1][1], calculate_checkouts(score)[1][2])
-      }}
-    </p>
-
-    <p v-if="calculate_checkouts(score).length > 2" style="margin: 0px;">
-      {{
-        stringify_checkout(calculate_checkouts(score)[2][0], calculate_checkouts(score)[2][1], calculate_checkouts(score)[2][2])
-      }}
-    </p>
-    -->
-
-
     <div class="row justify-content-center">
       <div class="col-12 text-center">
         <p v-if="calculate_checkouts(score).length > 0" style="margin: 0px; white-space: nowrap;">
@@ -37,8 +16,6 @@
         </p>
       </div>
     </div>
-
-
   </div>
 </template>
 
@@ -54,8 +31,8 @@ export default {
     # Output: [ [ 0, 50, 50 ],   [ 0, 60, 40 ],   [ 60, 2, 38 ] ]
     #
     # Focus on as few darts as possible to check out
-    # Focus on highest checkout doubles 40, 38, 36
-    # Show fastest Bull-Checkout, show only one Bull-Checkout
+    # Focus on highest checkout doubles 50, 40, 38, ...
+    # Show only one Bull-Checkout
     */
     calculate_checkouts(score) {
       const max_scores_per_first_arrow = [60, 57, 54, 51, 50, 48, 45, 42, 40, 38, 36, 34, 33, 32, 30, 28, 26, 25, 24, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
@@ -148,10 +125,11 @@ export default {
     },
 
     /*
+    #        f, s,  c
     # Input: 0, 50, 40
     # Output: BULL, D20
     #
-    # Returns a checkout as a string
+    # Returns the checkout as a string
     */
     stringify_checkout(f, s, c) {
       let f_s, s_s, c_s;
@@ -214,7 +192,7 @@ export default {
 
       if (f === 0 && s === 0) {
         return c_s;
-      } else if (f === 0){
+      } else if (f === 0) {
         return s_s + ", " + c_s;
       } else {
         return f_s + ", " + s_s + ", " + c_s;
