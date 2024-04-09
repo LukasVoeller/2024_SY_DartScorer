@@ -5,12 +5,7 @@ namespace App\Entity;
 use App\Repository\ShanghaiRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ShanghaiRepository::class)]
-#[ORM\InheritanceType("JOINED")]
-#[ORM\DiscriminatorColumn(name: "game_type", type: "string")]
-#[ORM\DiscriminatorMap([
-    "shanghai" => "GameShanghai"
-])]
+#[ORM\Entity]
 class GameShanghai extends Game
 {
     // TODO: Manage Endscores in an array per Leg played

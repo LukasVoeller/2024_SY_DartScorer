@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Leg;
+use App\Entity\Score;
+use App\Entity\Set;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,12 +54,8 @@ class GameController extends AbstractController
         $game = null;
         $gameMode = $data['gameMode'];
 
-        if ($gameMode == "X01") {
-            $startScore = $data['startScore'];
-            $finishType = $data['finishType'];
-        }
-
         $matchMode = $data['matchMode'];
+        // TODO: matchModeSets/Legs to matchModeSets/LegsNeeded
         $modeSets = $data['matchModeSets'];
         $modeLegs = $data['matchModeLegs'];
         $player1Id = $data['player1Id'];
@@ -64,28 +63,48 @@ class GameController extends AbstractController
         $playerStartingId = $data['playerStartingId'];
 
         // Find players by their IDs
+        // TODO: Remove
         $playerRepository = $this->entityManager->getRepository(Player::class);
         $player1 = $playerRepository->find($player1Id);
         $player2 = $playerRepository->find($player2Id);
 
-        // TODO: Dont reference as Player Entity
         $playerStarting = $playerRepository->find($playerStartingId);
 
         // Perform any necessary game logic here
         // For example, you can create a new Game entity and associate players with it
         if ($gameMode == "X01") {
             $game = new GameX01();
-            $game->setStartScore($startScore);
-            $game->setFinishType($finishType);
+            $game->setStartScore($data['startScore']);
+            $game->setFinishType($data['finishType']);
+
+            $set = new Set();
+            $leg = new Leg();
+            $score = new Score();
+
+            $score->setValue(60);
+            // TODO: Rename darts dartsThrown
+            $score->setDarts(3);
+            // TODO: Rename player to playerId
+            $score->setPlayer(3);
+            $leg->addScore($score);
+            $set->addLeg($leg);
+            $set->setMatchModeLegsNeeded($data['matchModeLegs']);
+
+            $this->entityManager->persist($score);
+            $this->entityManager->persist($leg);
+            $this->entityManager->persist($set);
+
+            $game->addSet($set);
         }
 
         $game->setMatchMode($matchMode);
-        $game->setMatchModeSets($modeSets);
-        $game->setMatchModeLegs($modeLegs);
-        $game->setPlayer1($player1);
-        $game->setPlayer2($player2);
-        $game->setPlayerStarting($playerStarting);
+        $game->setMatchModeSetsNeeded($modeSets);
+        $game->setMatchModeLegsNeeded($modeLegs);
+        $game->setPlayer1Id($player1->getId());
+        $game->setPlayer2Id($player2->getId());
+        $game->setPlayerIdStarting($playerStarting->getId());
         $game->setState("Live");
+
 
         // Persist the Game entity
         $this->entityManager->persist($game);
@@ -104,7 +123,9 @@ class GameController extends AbstractController
         $game = $this->entityManager->getRepository(GameX01::class)->find($id);
         //return $this->json($game);
 
-        $serializedGame = $this->serializer->serialize($game, 'json', ['groups' => 'api_game']);
+        //dd($game);
+        $serializedGame = $this->serializer->serialize($game, 'json');
+
 
         return new JsonResponse($serializedGame, 200, [], true);
     }

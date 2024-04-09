@@ -3,103 +3,78 @@
 namespace App\Entity;
 
 use App\Repository\GameRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\MappedSuperclass;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\MappedSuperclass]
-abstract class Game
+class Game
 {
-    public function __construct()
-    {
-        $this->date = new \DateTime();
-    }
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["api_game"])]
     private ?int $id = null;
 
-    #[ORM\Column(type: "datetime", options: ["default" => "CURRENT_TIMESTAMP"])]
-    #[Groups(["api_game"])]
-    private \DateTimeInterface $date;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $date = null;
 
-    #[ORM\ManyToOne(targetEntity: Player::class)]
-    #[Groups(["api_game"])]
-    private ?Player $player1 = null;
+    #[ORM\Column]
+    private ?int $player1Id = null;
 
-    #[ORM\ManyToOne(targetEntity: Player::class)]
-    #[Groups(["api_game"])]
-    private ?Player $player2 = null;
+    #[ORM\Column]
+    private ?int $player2Id = null;
 
-    // TODO: Dont reference as Player Entity?
-    #[ORM\ManyToOne(targetEntity: Player::class)]
-    #[Groups(["api_game"])]
-    private ?Player $playerStarting = null;
+    #[ORM\Column]
+    private ?int $playerIdStarting = null;
 
-    #[ORM\ManyToOne(targetEntity: Player::class)]
-    #[Groups(["api_game"])]
-    private ?Player $winner = null;
+    #[ORM\Column(nullable: true)]
+    private ?int $playerIdWinner = null;
 
-    #[ORM\ManyToOne(targetEntity: Player::class)]
-    #[Groups(["api_game"])]
-    private ?Player $loser = null;
-
-    #[ORM\Column(type: "json", nullable: true)]
-    #[Groups(["api_game"])]
-    private ?array $player1Scores = null;
-
-    #[ORM\Column(type: "json", nullable: true)]
-    #[Groups(["api_game"])]
-    private ?array $player2Scores = null;
-
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(["api_game"])]
-    private ?int $player1Sets = 0;
-
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(["api_game"])]
-    private ?int $player2Sets = 0;
-
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(["api_game"])]
-    private ?int $player1Legs = 0;
-
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(["api_game"])]
-    private int $player2Legs = 0;
-
-    #[ORM\Column(type: "string", nullable: true)]
-    #[Groups(["api_game"])]
+    #[ORM\Column(length: 32, nullable: true)]
     private ?string $state = null;
 
-    #[ORM\Column(type: "string", nullable: true)]
-    #[Groups(["api_game"])]
+    #[ORM\Column(length: 32)]
     private ?string $matchMode = null;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(["api_game"])]
-    private ?int $matchModeSets = 0;
+    #[ORM\Column(nullable: true)]
+    private ?int $matchModeSetsNeeded = null;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(["api_game"])]
-    private ?int $matchModeLegs = 0;
+    #[ORM\Column(nullable: true)]
+    private ?int $matchModeLegsNeeded = null;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(["api_game"])]
-    private ?int $player1Darts = 0;
+    /**
+     * @var Collection<int, Set>
+     */
+    #[ORM\OneToMany(targetEntity: Set::class, mappedBy: 'game', orphanRemoval: true)]
+    private Collection $sets;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(["api_game"])]
-    private int $player2Darts = 0;
+    /**
+     * @var Collection<int, Leg>
+     */
+    #[ORM\OneToMany(targetEntity: Leg::class, mappedBy: 'game', orphanRemoval: true)]
+    private Collection $legs;
+
+    /**
+     * @var Collection<int, Score>
+     */
+    #[ORM\OneToMany(targetEntity: Score::class, mappedBy: 'game', orphanRemoval: true)]
+    private Collection $scores;
+
+    public function __construct()
+    {
+        $this->sets = new ArrayCollection();
+        $this->legs = new ArrayCollection();
+        $this->scores = new ArrayCollection();
+        $this->date = new \DateTime();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDate(): \DateTimeInterface
+    public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
     }
@@ -111,134 +86,50 @@ abstract class Game
         return $this;
     }
 
-    public function getPlayer1(): ?Player
+    public function getPlayer1Id(): ?int
     {
-        return $this->player1;
+        return $this->player1Id;
     }
 
-    public function setPlayer1(?Player $player1): static
+    public function setPlayer1Id(int $player1Id): static
     {
-        $this->player1 = $player1;
+        $this->player1Id = $player1Id;
 
         return $this;
     }
 
-    public function getPlayer2(): ?Player
+    public function getPlayer2Id(): ?int
     {
-        return $this->player2;
+        return $this->player2Id;
     }
 
-    public function setPlayer2(?Player $player2): static
+    public function setPlayer2Id(int $player2Id): static
     {
-        $this->player2 = $player2;
+        $this->player2Id = $player2Id;
 
         return $this;
     }
 
-    public function getPlayerStarting(): ?Player
+    public function getPlayerIdStarting(): ?int
     {
-        return $this->playerStarting;
+        return $this->playerIdStarting;
     }
 
-    public function setPlayerStarting(?Player $playerStarting): static
+    public function setPlayerIdStarting(int $playerIdStarting): static
     {
-        $this->playerStarting = $playerStarting;
+        $this->playerIdStarting = $playerIdStarting;
 
         return $this;
     }
 
-    public function getWinner(): ?Player
+    public function getPlayerIdWinner(): ?int
     {
-        return $this->winner;
+        return $this->playerIdWinner;
     }
 
-    public function setWinner(?Player $winner): static
+    public function setPlayerIdWinner(?int $playerIdWinner): static
     {
-        $this->winner = $winner;
-
-        return $this;
-    }
-
-    public function getLoser(): ?Player
-    {
-        return $this->loser;
-    }
-
-    public function setLoser(?Player $loser): static
-    {
-        $this->loser = $loser;
-
-        return $this;
-    }
-
-    public function getPlayer1Scores(): ?array
-    {
-        return $this->player1Scores;
-    }
-
-    public function setPlayer1Scores(?array $player1Scores): static
-    {
-        $this->player1Scores = $player1Scores;
-
-        return $this;
-    }
-
-    public function getPlayer2Scores(): ?array
-    {
-        return $this->player2Scores;
-    }
-
-    public function setPlayer2Scores(?array $player2Scores): static
-    {
-        $this->player2Scores = $player2Scores;
-
-        return $this;
-    }
-
-    public function getPlayer1Sets(): ?int
-    {
-        return $this->player1Sets;
-    }
-
-    public function setPlayer1Sets(?int $player1Sets): static
-    {
-        $this->player1Sets = $player1Sets;
-
-        return $this;
-    }
-
-    public function getPlayer2Sets(): ?int
-    {
-        return $this->player2Sets;
-    }
-
-    public function setPlayer2Sets(?int $player2Sets): static
-    {
-        $this->player2Sets = $player2Sets;
-
-        return $this;
-    }
-
-    public function getPlayer1Legs(): ?int
-    {
-        return $this->player1Legs;
-    }
-
-    public function setPlayer1Legs(?int $player1Legs): static
-    {
-        $this->player1Legs = $player1Legs;
-
-        return $this;
-    }
-
-    public function getPlayer2Legs(): ?int
-    {
-        return $this->player2Legs;
-    }
-
-    public function setPlayer2Legs(?int $player2Legs): static
-    {
-        $this->player2Legs = $player2Legs;
+        $this->playerIdWinner = $playerIdWinner;
 
         return $this;
     }
@@ -260,57 +151,123 @@ abstract class Game
         return $this->matchMode;
     }
 
-    public function setMatchMode(?string $matchMode): static
+    public function setMatchMode(string $matchMode): static
     {
         $this->matchMode = $matchMode;
 
         return $this;
     }
 
-    public function getMatchModeSets(): ?int
+    public function getMatchModeSetsNeeded(): ?int
     {
-        return $this->matchModeSets;
+        return $this->matchModeSetsNeeded;
     }
 
-    public function setMatchModeSets(?int $matchModeSets): static
+    public function setMatchModeSetsNeeded(?int $matchModeSetsNeeded): static
     {
-        $this->matchModeSets = $matchModeSets;
+        $this->matchModeSetsNeeded = $matchModeSetsNeeded;
 
         return $this;
     }
 
-    public function getMatchModeLegs(): ?int
+    public function getMatchModeLegsNeeded(): ?int
     {
-        return $this->matchModeLegs;
+        return $this->matchModeLegsNeeded;
     }
 
-    public function setMatchModeLegs(?int $matchModeLegs): static
+    public function setMatchModeLegsNeeded(?int $matchModeLegsNeeded): static
     {
-        $this->matchModeLegs = $matchModeLegs;
+        $this->matchModeLegsNeeded = $matchModeLegsNeeded;
 
         return $this;
     }
 
-    public function getPlayer1Darts(): ?int
+    /**
+     * @return Collection<int, Set>
+     */
+    public function getSets(): Collection
     {
-        return $this->player1Darts;
+        return $this->sets;
     }
 
-    public function setPlayer1Darts(?int $player1Darts): static
+    public function addSet(Set $set): static
     {
-        $this->player1Darts = $player1Darts;
+        if (!$this->sets->contains($set)) {
+            $this->sets->add($set);
+            $set->setRelatedGame($this);
+        }
 
         return $this;
     }
 
-    public function getPlayer2Darts(): ?int
+    public function removeSet(Set $set): static
     {
-        return $this->player2Darts;
+        if ($this->sets->removeElement($set)) {
+            // set the owning side to null (unless already changed)
+            if ($set->getGame() === $this) {
+                $set->setGame(null);
+            }
+        }
+
+        return $this;
     }
 
-    public function setPlayer2Darts(?int $player2Darts): static
+    /**
+     * @return Collection<int, Leg>
+     */
+    public function getLegs(): Collection
     {
-        $this->player2Darts = $player2Darts;
+        return $this->legs;
+    }
+
+    public function addLeg(Leg $leg): static
+    {
+        if (!$this->legs->contains($leg)) {
+            $this->legs->add($leg);
+            $leg->setGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLeg(Leg $leg): static
+    {
+        if ($this->legs->removeElement($leg)) {
+            // set the owning side to null (unless already changed)
+            if ($leg->getGame() === $this) {
+                $leg->setGame(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Score>
+     */
+    public function getScores(): Collection
+    {
+        return $this->scores;
+    }
+
+    public function addScore(Score $score): static
+    {
+        if (!$this->scores->contains($score)) {
+            $this->scores->add($score);
+            $score->setGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeScore(Score $score): static
+    {
+        if ($this->scores->removeElement($score)) {
+            // set the owning side to null (unless already changed)
+            if ($score->getGame() === $this) {
+                $score->setGame(null);
+            }
+        }
 
         return $this;
     }

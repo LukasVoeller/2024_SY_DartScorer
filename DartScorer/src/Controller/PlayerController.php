@@ -37,7 +37,7 @@ class PlayerController extends AbstractController
         $players = $this->entityManager->getRepository(Player::class)->findAll();
 
         // Serialize players with 'api' serialization group
-        $data = $this->serializer->serialize($players, 'json', ['groups' => 'api_player']);
+        $data = $this->serializer->serialize($players, 'json');
         return new JsonResponse($data, Response::HTTP_OK, [], true);
     }
 
@@ -50,7 +50,7 @@ class PlayerController extends AbstractController
         $player = $this->entityManager->getRepository(Player::class)->find($id);
 
         // Serialize player with 'api' serialization group
-        $data = $this->serializer->serialize($player, 'json', ['groups' => 'api_player']);
+        $data = $this->serializer->serialize($player, 'json');
         return new JsonResponse($data, Response::HTTP_OK, [], true);
     }
 
@@ -60,7 +60,10 @@ class PlayerController extends AbstractController
         // Handle POST request to add a new player
         $data = json_decode($request->getContent(), true);
         $player = new Player();
-        $player->setName($data['name']); // Assuming 'name' is the key in the JSON data
+        $player->setName($data['name']);
+
+        $currentDate = new \DateTime();
+        $player->setDate($currentDate);
 
         $this->entityManager->persist($player);
         $this->entityManager->flush();
@@ -68,7 +71,7 @@ class PlayerController extends AbstractController
         //return $this->json($player);
 
         // Serialize player with 'api' serialization group
-        $data = $this->serializer->serialize($player, 'json', ['groups' => 'api_player']);
+        $data = $this->serializer->serialize($player, 'json');
         return new JsonResponse($data, Response::HTTP_CREATED, [], true);
     }
 

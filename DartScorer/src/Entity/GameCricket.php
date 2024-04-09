@@ -5,12 +5,7 @@ namespace App\Entity;
 use App\Repository\CricketRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CricketRepository::class)]
-#[ORM\InheritanceType("JOINED")]
-#[ORM\DiscriminatorColumn(name: "game_type", type: "string")]
-#[ORM\DiscriminatorMap([
-    "cricket" => "GameCricket"
-])]
+#[ORM\Entity]
 class GameCricket extends Game
 {
     // TODO: Manage Endscores in an array per Leg played
