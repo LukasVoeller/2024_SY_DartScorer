@@ -7,58 +7,88 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\MappedSuperclass]
-class Game
+//#[ORM\MappedSuperclass]
+#[ORM\Entity]
+#[ORM\InheritanceType("SINGLE_TABLE")]
+#[ORM\DiscriminatorColumn(name: "game_type", type: "string")]
+#[ORM\DiscriminatorMap([
+    "x01" => "GameX01",
+    "cricket" => "GameCricket",
+    "shanghai" => "GameShanghai",
+])]
+abstract class Game
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['game'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['game'])]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\Column]
-    private ?int $player1Id = null;
+    #[ORM\Column(nullable: false)]
+    #[Groups(['game'])]
+    private ?int $player1Id;
 
-    #[ORM\Column]
-    private ?int $player2Id = null;
+    #[ORM\Column(nullable: false)]
+    #[Groups(['game'])]
+    private ?string $player1Name;
 
-    #[ORM\Column]
-    private ?int $playerIdStarting = null;
+    #[ORM\Column(nullable: false)]
+    #[Groups(['game'])]
+    private ?int $player2Id;
+
+    #[ORM\Column(nullable: false)]
+    #[Groups(['game'])]
+    private ?string $player2Name;
+
+    #[ORM\Column(nullable: false)]
+    #[Groups(['game'])]
+    private ?int $playerIdStarting;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['game'])]
     private ?int $playerIdWinner = null;
 
     #[ORM\Column(length: 32, nullable: true)]
+    #[Groups(['game'])]
     private ?string $state = null;
 
-    #[ORM\Column(length: 32)]
-    private ?string $matchMode = null;
+    #[ORM\Column(length: 32, nullable: false)]
+    #[Groups(['game'])]
+    private ?string $matchMode;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['game'])]
     private ?int $matchModeSetsNeeded = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['game'])]
     private ?int $matchModeLegsNeeded = null;
 
     /**
      * @var Collection<int, Set>
      */
-    #[ORM\OneToMany(targetEntity: Set::class, mappedBy: 'game', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Set::class, mappedBy: 'relatedGame', orphanRemoval: true)]
+    #[Groups(['game'])]
     private Collection $sets;
 
     /**
      * @var Collection<int, Leg>
      */
-    #[ORM\OneToMany(targetEntity: Leg::class, mappedBy: 'game', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Leg::class, mappedBy: 'relatedGame', orphanRemoval: true)]
+    #[Groups(['game'])]
     private Collection $legs;
 
     /**
      * @var Collection<int, Score>
      */
-    #[ORM\OneToMany(targetEntity: Score::class, mappedBy: 'game', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Score::class, mappedBy: 'relatedGame', orphanRemoval: true)]
+    #[Groups(['game'])]
     private Collection $scores;
 
     public function __construct()
@@ -98,6 +128,18 @@ class Game
         return $this;
     }
 
+    public function getPlayer1Name(): ?string
+    {
+        return $this->player1Name;
+    }
+
+    public function setPlayer1Name(?string $player1Name): static
+    {
+        $this->player1Name = $player1Name;
+
+        return $this;
+    }
+
     public function getPlayer2Id(): ?int
     {
         return $this->player2Id;
@@ -106,6 +148,18 @@ class Game
     public function setPlayer2Id(int $player2Id): static
     {
         $this->player2Id = $player2Id;
+
+        return $this;
+    }
+
+    public function getPlayer2Name(): ?string
+    {
+        return $this->player2Name;
+    }
+
+    public function setPlayer2Name(?string $player2Name): static
+    {
+        $this->player2Name = $player2Name;
 
         return $this;
     }

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ScoreRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ScoreRepository::class)]
 class Score
@@ -11,11 +12,12 @@ class Score
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['score'])]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'scores')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Player $player = null;
+    #[ORM\Column(nullable: false)]
+    #[Groups(['score'])]
+    private ?int $playerId;
 
     #[ORM\ManyToOne(inversedBy: 'scores')]
     private ?Game $relatedGame = null;
@@ -23,11 +25,13 @@ class Score
     #[ORM\ManyToOne(inversedBy: 'scores')]
     private ?Leg $relatedLeg = null;
 
-    #[ORM\Column]
-    private ?int $value = null;
+    #[ORM\Column(nullable: false)]
+    #[Groups(['score'])]
+    private ?int $value;
 
-    #[ORM\Column]
-    private ?int $darts = null;
+    #[ORM\Column(nullable: false)]
+    #[Groups(['score'])]
+    private ?int $dartsThrown;
 
     #[ORM\Column(nullable: true)]
     private ?int $dart1 = null;
@@ -43,14 +47,14 @@ class Score
         return $this->id;
     }
 
-    public function getPlayer(): ?Player
+    public function getPlayerId(): int
     {
-        return $this->player;
+        return $this->playerId;
     }
 
-    public function setPlayer(?Player $player): static
+    public function setPlayerId(?int $playerId): static
     {
-        $this->player = $player;
+        $this->playerId = $playerId;
 
         return $this;
     }
@@ -91,14 +95,14 @@ class Score
         return $this;
     }
 
-    public function getDarts(): ?int
+    public function getDartsThrown(): ?int
     {
-        return $this->darts;
+        return $this->dartsThrown;
     }
 
-    public function setDarts(int $darts): static
+    public function setDartsThrown(int $darts): static
     {
-        $this->darts = $darts;
+        $this->dartsThrown = $darts;
 
         return $this;
     }

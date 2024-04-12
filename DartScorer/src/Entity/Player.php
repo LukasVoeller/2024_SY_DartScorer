@@ -17,7 +17,7 @@ class Player
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\Column(length: 32)]
+    #[ORM\Column(length: 32, nullable: false)]
     private ?string $name = null;
 
     #[ORM\OneToOne(inversedBy: 'player2', cascade: ['persist', 'remove'])]

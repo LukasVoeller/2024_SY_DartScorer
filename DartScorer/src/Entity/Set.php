@@ -6,6 +6,7 @@ use App\Repository\SetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SetRepository::class)]
 #[ORM\Table(name: '`set`')]
@@ -14,6 +15,7 @@ class Set
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['set'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'sets')]
@@ -21,15 +23,18 @@ class Set
     private ?Game $relatedGame = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['set'])]
     private ?int $playerIdWinner = null;
 
     #[ORM\Column]
+    #[Groups(['set'])]
     private ?int $matchModeLegsNeeded = null;
 
     /**
      * @var Collection<int, Leg>
      */
     #[ORM\OneToMany(targetEntity: Leg::class, mappedBy: 'relatedSet')]
+    #[Groups(['set'])]
     private Collection $legs;
 
     public function __construct()

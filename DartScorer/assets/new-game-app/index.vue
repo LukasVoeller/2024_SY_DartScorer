@@ -55,12 +55,12 @@
           <div class="col">
             <select class="form-select" aria-label="Default select example" v-model="selectedMatchMode">
               <option disabled value="">Match Mode</option>
-              <option value="First to Sets">First to Sets</option>
-              <option value="First to Legs">First to Legs</option>
+              <option value="FirstToSets">First to Sets</option>
+              <option value="FirstToLegs">First to Legs</option>
             </select>
           </div>
 
-          <div class="col-5" v-if="selectedMatchMode === 'First to Sets'">
+          <div class="col-5" v-if="selectedMatchMode === 'FirstToSets'">
             <select class="form-select" aria-label="Default select example" v-model="selectedMatchModeSets">
               <option disabled value="">Sets</option>
               <option value="1">1</option>
@@ -69,7 +69,7 @@
             </select>
           </div>
 
-          <div v-if="selectedMatchMode === 'First to Sets'">
+          <div v-if="selectedMatchMode === 'FirstToSets'">
             <br>
             <div class="row">
               <div class="col">
@@ -87,7 +87,7 @@
             </div>
           </div>
 
-          <div class="col-5" v-if="selectedMatchMode === 'First to Legs'">
+          <div class="col-5" v-if="selectedMatchMode === 'FirstToLegs'">
             <select class="form-select" aria-label="Default select example" v-model="selectedMatchModeLegs">
               <option disabled value="">Legs</option>
               <option value="1">1</option>
@@ -250,21 +250,20 @@ export default {
         playerStartingId: this.selectedPlayerStarting,
       };
 
-      if (this.selectedMatchMode === 'First to Sets') {
-        postData.matchModeSets = this.selectedMatchModeSets;
-        postData.matchModeLegs = this.selectedMatchModeLegs;
-      } else if (this.selectedMatchMode === 'First to Legs') {
-        postData.matchModeSets = 0;
-        postData.matchModeLegs = this.selectedMatchModeLegs;
+      if (this.selectedMatchMode === 'FirstToSets') {
+        postData.matchModeSetsNeeded = this.selectedMatchModeSets;
+        postData.matchModeLegsNeeded = this.selectedMatchModeLegs;
+      } else if (this.selectedMatchMode === 'FirstToLegs') {
+        postData.matchModeSetsNeeded = 0;
+        postData.matchModeLegsNeeded = this.selectedMatchModeLegs;
       }
 
       axios.post('/api/game', postData)
           .then(response => {
             // Handle success response
             console.log("Game started successfully.");
-            this.gameCode = response.data.gameCode;
-            const gameUrl = `/game/${this.gameCode}`;
-            window.location.href = gameUrl;
+            this.gameId = response.data.gameId;
+            window.location.href = `/game/${this.gameId}`;
           })
           .catch(error => {
             // Handle error response

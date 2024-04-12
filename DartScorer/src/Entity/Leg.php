@@ -6,6 +6,7 @@ use App\Repository\LegRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: LegRepository::class)]
 class Leg
@@ -13,6 +14,7 @@ class Leg
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['leg'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'legs')]
@@ -22,12 +24,14 @@ class Leg
     private ?Set $relatedSet = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['leg'])]
     private ?int $playerIdWinner = null;
 
     /**
      * @var Collection<int, Score>
      */
     #[ORM\OneToMany(targetEntity: Score::class, mappedBy: 'relatedLeg')]
+    #[Groups(['leg'])]
     private Collection $scores;
 
     public function __construct()
