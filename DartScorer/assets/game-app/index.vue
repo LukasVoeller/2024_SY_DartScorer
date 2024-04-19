@@ -5,11 +5,11 @@
   <div class="row px-1">
     <div class="col p-1">
       <Player1CardComponent v-if="game" :player1Name="player1.name" :score="player1.score" :toThrow="player1.toThrow"
-                            :dartsThrown="player1.currentDartsThrown" :sets="player1.sets" :legs="player1.tempLegs"/>
+                            :dartsThrown="calculateDartsThrownSum(player1)" :sets="player1.sets" :legs="player1.tempLegs"/>
     </div>
     <div class="col p-1">
       <Player2CardComponent v-if="game" :player2Name="player2.name" :score="player2.score" :toThrow="player2.toThrow"
-                            :dartsThrown="player2.currentDartsThrown" :sets="player2.sets" :legs="player2.tempLegs"/>
+                            :dartsThrown="calculateDartsThrownSum(player2)" :sets="player2.sets" :legs="player2.tempLegs"/>
     </div>
   </div>
 
@@ -144,6 +144,10 @@ export default {
 
   methods: {
     // Game Logic ######################################################################################################
+    calculateDartsThrownSum(player) {
+      return player.currentDartsThrown.reduce((acc, curr) => acc + curr, 0);
+    },
+
     clearScore(score) {
       score = parseInt(score.replace(/^0+/, ''), 10);
       if (isNaN(score)) {

@@ -92,7 +92,7 @@ export default {
 
     // UNDO
     document.getElementById("btn-undo").addEventListener('click', () => {
-      scoreInput.value = "";
+      //scoreInput.value = "";
       this.$emit('score-undo');
     });
 
