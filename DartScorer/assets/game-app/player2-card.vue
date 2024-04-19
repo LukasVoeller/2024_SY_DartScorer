@@ -34,7 +34,7 @@
 
     <ul class="list-group list-group-flush" style="margin-top: auto;">
       <li class="list-group-item">
-        <h1 style="font-size: 15px">Last: 0</h1>
+        <h1 style="font-size: 15px">Last: {{ lastThrow }}</h1>
         <h1 style="font-size: 15px; margin: 0px;">Average: 0</h1>
       </li>
       <li class="list-group-item">
@@ -64,6 +64,7 @@ export default {
   props: {
     player2Name: String,
     score: Number,
+    lastThrow: Array,
     toThrow: Boolean,
     dartsThrown: Number,
     sets: Number,

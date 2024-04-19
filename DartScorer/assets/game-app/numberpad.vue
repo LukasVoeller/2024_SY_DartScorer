@@ -93,8 +93,8 @@ export default {
 
     // UNDO
     document.getElementById("btn-undo").addEventListener('click', () => {
-      //scoreInput.value = "";
-      this.$emit('score-undo');
+      this.$emit('score-undo', scoreInput.value);
+      scoreInput.value = "";
     });
 
     // Attach click event listeners to number buttons

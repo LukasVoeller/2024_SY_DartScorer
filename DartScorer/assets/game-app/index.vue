@@ -4,11 +4,11 @@
   -->
   <div class="row px-1">
     <div class="col p-1">
-      <Player1CardComponent v-if="game" :player1Name="player1.name" :score="player1.score" :toThrow="player1.toThrow"
+      <Player1CardComponent v-if="game" :player1Name="player1.name" :score="player1.score" :toThrow="player1.toThrow" :lastThrow="player1.currentScores"
                             :dartsThrown="calculateDartsThrownSum(player1)" :sets="player1.sets" :legs="player1.tempLegs"/>
     </div>
     <div class="col p-1">
-      <Player2CardComponent v-if="game" :player2Name="player2.name" :score="player2.score" :toThrow="player2.toThrow"
+      <Player2CardComponent v-if="game" :player2Name="player2.name" :score="player2.score" :toThrow="player2.toThrow" :lastThrow="player2.currentScores"
                             :dartsThrown="calculateDartsThrownSum(player2)" :sets="player2.sets" :legs="player2.tempLegs"/>
     </div>
   </div>
@@ -83,7 +83,6 @@ export default {
       },
 
       score: 0,
-      legCounter: 0,
       gameState: "",
       playerStartsLegId: null
     };
@@ -96,21 +95,21 @@ export default {
       if (this.player1.toThrow) {
         this.processPlayerCheckout(this.player1);
 
-        this.player1.currentDartsThrown.push(numberOfDarts);
-        this.player1.totalScores.push(this.player1.currentScores);
-        this.player1.totalDartsThrown.push(this.player1.currentDartsThrown);
-        this.player2.totalScores.push(this.player2.currentScores);
-        this.player2.totalDartsThrown.push(this.player2.currentDartsThrown);
+        this.player1.currentDartsThrown.unshift(numberOfDarts);
+        this.player1.totalScores.unshift(this.player1.currentScores);
+        this.player1.totalDartsThrown.unshift(this.player1.currentDartsThrown);
+        this.player2.totalScores.unshift(this.player2.currentScores);
+        this.player2.totalDartsThrown.unshift(this.player2.currentDartsThrown);
 
         this.logTotalInfo();
       } else if (this.player2.toThrow) {
         this.processPlayerCheckout(this.player2);
 
-        this.player2.currentDartsThrown.push(numberOfDarts);
-        this.player2.totalScores.push(this.player2.currentScores);
-        this.player2.totalDartsThrown.push(this.player2.currentDartsThrown);
-        this.player1.totalScores.push(this.player1.currentScores);
-        this.player1.totalDartsThrown.push(this.player1.currentDartsThrown);
+        this.player2.currentDartsThrown.unshift(numberOfDarts);
+        this.player2.totalScores.unshift(this.player2.currentScores);
+        this.player2.totalDartsThrown.unshift(this.player2.currentDartsThrown);
+        this.player1.totalScores.unshift(this.player1.currentScores);
+        this.player1.totalDartsThrown.unshift(this.player1.currentDartsThrown);
 
         this.logTotalInfo();
       }
@@ -122,7 +121,13 @@ export default {
     });
 
     EventBus.on('modal-resumed', (dartsForCheckout) => {
-      //
+      if (this.player1.toThrow) {
+        this.player1.score += this.player1.currentScores[this.player1.currentScores.length - 1];
+        this.player1.currentScores.shift();
+      } else if (this.player2.toThrow) {
+        this.player2.score += this.player2.currentScores[this.player2.currentScores.length - 1];
+        this.player2.currentScores.shift();
+      }
     });
   },
 
@@ -168,6 +173,7 @@ export default {
       }
 
       if (this.player1.toThrow) {
+        //console.log("Player Score: " + this.player1.score + " Temp Score:  " + this.player1.tempScore + " Score: " + score)
         this.player1.score = this.player1.tempScore - score;
       } else if (this.player2.toThrow) {
         this.player2.score = this.player2.tempScore - score;
@@ -185,64 +191,64 @@ export default {
       if (this.player1.toThrow) {
         if (this.player1.score === 0) {
           // Checkout!
-          this.player1.currentScores.push(score);
+          this.player1.currentScores.unshift(score);
           EventBus.emit('show-leg-shut-modal');
         } else {
           this.player1.tempScore = this.player1.score;
-          this.player1.currentScores.push(score);
+          this.player1.currentScores.unshift(score);
           this.player1.toThrow = false;
           this.player2.toThrow = true;
-          this.player1.currentDartsThrown.push(3);
+          this.player1.currentDartsThrown.unshift(3);
         }
       } else if (this.player2.toThrow) {
         if (this.player2.score === 0) {
           // Checkout!
+          this.player2.currentScores.unshift(score);
           EventBus.emit('show-leg-shut-modal');
         } else {
           this.player2.tempScore = this.player2.score;
-          this.player2.currentScores.push(score);
+          this.player2.currentScores.unshift(score);
           this.player2.toThrow = false;
           this.player1.toThrow = true;
-          this.player2.currentDartsThrown.push(3);
+          this.player2.currentDartsThrown.unshift(3);
         }
       }
 
       this.logCurrentInfo(score);
     },
 
-    undoScore() {
+    undoScore(enteredScore) {
+      if (enteredScore) {
+        this.clearScore(enteredScore);
+      }
+
       if (this.player1.toThrow) {
-        if (this.player2.currentScores[this.player2.currentScores.length - 1]) {
+        if (this.player2.currentScores.length > 0) {
           this.player2.score += this.player2.currentScores[this.player2.currentScores.length - 1];
-          this.player2.currentScores.pop();
-          this.player2.currentDartsThrown.pop();
+          this.player2.tempScore += this.player2.currentScores[this.player2.currentScores.length - 1];
+          this.player2.currentScores.shift();
+          this.player2.currentDartsThrown.shift();
+          this.player1.toThrow = false;
+          this.player2.toThrow = true;
         } else {
           this.player2.score = this.player1.startScore;
         }
-
-        this.player1.toThrow = false;
-        this.player2.toThrow = true;
       } else if (this.player2.toThrow) {
-        if (this.player1.currentScores[this.player1.currentScores.length - 1]) {
+        if (this.player1.currentScores.length > 0) {
           this.player1.score += this.player1.currentScores[this.player1.currentScores.length - 1];
-          this.player1.currentScores.pop();
-          this.player1.currentDartsThrown.pop();
+          this.player1.tempScore += this.player1.currentScores[this.player1.currentScores.length - 1];
+          this.player1.currentScores.shift();
+          this.player1.currentDartsThrown.shift();
+          this.player1.toThrow = true;
+          this.player2.toThrow = false;
         }
         else {
           this.player2.score = this.player1.startScore;
         }
-
-        this.player1.toThrow = true;
-        this.player2.toThrow = false;
       }
     },
 
     processPlayerCheckout(player){
-      console.log("Leg shut");
-      player.tempLegs += 1;
-      this.legCounter += 1;
-      //console.log("his.game:", this.game);
-
       if (this.game.matchMode === "FirstToSets") {
         if (this.game.matchModeLegsNeeded === player.tempLegs) {
           console.log("Set shut");
@@ -253,6 +259,14 @@ export default {
             console.log("Game shut");
             this.gameState = "Finished";
           }
+        }
+      } else if (this.game.matchMode === "FirstToLegs") {
+        console.log("Leg shut");
+        player.tempLegs += 1;
+
+        if (this.game.matchModeLegsNeeded === player.tempLegs) {
+          console.log("Game shut");
+          this.gameState = "Finished";
         }
       }
     },
