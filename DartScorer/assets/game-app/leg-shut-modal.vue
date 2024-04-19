@@ -25,7 +25,7 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Resume</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="resumeModal">Resume</button>
           <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="confirmModal">Save</button>
         </div>
       </div>
@@ -51,8 +51,13 @@ export default {
   },
   methods: {
     confirmModal() {
-      const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
+      //const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
       EventBus.emit('modal-confirmed', this.dartsForCheckout);
+    },
+
+    resumeModal() {
+      //const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
+      EventBus.emit('modal-resumed', this.dartsForCheckout);
     }
   }
 }

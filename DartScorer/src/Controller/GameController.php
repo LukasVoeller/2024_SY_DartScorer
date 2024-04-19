@@ -84,7 +84,7 @@ class GameController extends AbstractController
         $game->setPlayer1Name($player1->getName());
         $game->setPlayer2Id($data['player2Id']);
         $game->setPlayer2Name($player2->getName());
-        $game->setPlayerIdStarting($data['playerStartingId']);
+        $game->setPlayerStartingId($data['playerStartingId']);
         $game->setState("Live");
 
         $this->entityManager->persist($game);

@@ -48,7 +48,7 @@ abstract class Game
 
     #[ORM\Column(nullable: false)]
     #[Groups(['game'])]
-    private ?int $playerIdStarting;
+    private ?int $playerStartingId;
 
     #[ORM\Column(nullable: true)]
     #[Groups(['game'])]
@@ -164,14 +164,14 @@ abstract class Game
         return $this;
     }
 
-    public function getPlayerIdStarting(): ?int
+    public function getPlayerStartingId(): ?int
     {
-        return $this->playerIdStarting;
+        return $this->playerStartingId;
     }
 
-    public function setPlayerIdStarting(int $playerIdStarting): static
+    public function setPlayerStartingId(int $playerStartingId): static
     {
-        $this->playerIdStarting = $playerIdStarting;
+        $this->playerStartingId = $playerStartingId;
 
         return $this;
     }

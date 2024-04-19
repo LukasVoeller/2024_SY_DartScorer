@@ -1,13 +1,13 @@
 <template>
   <div class="row px-1">
     <div class="col p-1">
-      <button type="button" class="btn btn-light custom-btn-score-row">Undo</button>
+      <button id="btn-undo" type="button" class="btn btn-light custom-btn-score-row">Undo</button>
     </div>
     <div class="col p-1">
       <input id="scoreInput" class="form-control text-center" style="height: 55px; font-size: 30px" type="text" aria-label=".form-control-lg example" readonly>
     </div>
     <div class="col p-1">
-      <button type="button" class="btn btn-light custom-btn-score-row">Rest</button>
+      <button id="btn-rest" type="button" class="btn btn-light custom-btn-score-row">Rest</button>
     </div>
   </div>
 
@@ -88,6 +88,12 @@ export default {
           scoreInputHandle.classList.remove('exceeds-limit');
         }, 1000);
       }
+    });
+
+    // UNDO
+    document.getElementById("btn-undo").addEventListener('click', () => {
+      scoreInput.value = "";
+      this.$emit('score-undo');
     });
 
     // Attach click event listeners to number buttons
