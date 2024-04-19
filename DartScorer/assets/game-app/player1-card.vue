@@ -9,7 +9,7 @@
     <div class="card-header" :style="{ backgroundColor: toThrow ? 'lightyellow' : '' }">
       <div class="row">
         <div class="col-7 p-0">
-          <h5>{{ game.player1.name }}</h5>
+          <h5>{{ player1Name }}</h5>
         </div>
         <div class="col-5 text-end p-0">
           <p>
@@ -62,7 +62,7 @@ export default {
     CalculateCheckouts,
   },
   props: {
-    game: Object,
+    player1Name: String,
     score: Number,
     toThrow: Boolean,
     dartsThrown: Number,

@@ -21,7 +21,7 @@
     </tbody>
   </table>
 
-  <form @submit.prevent="submitForm" :class="{ 'was-validated': formNeedsValidation }" id="player-form" class="row g-3 needs-validation" novalidate="">
+  <form @submit.prevent="submitForm" :class="{ 'was-validated': fromIsValid }" id="player-form" class="row g-3 needs-validation" novalidate="">
     <div class="col-8">
       <input v-model="newPlayerName" type="text" class="form-control" id="newPlayerName" required="" placeholder="Player name">
     </div>
@@ -40,7 +40,7 @@ export default {
     return {
       players: [],
       newPlayerName: '',
-      formNeedsValidation: false
+      fromIsValid: false
     };
   },
   mounted() {
@@ -53,8 +53,8 @@ export default {
       }
       return player.user.roles.includes('ROLE_ADMIN');
     },
+
     fetchPlayers() {
-      // Fetch players from the API
       axios.get('/api/players')
           .then(response => {
             this.players = response.data;
@@ -63,37 +63,32 @@ export default {
             console.error('Error fetching players:', error);
           });
     },
+
     submitForm() {
       if (this.newPlayerName.trim() !== '') {
-        this.formNeedsValidation = false;
+        this.fromIsValid = false;
 
-        // Make an API request to add the new player
         axios.post('/api/player', {
           name: this.newPlayerName
         })
             .then(response => {
-              // Update the players array with the new player
               this.players.push(response.data);
-
-              // Clear the form input
               this.newPlayerName = '';
             })
             .catch(error => {
               console.error('Error adding player:', error);
             });
       } else {
-        this.formNeedsValidation = true;
+        this.fromIsValid = true;
       }
     },
+
     deletePlayer(playerId) {
-      // Display a confirmation dialog
       const confirmed = window.confirm('Are you sure you want to delete this player?');
 
       if (confirmed) {
-        // Make an API request to delete the player
         axios.delete(`/api/player/${playerId}`)
             .then(() => {
-              // Remove the player from the players array
               this.players = this.players.filter(player => player.id !== playerId);
             })
             .catch(error => {

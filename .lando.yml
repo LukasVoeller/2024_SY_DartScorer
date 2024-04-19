@@ -29,4 +29,10 @@ tooling:
     cmd: ./install-nodejs.sh
     user: root
     dir: /app/.lando
-    description: Install NodeJS
+    description: Installs NodeJS
+
+  npm-watch:
+    service: appserver
+    cmd: npm run watch
+    dir: /app/DartScorer
+    description: Starts npm watcher

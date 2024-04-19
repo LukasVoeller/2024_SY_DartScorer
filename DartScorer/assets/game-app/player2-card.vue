@@ -9,7 +9,7 @@
     <div class="card-header" :style="{ backgroundColor: toThrow ? 'lightyellow' : '' }">
       <div class="row">
         <div class="col-7 p-0">
-          <h5>{{ game.player2.name }}</h5>
+          <h5>{{ player2Name }}</h5>
         </div>
         <div class="col-5 text-end p-0">
           <p>
@@ -40,10 +40,10 @@
       <li class="list-group-item">
         <div class="row">
           <div class="col text-center p-0">
-            Sets: {{ game.player2Sets }}
+            Sets: {{ sets }}
           </div>
           <div class="col text-center p-0">
-            Legs: {{ game.player2Legs }}
+            Legs: {{ legs }}
           </div>
         </div>
       </li>
@@ -62,10 +62,12 @@ export default {
     CalculateCheckouts,
   },
   props: {
-    game: Object,
+    player2Name: String,
     score: Number,
     toThrow: Boolean,
-    dartsThrown: Number
+    dartsThrown: Number,
+    sets: Number,
+    legs: Number
   },
   data() {
     return {
@@ -83,6 +85,7 @@ export default {
     }
   },
   computed: {
+    // TODO: Delete
     calculateCheckouts() {
       return calculateCheckouts
     },
