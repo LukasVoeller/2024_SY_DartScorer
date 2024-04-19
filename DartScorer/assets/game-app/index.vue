@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  <NumberpadComponent v-if="game" :game="game" @score-entered="processScore" @score-cleared="clearScore" @score-confirmed="confirmScore" @score-undo="undoScore"/>
+  <NumberpadComponent v-if="game" @score-entered="processScore" @score-cleared="clearScore" @score-confirmed="confirmScore" @score-undo="undoScore"/>
 
   <LegShutModalComponent />
 

@@ -63,6 +63,7 @@
 <script>
 export default {
   name: 'NumberpadComponent',
+  emits: ['score-entered', 'score-cleared', 'score-confirmed', 'score-undo'], // Declare the custom events
   props: {
     playerName: String,
   },
