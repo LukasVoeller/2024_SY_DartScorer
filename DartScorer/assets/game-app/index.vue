@@ -3,12 +3,12 @@
       <GameHeaderComponent v-if="game" :game="game"/>
   -->
   <div class="row px-1">
-    <div class="col p-1">
-      <Player1CardComponent v-if="game" :player1Name="player1.name" :score="player1.score" :toThrow="player1.toThrow" :lastThrow="player1.currentScores"
+    <div class="col p-1" style="max-width: 50%;">
+      <PlayerCardComponent v-if="game" :playerName="player1.name" :score="player1.score" :toThrow="player1.toThrow" :lastThrow="player1.currentScores.join(', ')"
                             :dartsThrown="calculateDartsThrownSum(player1)" :sets="player1.sets" :legs="player1.tempLegs"/>
     </div>
-    <div class="col p-1">
-      <Player2CardComponent v-if="game" :player2Name="player2.name" :score="player2.score" :toThrow="player2.toThrow" :lastThrow="player2.currentScores"
+    <div class="col p-1" style="max-width: 50%;">
+      <PlayerCardComponent v-if="game" :playerName="player2.name" :score="player2.score" :toThrow="player2.toThrow" :lastThrow="player2.currentScores.join(', ')"
                             :dartsThrown="calculateDartsThrownSum(player2)" :sets="player2.sets" :legs="player2.tempLegs"/>
     </div>
   </div>
@@ -27,8 +27,7 @@
  # - Reset score after resume on "How many darts needed?"
  */
 import GameHeaderComponent from './game-header.vue';
-import Player1CardComponent from './player1-card.vue';
-import Player2CardComponent from './player2-card.vue';
+import PlayerCardComponent from './player-card.vue';
 import NumberpadComponent from './numberpad.vue';
 import LegShutModalComponent from './leg-shut-modal.vue';
 import axios from 'axios';
@@ -38,8 +37,7 @@ export default {
   name: 'GameComponent',
   components: {
     GameHeaderComponent,
-    Player1CardComponent,
-    Player2CardComponent,
+    PlayerCardComponent,
     NumberpadComponent,
     LegShutModalComponent,
   },
@@ -180,6 +178,9 @@ export default {
       }
     },
 
+    // TODO: Don't add the score if score is bust
+    // Impossible scores:   179, 178, 176, 175, 173, 172, 169, 166, 163, 162, ...
+    // Possible scores:     180, 177, 174, 171, 170, 168, 167, 165, 164, 161, ...
     confirmScore(score) {
       score = parseInt(score.replace(/^0+/, ''), 10);
       if (isNaN(score)) {
@@ -224,8 +225,8 @@ export default {
 
       if (this.player1.toThrow) {
         if (this.player2.currentScores.length > 0) {
-          this.player2.score += this.player2.currentScores[this.player2.currentScores.length - 1];
-          this.player2.tempScore += this.player2.currentScores[this.player2.currentScores.length - 1];
+          this.player2.score += this.player2.currentScores[0];
+          this.player2.tempScore += this.player2.currentScores[0];
           this.player2.currentScores.shift();
           this.player2.currentDartsThrown.shift();
           this.player1.toThrow = false;
@@ -235,8 +236,8 @@ export default {
         }
       } else if (this.player2.toThrow) {
         if (this.player1.currentScores.length > 0) {
-          this.player1.score += this.player1.currentScores[this.player1.currentScores.length - 1];
-          this.player1.tempScore += this.player1.currentScores[this.player1.currentScores.length - 1];
+          this.player1.score += this.player1.currentScores[0];
+          this.player1.tempScore += this.player1.currentScores[0];
           this.player1.currentScores.shift();
           this.player1.currentDartsThrown.shift();
           this.player1.toThrow = true;

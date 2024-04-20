@@ -1,15 +1,9 @@
 <template>
-  <!--
-  <div :style="{ backgroundColor: toThrow ? 'lightblue' : '' }" id="player-2" class="card border-light border-5">
-  -->
-  <!--
-  <div :class="{ 'border-warning': toThrow, 'border-light': !toThrow }" id="player-2" class="card border-5" style="width: 100%; display: flex; flex-direction: column;">
-  -->
-  <div id="player-2" class="card" style="width: 100%; /*display: flex; flex-direction: column;*/">
+  <div id="player" class="card">
     <div class="card-header" :style="{ backgroundColor: toThrow ? 'lightyellow' : '' }">
       <div class="row">
         <div class="col-7 p-0">
-          <h5>{{ player2Name }}</h5>
+          <h5>{{ playerName }}</h5>
         </div>
         <div class="col-5 text-end p-0">
           <p>
@@ -34,8 +28,17 @@
 
     <ul class="list-group list-group-flush" style="margin-top: auto;">
       <li class="list-group-item">
-        <h1 style="font-size: 15px">Last: {{ lastThrow }}</h1>
-        <h1 style="font-size: 15px; margin: 0px;">Average: 0</h1>
+        <h1 style="font-size: 15px; white-space: nowrap; overflow: hidden;">Last: {{ lastThrow }}</h1>
+
+        <div class="row">
+          <div class="col">
+            <h1 style="font-size: 15px; margin: 0px;">Leg Avg.: 0</h1>
+          </div>
+          <div class="col">
+            <h1 style="font-size: 15px; margin: 0px;">Game Avg.: 0</h1>
+          </div>
+        </div>
+
       </li>
       <li class="list-group-item">
         <div class="row">
@@ -57,14 +60,16 @@ import CalculateCheckouts from './calculate-checkouts.vue';
 import calculateCheckouts from "./calculate-checkouts.vue";
 
 export default {
-  name: 'Player2CardComponent',
+  name: 'PlayerCardComponent',
   components: {
     CalculateCheckouts,
   },
   props: {
-    player2Name: String,
+    playerName: String,
     score: Number,
     lastThrow: Array,
+    legAverage: Number,
+    gameAverage: Number,
     toThrow: Boolean,
     dartsThrown: Number,
     sets: Number,
