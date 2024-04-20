@@ -32,10 +32,12 @@
 
         <div class="row">
           <div class="col">
-            <h1 style="font-size: 15px; margin: 0px;">Leg Avg.: 0</h1>
+            <h1 style="font-size: 15px; margin: 0px;">Leg</h1>
+            <h1 style="font-size: 15px; margin: 0px;">Avg.: 0</h1>
           </div>
           <div class="col">
-            <h1 style="font-size: 15px; margin: 0px;">Game Avg.: 0</h1>
+            <h1 style="font-size: 15px; margin: 0px;">Game</h1>
+            <h1 style="font-size: 15px; margin: 0px;">Avg.: 0</h1>
           </div>
         </div>
 
