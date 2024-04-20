@@ -44,10 +44,10 @@
       </li>
       <li class="list-group-item">
         <div class="row">
-          <div class="col text-center p-0">
+          <div class="col">
             Sets: {{ sets }}
           </div>
-          <div class="col text-center p-0">
+          <div class="col">
             Legs: {{ legs }}
           </div>
         </div>
