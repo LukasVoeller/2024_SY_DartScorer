@@ -73,12 +73,20 @@ export default {
 
     // CLR
     document.getElementById("btn-clr").addEventListener('click', () => {
+      const vibrate = () => {
+        window.navigator.vibrate([100])
+      }
+
       this.$emit('score-cleared', scoreInput.value);
       scoreInput.value = "";
     });
 
     // OK
     document.getElementById("btn-ok").addEventListener('click', () => {
+      const vibrate = () => {
+        window.navigator.vibrate([100])
+      }
+
       if (scoreInput.value <= 180) {
         this.$emit('score-confirmed', scoreInput.value);
         scoreInput.value = "";
@@ -93,6 +101,10 @@ export default {
 
     // UNDO
     document.getElementById("btn-undo").addEventListener('click', () => {
+      const vibrate = () => {
+        window.navigator.vibrate([100])
+      }
+
       this.$emit('score-undo', scoreInput.value);
       scoreInput.value = "";
     });
@@ -108,6 +120,10 @@ export default {
 
   methods: {
     handleButtonClick(buttonValue) {
+      const vibrate = () => {
+        window.navigator.vibrate([100])
+      }
+
       const scoreInput = document.getElementById("scoreInput");
       const currentInputValue = scoreInput.value;
 

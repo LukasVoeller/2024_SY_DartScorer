@@ -206,7 +206,7 @@ export default {
         if (this.player1.score === 0) {
           // Checkout!
           this.player1.currentScores.unshift(score);
-          EventBus.emit('play-gameShut-sound');
+          //EventBus.emit('play-gameShut-sound');
           EventBus.emit('show-leg-shut-modal');
         } else {
           this.player1.tempScore = this.player1.score;
@@ -219,7 +219,7 @@ export default {
         if (this.player2.score === 0) {
           // Checkout!
           this.player2.currentScores.unshift(score);
-          EventBus.emit('play-gameShut-sound');
+          //EventBus.emit('play-gameShut-sound');
           EventBus.emit('show-leg-shut-modal');
         } else {
           this.player2.tempScore = this.player2.score;
