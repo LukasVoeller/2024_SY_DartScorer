@@ -1,7 +1,4 @@
 <template>
-  <!--
-      <GameHeaderComponent v-if="game" :game="game"/>
-  -->
   <div class="row px-1">
     <div class="col p-1" style="max-width: 50%;">
       <PlayerCardComponent v-if="game" :playerName="player1.name" :score="player1.score" :toThrow="player1.toThrow" :lastThrow="player1.currentScores.join(', ')"
@@ -17,6 +14,8 @@
 
   <LegShutModalComponent />
 
+  <Caller />
+
 </template>
 
 <script>
@@ -26,20 +25,20 @@
  # - Don't allow input of impossible numbers blow 180
  # - Reset score after resume on "How many darts needed?"
  */
-import GameHeaderComponent from './game-header.vue';
 import PlayerCardComponent from './player-card.vue';
 import NumberpadComponent from './numberpad.vue';
 import LegShutModalComponent from './leg-shut-modal.vue';
+import Caller from './caller.vue';
 import axios from 'axios';
 import { EventBus } from '../event-bus';
 
 export default {
   name: 'GameComponent',
   components: {
-    GameHeaderComponent,
     PlayerCardComponent,
     NumberpadComponent,
     LegShutModalComponent,
+    Caller
   },
 
   data() {
@@ -87,7 +86,7 @@ export default {
   },
 
   created() {
-    EventBus.on('modal-confirmed', (dartsForCheckout) => {
+    this.onModalConfirmed = (dartsForCheckout) => {
       const numberOfDarts = parseInt(dartsForCheckout);
 
       if (this.player1.toThrow) {
@@ -116,9 +115,9 @@ export default {
         this.resetScores();
         this.switchToThrow();
       }
-    });
+    };
 
-    EventBus.on('modal-resumed', (dartsForCheckout) => {
+    this.onModalResumed = (dartsForCheckout) => {
       if (this.player1.toThrow) {
         this.player1.score += this.player1.currentScores[this.player1.currentScores.length - 1];
         this.player1.currentScores.shift();
@@ -126,7 +125,16 @@ export default {
         this.player2.score += this.player2.currentScores[this.player2.currentScores.length - 1];
         this.player2.currentScores.shift();
       }
-    });
+    };
+
+    EventBus.on('modal-confirmed', this.onModalConfirmed);
+    EventBus.on('modal-resumed', this.onModalResumed);
+  },
+
+  beforeDestroy() {
+    // Remove event listeners to avoid memory leaks
+    EventBus.off('modal-confirmed', this.onModalConfirmed);
+    EventBus.off('modal-resumed', this.onModalResumed);
   },
 
   mounted() {
@@ -138,6 +146,8 @@ export default {
 
     if (this.gameId) {
       this.getGameData();
+      //console.log("Game loaded!");
+      //EventBus.emit('play-gameOn-sound');
     } else {
       console.error('Game ID not found in the URL');
       this.error = true;
@@ -182,6 +192,7 @@ export default {
     // Impossible scores:   179, 178, 176, 175, 173, 172, 169, 166, 163, 162, ...
     // Possible scores:     180, 177, 174, 171, 170, 168, 167, 165, 164, 161, ...
     confirmScore(score) {
+      EventBus.emit('play-gameOn-sound');
       score = parseInt(score.replace(/^0+/, ''), 10);
       if (isNaN(score)) {
         score = 0;
@@ -361,6 +372,6 @@ export default {
             this.loading = false;
           });
     }
-  }
+  },
 }
 </script>

@@ -1,4 +1,3 @@
 /.idea/
-/deploy.php
 /config/
-/DartScorer/.env.dist
+/deploy.php

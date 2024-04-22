@@ -1,8 +1,10 @@
 ###> My ignores ###
 .env
 .env.test
+.env.dist
 /config/secrets/dev/dev.decrypt.private.php
 /config/secrets/dev/dev.encrypt.public.php
+/sound/
 ###< My ignores ###
 
 ###> symfony/framework-bundle ###

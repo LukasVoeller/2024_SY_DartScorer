@@ -27,12 +27,22 @@ Encore
     .addEntry('newGameApp', './assets/new-game-app.js')
     .addEntry('gameApp', './assets/game-app.js')
 
-    // Enable plugins
+    // Enable vue plugins
     .addPlugin(new webpack.DefinePlugin({
         __VUE_OPTIONS_API__: 'true',
         __VUE_PROD_DEVTOOLS__: 'false',
         __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false'
     }))
+
+    // Add a rule for handling audio files (mp3, wav, etc.)
+    .addRule({
+        test: /\.(mp3|wav|ogg)$/, // Extend to support other audio formats if needed
+        loader: 'file-loader', // Use file-loader to process audio files
+        options: {
+            name: '[name].[ext]', // This controls how the file is named in the output
+            outputPath: 'sounds', // Define the folder where audio files will be stored
+        },
+    })
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
