@@ -119,10 +119,10 @@ export default {
 
     this.onModalResumed = (dartsForCheckout) => {
       if (this.player1.toThrow) {
-        this.player1.score += this.player1.currentScores[this.player1.currentScores.length - 1];
+        this.player1.score += this.player1.currentScores[0];
         this.player1.currentScores.shift();
       } else if (this.player2.toThrow) {
-        this.player2.score += this.player2.currentScores[this.player2.currentScores.length - 1];
+        this.player2.score += this.player2.currentScores[0];
         this.player2.currentScores.shift();
       }
     };
@@ -192,7 +192,9 @@ export default {
     // Impossible scores:   179, 178, 176, 175, 173, 172, 169, 166, 163, 162, ...
     // Possible scores:     180, 177, 174, 171, 170, 168, 167, 165, 164, 161, ...
     confirmScore(score) {
-      EventBus.emit('play-gameOn-sound');
+      //EventBus.emit('play-gameShut-sound');
+      EventBus.emit('play-score-sound', score);
+
       score = parseInt(score.replace(/^0+/, ''), 10);
       if (isNaN(score)) {
         score = 0;
@@ -204,6 +206,7 @@ export default {
         if (this.player1.score === 0) {
           // Checkout!
           this.player1.currentScores.unshift(score);
+          EventBus.emit('play-gameShut-sound');
           EventBus.emit('show-leg-shut-modal');
         } else {
           this.player1.tempScore = this.player1.score;
@@ -216,6 +219,7 @@ export default {
         if (this.player2.score === 0) {
           // Checkout!
           this.player2.currentScores.unshift(score);
+          EventBus.emit('play-gameShut-sound');
           EventBus.emit('show-leg-shut-modal');
         } else {
           this.player2.tempScore = this.player2.score;
@@ -262,6 +266,9 @@ export default {
 
     processPlayerCheckout(player){
       if (this.game.matchMode === "FirstToSets") {
+        console.log("Leg shut");
+        player.tempLegs += 1;
+
         if (this.game.matchModeLegsNeeded === player.tempLegs) {
           console.log("Set shut");
           player.tempLegs = 0;
@@ -269,6 +276,7 @@ export default {
 
           if (this.game.matchModeSetsNeeded === player.sets) {
             console.log("Game shut");
+            EventBus.emit('play-gameShutAndTheMatch-sound');
             this.gameState = "Finished";
           }
         }
@@ -278,6 +286,7 @@ export default {
 
         if (this.game.matchModeLegsNeeded === player.tempLegs) {
           console.log("Game shut");
+          EventBus.emit('play-gameShutAndTheMatch-sound');
           this.gameState = "Finished";
         }
       }
