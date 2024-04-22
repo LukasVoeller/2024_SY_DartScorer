@@ -2,7 +2,8 @@
   <div id="player" class="card">
     <div class="card-header" :style="{
       backgroundColor: toThrow ? 'rgb(0, 135, 84)' : '',
-      color: toThrow ? 'white' : 'black'  // Conditional text color
+      color: toThrow ? 'white' : 'black',  // Conditional text color
+      height: '40px'
     }">
       <div class="row">
         <div class="col-7 p-0">
