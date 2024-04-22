@@ -1,6 +1,9 @@
 <template>
   <div id="player" class="card">
-    <div class="card-header" :style="{ backgroundColor: toThrow ? 'lightyellow' : '' }">
+    <div class="card-header" :style="{
+      backgroundColor: toThrow ? 'rgb(0, 135, 84)' : '',
+      color: toThrow ? 'white' : 'black'  // Conditional text color
+    }">
       <div class="row">
         <div class="col-7 p-0">
           <h5>{{ playerName }}</h5>
@@ -8,13 +11,20 @@
         <div class="col-5 text-end p-0">
           <p>
             {{ dartsThrown }}
-            <img src="/homepage/assets/img/dart-arrow-32px.png" alt="" style="max-width: 20px">
+            <img
+                src="/homepage/assets/img/dart-arrow-32px.png"
+                alt="dart arrow"
+                style="max-width: 20px"
+                :style="{
+              filter: toThrow ? 'invert(100%)' : 'none'  // Conditional filter
+            }"
+            >
           </p>
         </div>
       </div>
     </div>
 
-    <ul class="list-group list-group-flush" style="/*flex-grow: 1;*/ height: 120px;">
+    <ul class="list-group list-group-flush" style="height: 120px;">
       <li class="list-group-item p-0">
         <div class="row justify-content-center">
           <div class="col-auto">

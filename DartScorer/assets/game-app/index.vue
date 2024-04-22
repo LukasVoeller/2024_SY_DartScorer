@@ -192,13 +192,12 @@ export default {
     // Impossible scores:   179, 178, 176, 175, 173, 172, 169, 166, 163, 162, ...
     // Possible scores:     180, 177, 174, 171, 170, 168, 167, 165, 164, 161, ...
     confirmScore(score) {
-      //EventBus.emit('play-gameShut-sound');
-      EventBus.emit('play-score-sound', score);
-
       score = parseInt(score.replace(/^0+/, ''), 10);
       if (isNaN(score)) {
         score = 0;
       }
+
+      EventBus.emit('play-score-sound', score);
 
       this.score = score;
 
