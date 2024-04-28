@@ -1,6 +1,5 @@
 import {createApp} from "vue";
 import App from './game-app/index.vue';
-//import GameHeaderComponent from './game-app/game-header.vue';
 import PlayerCardComponent from './game-app/player-card.vue';
 import NumberpadComponent from './game-app/numberpad.vue';
 import CalculateCheckouts from './game-app/calculate-checkouts.vue';
@@ -8,7 +7,6 @@ import LegShutModalComponent from './game-app/leg-shut-modal.vue';
 
 const app = createApp(App);
 
-//app.component('GameHeaderComponent', GameHeaderComponent);
 app.component('PlayerCardComponent', PlayerCardComponent);
 app.component('NumberpadComponent', NumberpadComponent);
 app.component('CalculateCheckouts', CalculateCheckouts);

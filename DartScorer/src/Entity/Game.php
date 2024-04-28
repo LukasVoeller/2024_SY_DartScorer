@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Repository\GameRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -14,9 +13,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\InheritanceType("SINGLE_TABLE")]
 #[ORM\DiscriminatorColumn(name: "game_type", type: "string")]
 #[ORM\DiscriminatorMap([
-    "x01" => "GameX01",
-    "cricket" => "GameCricket",
-    "shanghai" => "GameShanghai",
+    "x01" => "GameTypeX01",
+    "cricket" => "GameTypeCricket",
+    "shanghai" => "GameTypeShanghai",
 ])]
 abstract class Game
 {
@@ -71,23 +70,23 @@ abstract class Game
     private ?int $matchModeLegsNeeded = null;
 
     /**
-     * @var Collection<int, Set>
+     * @var Collection<int, GameSet>
      */
-    #[ORM\OneToMany(targetEntity: Set::class, mappedBy: 'relatedGame', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: GameSet::class, mappedBy: 'relatedGame', orphanRemoval: true)]
     #[Groups(['game'])]
     private Collection $sets;
 
     /**
-     * @var Collection<int, Leg>
+     * @var Collection<int, GameLeg>
      */
-    #[ORM\OneToMany(targetEntity: Leg::class, mappedBy: 'relatedGame', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: GameLeg::class, mappedBy: 'relatedGame', orphanRemoval: true)]
     #[Groups(['game'])]
     private Collection $legs;
 
     /**
-     * @var Collection<int, Score>
+     * @var Collection<int, GameScore>
      */
-    #[ORM\OneToMany(targetEntity: Score::class, mappedBy: 'relatedGame', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: GameScore::class, mappedBy: 'relatedGame', orphanRemoval: true)]
     #[Groups(['game'])]
     private Collection $scores;
 
@@ -237,14 +236,14 @@ abstract class Game
     }
 
     /**
-     * @return Collection<int, Set>
+     * @return Collection<int, GameSet>
      */
     public function getSets(): Collection
     {
         return $this->sets;
     }
 
-    public function addSet(Set $set): static
+    public function addSet(GameSet $set): static
     {
         if (!$this->sets->contains($set)) {
             $this->sets->add($set);
@@ -254,7 +253,7 @@ abstract class Game
         return $this;
     }
 
-    public function removeSet(Set $set): static
+    public function removeSet(GameSet $set): static
     {
         if ($this->sets->removeElement($set)) {
             // set the owning side to null (unless already changed)
@@ -267,14 +266,14 @@ abstract class Game
     }
 
     /**
-     * @return Collection<int, Leg>
+     * @return Collection<int, GameLeg>
      */
     public function getLegs(): Collection
     {
         return $this->legs;
     }
 
-    public function addLeg(Leg $leg): static
+    public function addLeg(GameLeg $leg): static
     {
         if (!$this->legs->contains($leg)) {
             $this->legs->add($leg);
@@ -284,7 +283,7 @@ abstract class Game
         return $this;
     }
 
-    public function removeLeg(Leg $leg): static
+    public function removeLeg(GameLeg $leg): static
     {
         if ($this->legs->removeElement($leg)) {
             // set the owning side to null (unless already changed)
@@ -297,14 +296,14 @@ abstract class Game
     }
 
     /**
-     * @return Collection<int, Score>
+     * @return Collection<int, GameScore>
      */
     public function getScores(): Collection
     {
         return $this->scores;
     }
 
-    public function addScore(Score $score): static
+    public function addScore(GameScore $score): static
     {
         if (!$this->scores->contains($score)) {
             $this->scores->add($score);
@@ -314,7 +313,7 @@ abstract class Game
         return $this;
     }
 
-    public function removeScore(Score $score): static
+    public function removeScore(GameScore $score): static
     {
         if ($this->scores->removeElement($score)) {
             // set the owning side to null (unless already changed)

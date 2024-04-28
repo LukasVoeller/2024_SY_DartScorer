@@ -161,9 +161,7 @@
           </div>
 
           <div class="col-6">
-            <button id="custom-btn" class="btn btn-primary" type="submit" style="width: 100%">
-              Play
-            </button>
+              <button type="submit" class="btn btn-primary w-100">Play</button>
           </div>
         </div>
       </form>
@@ -212,7 +210,7 @@ export default {
   methods: {
     fetchPlayers() {
       // Fetch players from the API
-      axios.get('/api/players')
+      axios.get('/api/player')
           .then(response => {
             // Sort players alphabetically by name
             this.players = response.data.sort((a, b) => a.name.localeCompare(b.name));

@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: LegRepository::class)]
-class Leg
+class GameLeg
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -21,16 +21,16 @@ class Leg
     private ?Game $relatedGame = null;
 
     #[ORM\ManyToOne(inversedBy: 'legs')]
-    private ?Set $relatedSet = null;
+    private ?GameSet $relatedSet = null;
 
     #[ORM\Column(nullable: true)]
     #[Groups(['leg'])]
     private ?int $playerIdWinner = null;
 
     /**
-     * @var Collection<int, Score>
+     * @var Collection<int, GameScore>
      */
-    #[ORM\OneToMany(targetEntity: Score::class, mappedBy: 'relatedLeg')]
+    #[ORM\OneToMany(targetEntity: GameScore::class, mappedBy: 'relatedLeg')]
     #[Groups(['leg'])]
     private Collection $scores;
 
@@ -56,12 +56,12 @@ class Leg
         return $this;
     }
 
-    public function getRelatedSet(): ?Set
+    public function getRelatedSet(): ?GameSet
     {
         return $this->relatedSet;
     }
 
-    public function setRelatedSet(?Set $relatedSet): static
+    public function setRelatedSet(?GameSet $relatedSet): static
     {
         $this->relatedSet = $relatedSet;
 
@@ -81,14 +81,14 @@ class Leg
     }
 
     /**
-     * @return Collection<int, Score>
+     * @return Collection<int, GameScore>
      */
     public function getScores(): Collection
     {
         return $this->scores;
     }
 
-    public function addScore(Score $score): static
+    public function addScore(GameScore $score): static
     {
         if (!$this->scores->contains($score)) {
             $this->scores->add($score);
@@ -98,7 +98,7 @@ class Leg
         return $this;
     }
 
-    public function removeScore(Score $score): static
+    public function removeScore(GameScore $score): static
     {
         if ($this->scores->removeElement($score)) {
             // set the owning side to null (unless already changed)

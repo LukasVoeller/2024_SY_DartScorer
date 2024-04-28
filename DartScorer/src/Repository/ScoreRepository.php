@@ -2,23 +2,23 @@
 
 namespace App\Repository;
 
-use App\Entity\Score;
+use App\Entity\GameScore;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Score>
+ * @extends ServiceEntityRepository<GameScore>
  *
- * @method Score|null find($id, $lockMode = null, $lockVersion = null)
- * @method Score|null findOneBy(array $criteria, array $orderBy = null)
- * @method Score[]    findAll()
- * @method Score[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method GameScore|null find($id, $lockMode = null, $lockVersion = null)
+ * @method GameScore|null findOneBy(array $criteria, array $orderBy = null)
+ * @method GameScore[]    findAll()
+ * @method GameScore[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ScoreRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Score::class);
+        parent::__construct($registry, GameScore::class);
     }
 
     //    /**

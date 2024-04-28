@@ -28,29 +28,32 @@ class PlayerController extends AbstractController
         return $this->render('player/index.html.twig');
     }
 
-    #[Route('/api/players', name: 'api_get_players', methods: ['GET'])]
+    #[Route('/api/player', name: 'api_get_players', methods: ['GET'])]
     public function getPlayers(Request $request): JsonResponse
     {
-        //$players = $this->entityManager->getRepository(Player::class)->findAll();
-        //return $this->json($players);
-
         $players = $this->entityManager->getRepository(Player::class)->findAll();
-
-        // Serialize players with 'api' serialization group
-        $data = $this->serializer->serialize($players, 'json');
+        $data = $this->serializer->serialize($players, 'json', ['groups' => 'api_player']);
         return new JsonResponse($data, Response::HTTP_OK, [], true);
     }
 
-    #[Route('/api/player/{id}', name: 'api_get_player', methods: ['GET'])]
-    public function getPlayer(int $id): JsonResponse
+    #[Route('/api/player/id/{id}', name: 'api_get_player_by_id', methods: ['GET'])]
+    public function getPlayerById(int $id): JsonResponse
     {
-        //$player = $this->entityManager->getRepository(Player::class)->find($id);
-        //return $this->json($player);
-
         $player = $this->entityManager->getRepository(Player::class)->find($id);
+        $data = $this->serializer->serialize($player, 'json', ['groups' => 'api_player']);
+        return new JsonResponse($data, Response::HTTP_OK, [], true);
+    }
 
-        // Serialize player with 'api' serialization group
-        $data = $this->serializer->serialize($player, 'json');
+    #[Route('/api/player/no-user', name: 'api_get_players_no_user', methods: ['GET'])]
+    public function getPlayersWithoutUser(): JsonResponse
+    {
+        $players = $this->entityManager->getRepository(Player::class)
+            ->createQueryBuilder('p')
+            ->where('p.user IS NULL') // filter players without a user
+            ->getQuery()
+            ->getResult();
+
+        $data = $this->serializer->serialize($players, 'json', ['groups' => 'api_player']);
         return new JsonResponse($data, Response::HTTP_OK, [], true);
     }
 
@@ -67,8 +70,6 @@ class PlayerController extends AbstractController
 
         $this->entityManager->persist($player);
         $this->entityManager->flush();
-
-        //return $this->json($player);
 
         // Serialize player with 'api' serialization group
         $data = $this->serializer->serialize($player, 'json');

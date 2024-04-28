@@ -2,14 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\X01Repository;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Entity]
-class GameX01 extends Game
+class GameTypeX01 extends Game
 {
     #[ORM\Column(type: "integer", nullable: false)]
     #[Groups(['game'])]

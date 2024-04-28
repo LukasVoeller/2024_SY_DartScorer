@@ -32,17 +32,19 @@ class UserController extends AbstractController
         return $this->render('user/index.html.twig');
     }
 
-    #[Route('/api/users', name: 'api_get_users', methods: ['GET'])]
+    #[Route('/api/user', name: 'api_get_user', methods: ['GET'])]
     public function getUsers(Request $request): JsonResponse
     {
-        //$users = $this->entityManager->getRepository(User::class)->findAll();
-        //return $this->json($users);
-
         $users = $this->entityManager->getRepository(User::class)->findAll();
-
-        // Serialize users with 'api' serialization group
         $data = $this->serializer->serialize($users, 'json', ['groups' => 'api_user']);
+        return new JsonResponse($data, Response::HTTP_OK, [], true);
+    }
 
+    #[Route('/api/user/{id}', name: 'api_get_user', methods: ['GET'])]
+    public function getUserById(int $id): JsonResponse
+    {
+        $user = $this->entityManager->getRepository(User::class)->find($id);
+        $data = $this->serializer->serialize($user, 'json', ['groups' => 'api_user']);
         return new JsonResponse($data, Response::HTTP_OK, [], true);
     }
 

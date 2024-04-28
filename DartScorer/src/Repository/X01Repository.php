@@ -2,23 +2,23 @@
 
 namespace App\Repository;
 
-use App\Entity\GameX01;
+use App\Entity\GameTypeX01;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<GameX01>
+ * @extends ServiceEntityRepository<GameTypeX01>
  *
- * @method GameX01|null find($id, $lockMode = null, $lockVersion = null)
- * @method GameX01|null findOneBy(array $criteria, array $orderBy = null)
- * @method GameX01[]    findAll()
- * @method GameX01[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method GameTypeX01|null find($id, $lockMode = null, $lockVersion = null)
+ * @method GameTypeX01|null findOneBy(array $criteria, array $orderBy = null)
+ * @method GameTypeX01[]    findAll()
+ * @method GameTypeX01[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class X01Repository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, GameX01::class);
+        parent::__construct($registry, GameTypeX01::class);
     }
 
     //    /**

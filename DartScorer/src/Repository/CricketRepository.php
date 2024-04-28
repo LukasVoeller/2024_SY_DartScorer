@@ -2,23 +2,23 @@
 
 namespace App\Repository;
 
-use App\Entity\GameCricket;
+use App\Entity\GameTypeCricket;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<GameCricket>
+ * @extends ServiceEntityRepository<GameTypeCricket>
  *
- * @method GameCricket|null find($id, $lockMode = null, $lockVersion = null)
- * @method GameCricket|null findOneBy(array $criteria, array $orderBy = null)
- * @method GameCricket[]    findAll()
- * @method GameCricket[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method GameTypeCricket|null find($id, $lockMode = null, $lockVersion = null)
+ * @method GameTypeCricket|null findOneBy(array $criteria, array $orderBy = null)
+ * @method GameTypeCricket[]    findAll()
+ * @method GameTypeCricket[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class CricketRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, GameCricket::class);
+        parent::__construct($registry, GameTypeCricket::class);
     }
 
     //    /**

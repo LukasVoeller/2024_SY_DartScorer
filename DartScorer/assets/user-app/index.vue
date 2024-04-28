@@ -1,8 +1,9 @@
 <template>
-  <h1 style="padding-top: 15px;">User</h1>
+  <h1 style="padding-top: 15px">User Management</h1>
 
-    <!-- Table to display user -->
-    <table class="table table-bordered mt-4">
+  <!-- Table to display user -->
+  <div class="card shadow h-100" style="padding: 20px; margin-bottom: 25px">
+    <table class="table">
       <thead>
       <tr>
         <th scope="col">Username</th>
@@ -25,52 +26,95 @@
       </tbody>
     </table>
 
+    <div style="display: flex; justify-content: center">
+      <VueSpinnerDots v-if="isLoading" size="40" color="black" />
+    </div>
+  </div>
 
-  <form @submit.prevent="submitForm" :class="{ 'was-validated': formNeedsValidation }"
-        class="mt-4 d-flex justify-content-between" novalidate="">
+  <div class="row d-flex">
+    <div class="col-md-6" style="margin-bottom: 25px">
+      <div class="card shadow h-100" style="padding: 20px;">
+        <form @submit.prevent="submitForm" :class="{ 'was-validated': formNeedsValidation }" novalidate="">
+          <div class="row">
+            <div class="col-6" style="padding-bottom: 20px;">
+              <input v-model="newUsername" type="text" class="form-control" id="newUsername" placeholder="Username" required>
+            </div>
+            <div class="col-6">
+              <input v-model="newPassword" type="password" class="form-control" id="newPassword" placeholder="Password"
+                     required>
+            </div>
+          </div>
 
-    <div class="row">
-      <div class="col-6" style="padding-bottom: 20px;">
-        <input v-model="newUsername" type="text" class="form-control" id="newUsername" placeholder="Username" required>
-      </div>
+          <div class="col-12" style="padding-bottom: 20px;">
+            <select class="form-select" aria-label="Default select example" v-model="newPlayerId" id="newPlayer" required>
+              <option disabled value="">Select Player</option>
+              <option v-for="player in players" :key="player.id" :value="player.id">{{ player.name }}</option>
+            </select>
+          </div>
 
-      <div class="col-6">
-        <input v-model="newPassword" type="password" class="form-control" id="newPassword" placeholder="Password"
-               required>
-      </div>
+          <div class="row">
+            <div class="col-8" style="padding-bottom: 20px;">
+              <select class="form-select" aria-label="Default select example" v-model="newRole" required>
+                <option disabled value="">Select Role</option>
+                <option value="ROLE_ADMIN">Admin</option>
+                <option value="ROLE_ASSOCIATE">Associate</option>
+                <option value="ROLE_PLAYER">Player</option>
+              </select>
+            </div>
 
-      <div class="col-12" style="padding-bottom: 20px;">
-        <select class="form-select" aria-label="Default select example" v-model="newRole" required>
-          <option disabled value="">Select Role</option>
-          <option value="ROLE_ADMIN">Admin</option>
-          <option value="ROLE_ASSOCIATE">Associate</option>
-          <option value="ROLE_PLAYER">Player</option>
-        </select>
-      </div>
-
-      <div class="col-12" style="padding-bottom: 20px;">
-        <select class="form-select" aria-label="Default select example" v-model="newPlayerId" id="newPlayer" required>
-          <option disabled value="">Select Player</option>
-          <option v-for="player in playersWithoutUser" :key="player.id" :value="player.id">{{ player.name }}</option>
-        </select>
-      </div>
-
-      <div class="col-12">
-        <button type="submit" class="btn btn-primary">Add User</button>
+            <div class="col-4">
+              <button type="submit" class="btn btn-primary w-100">Add User</button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
 
-  </form>
-
+    <div class="col-md-6 h-100">
+      <div class="card shadow h-100" style="padding: 20px">
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">Role</th>
+            <th scope="col">Manage User</th>
+            <th scope="col">Manage Player</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Admin</td>
+            <td>Yes</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Associate</td>
+            <td>No</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Player</td>
+            <td>No</td>
+            <td>No</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import axios from 'axios';
+import {VueSpinnerDots} from 'vue3-spinners';
 
 export default {
   name: 'UserComponent',
+  components: {
+    VueSpinnerDots
+  },
   data() {
     return {
+      isLoading: true,
       users: [],
       players: [],
       newUsername: '',
@@ -80,29 +124,27 @@ export default {
       formNeedsValidation: false
     };
   },
-  computed: {
-    playersWithoutUser() {
-      return this.players.filter(player => player.user === null);
-    }
-  },
   mounted() {
     this.fetchUsers();
-    this.fetchPlayers();
+    this.fetchPlayersWithNoUser();
   },
   methods: {
     fetchUsers() {
-      // Fetch user from the API
-      axios.get('/api/users')
+      this.isLoading = true;
+
+      axios.get('/api/user')
           .then(response => {
             this.users = response.data;
+            this.isLoading = false;
           })
           .catch(error => {
             console.error('Error fetching users:', error);
+            this.isLoading = false;
           });
     },
-    fetchPlayers() {
+    fetchPlayersWithNoUser() {
       // Fetch players from the API
-      axios.get('/api/players')
+      axios.get('/api/player/no-user')
           .then(response => {
             this.players = response.data;
           })
@@ -123,13 +165,15 @@ export default {
           player: this.newPlayerId
         })
             .then(response => {
-              // Update the players array with the new player
-              this.users.push(response.data);
+              // Update data
+              this.fetchUsers();
+              this.fetchPlayersWithNoUser();
 
-              // Clear the form input
-              this.newUserName = '';
-
-              this.fetchPlayers();
+              // Reset the form inputs
+              this.newUsername = '';
+              this.newPassword = '';
+              this.newRole = ''; // Reset role selection
+              this.newPlayerId = ''; // Reset player selection
             })
             .catch(error => {
               console.error('Error adding user:', error);
@@ -150,7 +194,7 @@ export default {
               // Remove the user from the users array
               this.users = this.users.filter(user => user.id !== userId);
 
-              this.fetchPlayers();
+              this.fetchPlayersWithNoUser();
             })
             .catch(error => {
               console.error('Error deleting user:', error);

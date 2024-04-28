@@ -9,8 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SetRepository::class)]
-#[ORM\Table(name: '`set`')]
-class Set
+class GameSet
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -31,9 +30,9 @@ class Set
     private ?int $matchModeLegsNeeded = null;
 
     /**
-     * @var Collection<int, Leg>
+     * @var Collection<int, GameLeg>
      */
-    #[ORM\OneToMany(targetEntity: Leg::class, mappedBy: 'relatedSet')]
+    #[ORM\OneToMany(targetEntity: GameLeg::class, mappedBy: 'relatedSet')]
     #[Groups(['set'])]
     private Collection $legs;
 
@@ -84,14 +83,14 @@ class Set
     }
 
     /**
-     * @return Collection<int, Leg>
+     * @return Collection<int, GameLeg>
      */
     public function getLegs(): Collection
     {
         return $this->legs;
     }
 
-    public function addLeg(Leg $leg): static
+    public function addLeg(GameLeg $leg): static
     {
         if (!$this->legs->contains($leg)) {
             $this->legs->add($leg);
@@ -101,7 +100,7 @@ class Set
         return $this;
     }
 
-    public function removeLeg(Leg $leg): static
+    public function removeLeg(GameLeg $leg): static
     {
         if ($this->Legs->removeElement($leg)) {
             // set the owning side to null (unless already changed)

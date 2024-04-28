@@ -56,13 +56,18 @@ match:
 ############ Player
 
 api_get_players:
-  path: '/api/players'
+  path: '/api/player'
   controller: 'App\Controller\PlayerController::getPlayers'
   methods: ['GET']
 
-api_get_player:
-  path: '/api/player/{id}'
-  controller: 'App\Controller\PlayerController::getPlayer'
+api_get_player_by_id:
+  path: '/api/player/id/{id}'
+  controller: 'App\Controller\PlayerController::getPlayerById'
+  methods: ['GET']
+
+api_get_players_no_user:
+  path: '/api/player/no-user'
+  controller: 'App\Controller\PlayerController::getPlayersWithoutUser'
   methods: ['GET']
 
 api_post_player:
@@ -78,8 +83,13 @@ api_delete_player:
 ############ User
 
 api_get_users:
-  path: '/api/users'
+  path: '/api/user'
   controller: 'App\Controller\UserController::getUsers'
+  methods: ['GET']
+
+api_get_user:
+  path: '/api/user/{id}'
+  controller: 'App\Controller\UserController::getUserById'
   methods: ['GET']
 
 api_post_user:

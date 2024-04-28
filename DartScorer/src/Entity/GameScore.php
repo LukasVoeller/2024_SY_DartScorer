@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ScoreRepository::class)]
-class Score
+class GameScore
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -23,7 +23,7 @@ class Score
     private ?Game $relatedGame = null;
 
     #[ORM\ManyToOne(inversedBy: 'scores')]
-    private ?Leg $relatedLeg = null;
+    private ?GameLeg $relatedLeg = null;
 
     #[ORM\Column(nullable: false)]
     #[Groups(['score'])]
@@ -71,12 +71,12 @@ class Score
         return $this;
     }
 
-    public function getRelatedLeg(): ?Leg
+    public function getRelatedLeg(): ?GameLeg
     {
         return $this->relatedLeg;
     }
 
-    public function setRelatedLeg(?Leg $relatedLeg): static
+    public function setRelatedLeg(?GameLeg $relatedLeg): static
     {
         $this->relatedLeg = $relatedLeg;
 
