@@ -1,63 +1,93 @@
 <template>
-  <div class="row px-1">
-    <div class="col p-1">
-      <button id="btn-undo" type="button" class="btn btn-light custom-btn-score-row">Undo</button>
-    </div>
-    <div class="col p-1">
-      <input id="scoreInput" class="form-control text-center" style="height: 55px; font-size: 30px" type="text" aria-label=".form-control-lg example" readonly>
-    </div>
-    <div class="col p-1">
-      <button id="btn-rest" type="button" class="btn btn-light custom-btn-score-row">Rest</button>
-    </div>
-  </div>
 
-  <!-- Numberpad row -->
-  <div class="px-1">
-    <div class="row">
-      <div class="col p-1">
+  <div class="row vh-100">
+
+    <!-- Numberpad row Undo, Input, Rest -->
+    <div class="row p-0">
+      <div class="col p-0">
+        <button id="btn-undo" type="button" class="btn btn-light custom-btn-score-row">Undo</button>
+      </div>
+      <div class="col p-0">
+        <input id="scoreInput" class="form-control text-center" style="height: 100%; font-size: 30px" type="text" aria-label=".form-control-lg example" readonly>
+      </div>
+      <div class="col p-0">
+        <button id="btn-rest" type="button" class="btn btn-light custom-btn-score-row">Rest</button>
+      </div>
+    </div>
+
+    <!-- Numberpad row 1, 2, 3 -->
+    <div class="row p-0">
+      <div class="col p-0">
+        <button id="btn-26" type="button" class="btn btn-dark custom-btn-number">26</button>
+      </div>
+      <div class="col p-0">
         <button id="btn-1" type="button" class="btn btn-dark custom-btn-number">1</button>
       </div>
-      <div class="col p-1">
+      <div class="col p-0">
         <button id="btn-2" type="button" class="btn btn-dark custom-btn-number">2</button>
       </div>
-      <div class="col p-1">
+      <div class="col p-0">
         <button id="btn-3" type="button" class="btn btn-dark custom-btn-number">3</button>
       </div>
+      <div class="col p-0">
+        <button id="btn-60" type="button" class="btn btn-dark custom-btn-number">60</button>
+      </div>
     </div>
-    <div class="row">
-      <div class="col p-1">
+
+    <!-- Numberpad row 4, 5, 6 -->
+    <div class="row p-0">
+      <div class="col p-0">
+        <button id="btn-41" type="button" class="btn btn-dark custom-btn-number">41</button>
+      </div>
+      <div class="col p-0">
         <button id="btn-4" type="button" class="btn btn-dark custom-btn-number">4</button>
       </div>
-      <div class="col p-1">
+      <div class="col p-0">
         <button id="btn-5" type="button" class="btn btn-dark custom-btn-number">5</button>
       </div>
-      <div class="col p-1">
+      <div class="col p-0">
         <button id="btn-6" type="button" class="btn btn-dark custom-btn-number">6</button>
       </div>
+      <div class="col p-0">
+        <button id="btn-85" type="button" class="btn btn-dark custom-btn-number">85</button>
+      </div>
     </div>
-    <div class="row">
-      <div class="col p-1">
+
+    <!-- Numberpad row 7, 8, 9 -->
+    <div class="row p-0">
+      <div class="col p-0">
+        <button id="btn-45" type="button" class="btn btn-dark custom-btn-number">45</button>
+      </div>
+      <div class="col p-0">
         <button id="btn-7" type="button" class="btn btn-dark custom-btn-number">7</button>
       </div>
-      <div class="col p-1">
+      <div class="col p-0">
         <button id="btn-8" type="button" class="btn btn-dark custom-btn-number">8</button>
       </div>
-      <div class="col p-1">
+      <div class="col p-0">
         <button id="btn-9" type="button" class="btn btn-dark custom-btn-number">9</button>
       </div>
+      <div class="col p-0">
+        <button id="btn-100" type="button" class="btn btn-dark custom-btn-number">100</button>
+      </div>
     </div>
-    <div class="row" style="padding-bottom: 5px;">
-      <div class="col p-1">
+
+    <!-- Numberpad row CLR, 0, OK -->
+    <div class="row p-0">
+      <div class="col p-0">
         <button id="btn-clr" type="button" class="btn btn-danger custom-btn-function">CLR</button>
       </div>
-      <div class="col p-1">
+      <div class="col p-0">
         <button id="btn-0" type="button" class="btn btn-dark custom-btn-number">0</button>
       </div>
-      <div class="col p-1">
+      <div class="col p-0">
         <button id="btn-ok" type="button" class="btn btn-success custom-btn-function">OK</button>
       </div>
     </div>
+
   </div>
+
+
 </template>
 
 <script>

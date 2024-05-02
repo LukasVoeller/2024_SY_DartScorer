@@ -53,7 +53,7 @@
           </div>
 
           <div class="row">
-            <div class="col-8" style="padding-bottom: 20px;">
+            <div class="col-6" style="padding-bottom: 20px;">
               <select class="form-select" aria-label="Default select example" v-model="newRole" required>
                 <option disabled value="">Select Role</option>
                 <option value="ROLE_ADMIN">Admin</option>
@@ -62,7 +62,7 @@
               </select>
             </div>
 
-            <div class="col-4">
+            <div class="col-6">
               <button type="submit" class="btn btn-primary w-100">Add User</button>
             </div>
           </div>
@@ -71,7 +71,7 @@
     </div>
 
     <div class="col-md-6 h-100">
-      <div class="card shadow h-100" style="padding: 20px">
+      <div class="card shadow h-100" style="padding: 20px; margin-bottom: 20px">
         <table class="table">
           <thead>
           <tr>

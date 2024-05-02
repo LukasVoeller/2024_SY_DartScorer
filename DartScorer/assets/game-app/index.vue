@@ -1,10 +1,11 @@
 <template>
-  <div class="row px-1">
-    <div class="col p-1" style="max-width: 50%;">
+  <!--
+  <div class="row" style="padding: 20px">
+    <div class="col-6 p-0">
       <PlayerCardComponent v-if="game" :playerName="player1.name" :score="player1.score" :toThrow="player1.toThrow" :lastThrow="player1.currentScores.join(', ')"
                             :dartsThrown="calculateDartsThrownSum(player1)" :sets="player1.sets" :legs="player1.tempLegs"/>
     </div>
-    <div class="col p-1" style="max-width: 50%;">
+    <div class="col-6 p-0">
       <PlayerCardComponent v-if="game" :playerName="player2.name" :score="player2.score" :toThrow="player2.toThrow" :lastThrow="player2.currentScores.join(', ')"
                             :dartsThrown="calculateDartsThrownSum(player2)" :sets="player2.sets" :legs="player2.tempLegs"/>
     </div>
@@ -15,6 +16,27 @@
   <LegShutModalComponent />
 
   <Caller />
+  -->
+
+  <div class="row">
+    <div class="col-3">
+
+      <PlayerCardComponent v-if="game" :playerName="player1.name" :score="player1.score" :toThrow="player1.toThrow" :lastThrow="player1.currentScores.join(', ')"
+                           :dartsThrown="calculateDartsThrownSum(player1)" :sets="player1.sets" :legs="player1.tempLegs"/>
+    </div>
+    <div class="col-3">
+      <PlayerCardComponent v-if="game" :playerName="player2.name" :score="player2.score" :toThrow="player2.toThrow" :lastThrow="player2.currentScores.join(', ')"
+                           :dartsThrown="calculateDartsThrownSum(player2)" :sets="player2.sets" :legs="player2.tempLegs"/>
+    </div>
+    <div class="col-6">
+      <NumberpadComponent v-if="game" @score-entered="processScore" @score-cleared="clearScore" @score-confirmed="confirmScore" @score-undo="undoScore"/>
+    </div>
+  </div>
+
+  <LegShutModalComponent />
+
+  <Caller />
+
 
 </template>
 

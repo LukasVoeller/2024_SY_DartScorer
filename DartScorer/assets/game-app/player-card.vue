@@ -1,5 +1,5 @@
 <template>
-  <div id="player" class="card">
+  <div id="player" class="card m-1 vh-100">
     <div class="card-header" :style="{
       backgroundColor: toThrow ? 'rgb(0, 135, 84)' : '',
       color: toThrow ? 'white' : 'black',  // Conditional text color

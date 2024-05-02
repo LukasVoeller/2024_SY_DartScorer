@@ -1,5 +1,5 @@
 <template>
-  <h1 style="padding-top: 15px;">Player</h1>
+  <h1 style="padding-top: 15px;">Player Management</h1>
 
   <!-- Table to display player -->
   <div class="card shadow" style="padding: 20px; margin-bottom: 25px">
@@ -31,11 +31,11 @@
     <div class="col-md-6">
       <div class="card shadow" style="padding: 20px">
         <form @submit.prevent="submitForm" :class="{ 'was-validated': fromIsValid }" id="player-form" class="row g-3 needs-validation" novalidate="">
-          <div class="col-8">
+          <div class="col-6">
             <input v-model="newPlayerName" type="text" class="form-control" id="newPlayerName" required="" placeholder="Player name">
           </div>
 
-          <div class="col-4">
+          <div class="col-6">
             <button class="btn btn-primary w-100" type="submit">Add Player</button>
           </div>
         </form>

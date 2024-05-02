@@ -9,13 +9,6 @@
 {% block body %}
     <div class="container">
         <h1 style="padding-top: 15px">Latest Games</h1>
-        <!--
-        <a href="/gif/bobby-george-nipple-trick-iIQuVv" title="Bobby George nipple trick"><img src="https://i.makeagif.com/media/2-03-2023/iIQuVv.gif" alt="Bobby George nipple trick"></a>
-        <br>
-        <br>
-        -->
-
-
 
         <table class="table accordion shadow" style="border-radius: 6px; overflow: hidden;">
             <thead>
@@ -23,7 +16,7 @@
                     <th scope="col">Date</th>
                     <th scope="col">Result</th>
                     <th scope="col">Winner</th>
-                    <th scope="col">Looser</th>
+                    <th scope="col">Loser</th>
                 </tr>
             </thead>
             <tbody>
@@ -104,8 +97,21 @@
             </tbody>
         </table>
 
+        <br>
 
+        <a href="{{ path('new-game') }}" class="btn btn-warning" style="width: 100%;">
+            <i class="bx bx-play-circle"></i> New Game
+        </a>
 
+        <br>
+        <br>
+        <br>
+
+        <a title="Bobby George nipple trick"><img src="https://i.makeagif.com/media/2-03-2023/iIQuVv.gif" style="width: 100%" alt="Bobby George nipple trick"></a>
+        <br>
+        <br>
+
+        <!--
         <div class="card shadow" style="margin-top: 20px">
             <div class="card-body">
 
@@ -121,41 +127,35 @@
 
                 <br>
 
-                <!--
-                <div class="live-circle"></div>
-                <h5 class="card-title" style="padding-left: 30px">Livegame</h5>
-                -->
-                    <div class="row">
-                        <div class="col-5 col-sm-5 col-md-5">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Lukas</h5>
-                                    <h1 style="font-size: 25px">441</h1>
-                                    <h1 style="font-size: 15px">Last: 60</h1>
-                                    <h1 style="font-size: 15px">&empty; 52.3</h1>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-2 col-sm-2 col-md-2 d-flex align-items-center justify-content-center">
-                            <h1>VS</h1>
-                        </div>
-                        <div class="col-5 col-sm-5 col-md-5">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Florian</h5>
-                                    <h1 style="font-size: 25px">475</h1>
-                                    <h1 style="font-size: 15px">Last: 26</h1>
-                                    <h1 style="font-size: 15px">&empty; 45.6</h1>
-                                </div>
+
+                <div class="row">
+                    <div class="col-5 col-sm-5 col-md-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Lukas</h5>
+                                <h1 style="font-size: 25px">441</h1>
+                                <h1 style="font-size: 15px">Last: 60</h1>
+                                <h1 style="font-size: 15px">&empty; 52.3</h1>
                             </div>
                         </div>
                     </div>
-
-                <!--
-                <a id="watch-live-btn" href="#" class="btn btn-warning" style="margin-top: 10px">Watch Live</a>
-                -->
+                    <div class="col-2 col-sm-2 col-md-2 d-flex align-items-center justify-content-center">
+                        <h1>VS</h1>
+                    </div>
+                    <div class="col-5 col-sm-5 col-md-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Florian</h5>
+                                <h1 style="font-size: 25px">475</h1>
+                                <h1 style="font-size: 15px">Last: 26</h1>
+                                <h1 style="font-size: 15px">&empty; 45.6</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+        -->
 
     </div>
 {% endblock %}

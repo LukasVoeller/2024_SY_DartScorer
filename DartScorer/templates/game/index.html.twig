@@ -33,11 +33,15 @@
 
         <!-- Template Main CSS File -->
         <link href="/homepage/assets/css/style.css" rel="stylesheet">
+        <!--
         <link type="text/css" href="/css/base_darts.css" rel="stylesheet"/>
+        -->
 
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
             <link type="text/css" href="/css/game.css" rel="stylesheet"/>
+            <link type="text/css" href="/css/sidebar.css" rel="stylesheet"/>
+            <link type="text/css" href="/css/numberpad.css" rel="stylesheet"/>
         {% endblock %}
 
         {% block javascripts %}
@@ -68,32 +72,47 @@
     </head>
 
     <body>
-        <!-- ======= Sidebar ======= -->
-        <header id="header">
-            <div class="d-flex flex-column">
-                <div class="profile d-flex flex-column align-items-center">
-                    <img id="nav-profile-img" src="/homepage/assets/img/first-180.jpg" alt="" class="img-fluid rounded-circle img-hor-vert">
-                    <h1 class="text-light"><a href="index.html">Dart Scorer</a></h1>
-                    <br>
-                    {% if app.user %}
-                        <p style="color: white; text-align: center;">Welcome, {{ app.user.username }}! <a href="{{ path('logout') }}">Logout</a></p>
+        <!-- ======= Header lage viewport ======= -->
+        <div class="d-none d-lg-block">
+            <div class="sidenav">
+
+                <div id="game-id">
+                    {% if game %}
+                        <p style="color: white; text-align: left; margin: 0; font-size: 11pt">ID: {{ game.id }}</p>
                     {% endif %}
                 </div>
-
-                <nav id="navbar" class="nav-menu navbar">
-                    <ul>
-                        <li><a href="{{ path('darts') }}" class="nav-link {% if app.request.attributes.get('_route') == 'darts' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>
-                        <li><a href="{{ path('new-game') }}" class="nav-link {% if app.request.attributes.get('_route') == 'new-game' %}active{% endif %}"><i class="bx bx-home"></i> <span>New Game</span></a></li>
-                        <li><a href="{{ path('match') }}" class="nav-link {% if app.request.attributes.get('_route') == 'match' %}active{% endif %}"><i class="bx bx-play-circle"></i> <span>Match</span></a></li>
-                        <li><a href="{{ path('player') }}" class="nav-link {% if app.request.attributes.get('_route') == 'player' %}active{% endif %}"><i class="bx bx-play-circle"></i> <span>Player</span></a></li>
-                    </ul>
-                </nav>
+                <!--
+                <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                    <i class="bi bi-list"></i>
+                </button>
+                -->
             </div>
-        </header>
-        <!-- End Sidebar -->
 
-        <!-- ======= Header ======= -->
-        <nav class="navbar navbar-dark fixed-top d-xl-none" style="background-color: #000">
+            <!-- Offcanvas element -->
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" style="background-color: #000">
+                <div class="offcanvas-header">
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <div id="nav-profile">
+                        <div class="profile">
+                            <img id="nav-profile-img" src="/homepage/assets/img/first-180.jpg" alt="" class="img-fluid rounded-circle img-hor-vert">
+                            {% if app.user %}
+                                <p style="color: white; text-align: center;">Welcome, {{ app.user.username }}! <a href="{{ path('logout') }}">Logout</a></p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {% include './util/navbar_darts.html.twig' %}
+                </div>
+            </div>
+        </div>
+        <!-- End Header -->
+
+
+
+        <!-- ======= Header small viewport ======= -->
+        <nav class="navbar navbar-dark fixed-top d-xl-none d-lg-none" style="background-color: #000">
             <div class="container-fluid">
 
                 <div class="col-2 p-0">
@@ -138,14 +157,7 @@
                             </div>
                         </div>
 
-                        <nav id="navbar" class="nav-menu navbar">
-                            <ul>
-                                <li><a href="{{ path('darts') }}" class="nav-link {% if app.request.attributes.get('_route') == 'darts' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>
-                                <li><a href="{{ path('new-game') }}" class="nav-link {% if app.request.attributes.get('_route') == 'new-game' %}active{% endif %}"><i class="bx bx-home"></i> <span>New Game</span></a></li>
-                                <li><a href="{{ path('match') }}" class="nav-link {% if app.request.attributes.get('_route') == 'match' %}active{% endif %}"><i class="bx bx-play-circle"></i> <span>Match</span></a></li>
-                                <li><a href="{{ path('player') }}" class="nav-link {% if app.request.attributes.get('_route') == 'player' %}active{% endif %}"><i class="bx bx-play-circle"></i> <span>Player</span></a></li>
-                            </ul>
-                        </nav>
+                        {% include './util/navbar_darts.html.twig' %}
                     </div>
                 </div>
 
@@ -153,7 +165,7 @@
         </nav>
         <!-- End Header -->
 
-        <div class="container vh-100 disable-dbl-tap-zoom" style="padding-top: 5px">
+        <div class="disable-dbl-tap-zoom" style="padding: 0px; margin: 0px;">
             <div id="game-app">
 
             </div>
