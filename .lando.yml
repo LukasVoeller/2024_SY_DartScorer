@@ -1,6 +1,11 @@
 name: symfonyproject
 recipe: symfony
 
+excludes:
+  - "DartScorer/var/cache"
+  - "DartScorer/vendor"
+  - "DartScorer/node_modules"
+
 services:
   appserver:
     webroot: ./DartScorer/public

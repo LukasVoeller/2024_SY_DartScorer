@@ -1,7 +1,7 @@
 <template>
   <h1 style="padding-top: 15px">User Management</h1>
 
-  <!-- Table to display user -->
+  <!-- Table to display user before -->
   <div class="card shadow h-100" style="padding: 20px; margin-bottom: 25px">
     <table class="table">
       <thead>
@@ -9,25 +9,62 @@
         <th scope="col">Username</th>
         <th scope="col">Player</th>
         <th scope="col">Role</th>
-        <th scope="col">Actions</th>
+        <th scope="col" class="text-end">Actions</th>
       </tr>
       </thead>
       <tbody>
-      <tr v-for="user in users" :key="user.id">
+      <tr v-for="user in paginatedUsers" :key="user.id">
         <td>{{ user.username }}</td>
         <td>{{ user.player ? user.player.name : "None" }}</td>
-        <td>
-          {{ user.roles.includes('ROLE_ADMIN') ? 'Admin' : (user.roles.includes('ROLE_ASSOCIATE') ? 'Associate' : (user.roles.includes('ROLE_PLAYER') ? 'Player' : user.roles[0])) }}
-        </td>
-        <td>
-          <button @click="deleteUser(user.id)" class="btn btn-danger">Delete</button>
+        <td>{{ determineRole(user) }}</td>
+        <td class="text-end">
+          <button @click="deleteUser(user.id)" class="btn btn-danger">
+            <i class="bi bi-trash"></i>
+          </button>
         </td>
       </tr>
       </tbody>
     </table>
 
+    <!-- Loading spinner -->
     <div style="display: flex; justify-content: center">
-      <VueSpinnerDots v-if="isLoading" size="40" color="black" />
+      <VueSpinnerDots v-if="isLoadingFetchUser" size="40" color="black" />
+    </div>
+
+    <!-- Pagination Controls -->
+    <div style="text-align: center; margin-top: 10px;">
+      <button
+          class="btn btn-secondary"
+          :disabled="currentPage === 1"
+          style="margin-right: 20px"
+          @click="goToPreviousPage"
+      >
+        <i class="bi bi-chevron-left"></i>
+      </button>
+      <span> Page {{ currentPage }} of {{ totalPages }} </span>
+      <button
+          class="btn btn-secondary"
+          :disabled="currentPage === totalPages"
+          style="margin-left: 20px"
+          @click="goToNextPage"
+      >
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Search Bar -->
+    <div class="col-md-12">
+      <div class="card shadow" style="padding: 20px; margin-bottom: 25px">
+        <input
+            type="text"
+            class="form-control"
+            placeholder="Search by user name"
+            v-model="searchTerm"
+            @input="resetToFirstPage"
+        />
+      </div>
     </div>
   </div>
 
@@ -63,7 +100,11 @@
             </div>
 
             <div class="col-4">
-              <button type="submit" class="btn btn-primary w-100">Add User</button>
+              <button type="submit" class="btn btn-primary w-100">Add</button>
+            </div>
+
+            <div style="display: flex; justify-content: center">
+              <VueSpinnerDots v-if="isLoadingPostUser" size="40" color="black" />
             </div>
           </div>
         </form>
@@ -71,7 +112,7 @@
     </div>
 
     <div class="col-md-6 h-100">
-      <div class="card shadow h-100" style="padding: 20px">
+      <div class="card shadow h-100" style="padding: 20px; margin-bottom: 25px">
         <table class="table">
           <thead>
           <tr>
@@ -109,39 +150,101 @@ import {VueSpinnerDots} from 'vue3-spinners';
 
 export default {
   name: 'UserComponent',
+
   components: {
     VueSpinnerDots
   },
+
   data() {
     return {
-      isLoading: true,
+      isLoadingFetchUser: true,
+      isLoadingPostUser: false,
       users: [],
       players: [],
       newUsername: '',
       newPassword: '',
       newRole: '',
       newPlayerId: '',
-      formNeedsValidation: false
+      formNeedsValidation: false,
+      pageSize: 5,
+      currentPage: 1,
+      searchTerm: '',
     };
   },
+
   mounted() {
     this.fetchUsers();
     this.fetchPlayersWithNoUser();
   },
+
+  computed: {
+    totalPages() {
+      return Math.ceil(this.filteredUsers.length / this.pageSize); // Calculate total pages based on filtered users
+    },
+
+    filteredUsers() {
+      // Filter users based on the search term
+      if (!this.searchTerm.trim()) {
+        return this.users; // If no search term, return all users
+      }
+      const lowerSearchTerm = this.searchTerm.trim().toLowerCase(); // Lowercase search term for case-insensitive search
+      return this.users.filter(user =>
+          user.username.toLowerCase().includes(lowerSearchTerm) // Check if username contains the search term
+      );
+    },
+
+    paginatedUsers() {
+      const filteredUsers = this.filteredUsers; // Use the filtered users
+      const start = (this.currentPage - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      return filteredUsers.slice(start, end); // Return the appropriate slice for the current page
+    },
+  },
+
   methods: {
+    resetToFirstPage() {
+      this.currentPage = 1; // When the search term changes, go back to the first page
+    },
+
+    goToPreviousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
+
+    goToNextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
+    },
+
+    determineRole(user) {
+      if (user.roles.includes('ROLE_ADMIN')) {
+        return 'Admin';
+      }
+      if (user.roles.includes('ROLE_ASSOCIATE')) {
+        return 'Associate';
+      }
+      if (user.roles.includes('ROLE_PLAYER')) {
+        return 'Player';
+      }
+      return user.roles[0]; // Default fallback
+    },
+
     fetchUsers() {
-      this.isLoading = true;
+      this.isLoadingFetchUser = true;
 
       axios.get('/api/user')
           .then(response => {
             this.users = response.data;
-            this.isLoading = false;
+            this.isLoadingFetchUser = false;
           })
           .catch(error => {
             console.error('Error fetching users:', error);
-            this.isLoading = false;
+            this.isLoadingFetchUser = false;
           });
     },
+
     fetchPlayersWithNoUser() {
       // Fetch players from the API
       axios.get('/api/player/no-user')
@@ -152,11 +255,21 @@ export default {
             console.error('Error fetching players:', error);
           });
     },
+
     submitForm() {
       // Make an API request to add the new player
-      // Check if username is not empty
+      // Check if inputs are not empty
       if (this.newUsername.trim() && this.newPassword.trim() && this.newRole !== "" && this.newPlayerId !== "") {
+
+        const usernameExists = this.users.some(user => user.username === this.newUsername.trim());
+
+        if (usernameExists) {
+          alert('This username is already taken. Please choose a different one.');
+          return; // Prevent the form from submitting
+        }
+
         this.formNeedsValidation = false;
+        this.isLoadingPostUser = true;
 
         axios.post('/api/user', {
           username: this.newUsername,
@@ -166,8 +279,10 @@ export default {
         })
             .then(response => {
               // Update data
-              this.fetchUsers();
+              //this.fetchUsers();
+              this.users.push(response.data);
               this.fetchPlayersWithNoUser();
+              this.isLoadingPostUser = false;
 
               // Reset the form inputs
               this.newUsername = '';
@@ -183,6 +298,7 @@ export default {
         this.formNeedsValidation = true;
       }
     },
+
     deleteUser(userId) {
       // Display a confirmation dialog
       const confirmed = window.confirm('Are you sure you want to delete this user?');
