@@ -18,9 +18,20 @@ services:
       - apt-get install nodejs npm
 
   database:
+    app_mount: disabled
+    type: "mysql:8.0"
+    creds:
+      user: "symfony"
+      password: "symfony"
+      database: "symfony"
     overrides:
+      image: "bitnami/mysql:8.0.36-debian-12-r12"
       ports:
         - '3306:3307'
+    healthcheck:
+      command: mysql -uroot --silent --execute "SHOW DATABASES;"
+      retry: 5
+      delay: 5000
 
 tooling:
   console:

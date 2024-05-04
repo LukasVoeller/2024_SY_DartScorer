@@ -3,6 +3,15 @@
 
   <!-- Table to display player before -->
   <div class="card shadow" style="padding: 20px; margin-bottom: 25px">
+    <input
+        type="text"
+        class="form-control"
+        placeholder="Search by player name"
+        v-model="searchTerm"
+        @input="resetToFirstPage"
+        style="margin-bottom: 20px"
+    />
+
     <table class="table">
       <thead>
       <tr>
@@ -50,19 +59,6 @@
   </div>
 
   <div class="row">
-    <!-- Search Bar -->
-    <div class="col-md-6">
-      <div class="card shadow" style="padding: 20px; margin-bottom: 25px">
-        <input
-            type="text"
-            class="form-control"
-            placeholder="Search by player name"
-            v-model="searchTerm"
-            @input="resetToFirstPage"
-        />
-      </div>
-    </div>
-
     <!-- Add Player -->
     <div class="col-md-6">
       <div class="card shadow" style="padding: 20px">
@@ -73,6 +69,10 @@
 
           <div class="col-4">
             <button class="btn btn-primary w-100" type="submit">Add</button>
+          </div>
+
+          <div style="display: flex; justify-content: center">
+            <VueSpinnerDots v-if="isLoadingPostPlayer" size="40" color="black" />
           </div>
         </form>
       </div>
@@ -94,6 +94,7 @@ export default {
   data() {
     return {
       isLoading: true,
+      isLoadingPostPlayer: false,
       players: [],
       newPlayerName: '',
       fromIsValid: false,
@@ -173,6 +174,7 @@ export default {
     submitForm() {
       if (this.newPlayerName.trim() !== '') {
         this.fromIsValid = false;
+        this.isLoadingPostPlayer = true;
 
         axios.post('/api/player', {
           name: this.newPlayerName,
@@ -180,7 +182,8 @@ export default {
             .then((response) => {
               this.players.push(response.data);
               this.newPlayerName = '';
-              this.currentPage = this.totalPages; // Go to the last page after adding a player
+              this.currentPage = this.totalPages;
+              this.isLoadingPostPlayer = false;
             })
             .catch((error) => {
               console.error('Error adding player:', error);

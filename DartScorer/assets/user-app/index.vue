@@ -3,6 +3,15 @@
 
   <!-- Table to display user before -->
   <div class="card shadow h-100" style="padding: 20px; margin-bottom: 25px">
+    <input
+        type="text"
+        class="form-control"
+        placeholder="Search by user name"
+        v-model="searchTerm"
+        @input="resetToFirstPage"
+        style="margin-bottom: 20px"
+    />
+
     <table class="table">
       <thead>
       <tr>
@@ -50,21 +59,6 @@
       >
         <i class="bi bi-chevron-right"></i>
       </button>
-    </div>
-  </div>
-
-  <div class="row">
-    <!-- Search Bar -->
-    <div class="col-md-12">
-      <div class="card shadow" style="padding: 20px; margin-bottom: 25px">
-        <input
-            type="text"
-            class="form-control"
-            placeholder="Search by user name"
-            v-model="searchTerm"
-            @input="resetToFirstPage"
-        />
-      </div>
     </div>
   </div>
 

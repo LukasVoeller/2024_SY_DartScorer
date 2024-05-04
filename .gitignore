@@ -2,3 +2,4 @@
 /config/
 /deploy.php
 .DS_Store
+/vendor/
