@@ -53,6 +53,9 @@ match:
 
 ######################## API Routes #######################
 
+api_login_check:
+  path: /api/login_check
+
 ############ Player
 
 api_get_players:

@@ -1,4 +1,6 @@
 security:
+    enable_authenticator_manager: true
+
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
@@ -9,39 +11,54 @@ security:
                 property: username
 
     firewalls:
+        # JWT authentication for login endpoint
+        login:
+            pattern: ^/api/login
+            stateless: false
+            json_login:
+                check_path: /api/login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+        # JWT authentication for API endpoints
+        api:
+            pattern: ^/api
+            stateless: true
+            jwt: ~
+
+        # Session-based authentication for other endpoints
+        main:
+            pattern: ^/(?!api).*  # Excludes /api endpoints
+            lazy: true  # Delays initialization for performance
+            provider: app_user_provider
+
+            form_login:
+                login_path: /login
+                check_path: /login
+                default_target_path: /darts
+            logout:
+                path: /logout
+                target: /login
+                invalidate_session: true
+
+            #remember_me:
+            #    secret: '%kernel.secret%'
+            #    lifetime: 604800  # 1 week
+            #    path: /
+
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        # API Auth
-        api:
-            pattern: ^/api
-            stateless: true
-            http_basic: ~
-            provider: app_user_provider
-
-        # Login
-        main:
-            lazy: true
-            provider: app_user_provider
-
-            form_login:
-                login_path: login
-                check_path: login
-                default_target_path: /darts  # Redirect after successful login
-
-            logout:
-                path: /logout
-                target: /login # Redirect after logout
-                invalidate_session: true
-
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-         - { path: ^/darts, roles: [ROLE_ADMIN, ROLE_PLAYER, ROLE_ASSOCIATE] }
-         - { path: ^/game, roles: [ROLE_ADMIN, ROLE_PLAYER, ROLE_ASSOCIATE] }
-         - { path: ^/player, roles: [ROLE_ADMIN, ROLE_ASSOCIATE] }
-         - { path: ^/api, roles: ROLE_USER }
+         - { path: ^/api/login, roles: PUBLIC_ACCESS }
+         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+         - { path: ^/darts,     roles: [ROLE_ADMIN, ROLE_PLAYER, ROLE_ASSOCIATE] }
+         - { path: ^/game,      roles: [ROLE_ADMIN, ROLE_PLAYER, ROLE_ASSOCIATE] }
+         - { path: ^/player,    roles: [ROLE_ADMIN, ROLE_ASSOCIATE] }
+         - { path: ^/user,      roles: [ROLE_ADMIN] }
 
 when@test:
     security:

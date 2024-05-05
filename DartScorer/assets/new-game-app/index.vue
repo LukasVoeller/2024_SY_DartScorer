@@ -174,6 +174,16 @@
 <script>
 import axios from 'axios';
 
+axios.interceptors.request.use(config => {
+  const token = localStorage.getItem('jwt_token');  // Retrieve JWT token from localStorage
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;  // Add JWT token to Authorization header
+  }
+  return config;
+}, error => {
+  return Promise.reject(error);
+});
+
 export default {
   name: 'NewGameComponent',
   data() {
