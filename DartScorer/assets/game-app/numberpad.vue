@@ -48,13 +48,13 @@
     </div>
     <div class="row" style="padding-bottom: 5px;">
       <div class="col p-1">
-        <button id="btn-clr" type="button" style="font-size: 20px;" class="btn btn-danger custom-btn-function">CLR</button>
+        <button id="btn-clr" type="button" style="font-size: 18px;" class="btn btn-danger custom-btn-function">CLR</button>
       </div>
       <div class="col p-1">
         <button id="btn-0" type="button" class="btn btn-dark custom-btn-number">0</button>
       </div>
       <div class="col p-1">
-        <button id="btn-ok" type="button" style="font-size: 20px;" class="btn btn-success custom-btn-function">{{ okButtonText }}</button>
+        <button id="btn-ok" type="button" style="font-size: 18px;" class="btn btn-success custom-btn-function">{{ okButtonText }}</button>
       </div>
     </div>
   </div>
