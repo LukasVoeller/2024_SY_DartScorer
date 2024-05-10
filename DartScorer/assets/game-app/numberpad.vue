@@ -4,7 +4,7 @@
       <button id="btn-undo" type="button" class="btn btn-light custom-btn-score-row">Undo</button>
     </div>
     <div class="col p-1">
-      <input id="scoreInput" class="form-control text-center" style="height: 55px; font-size: 30px" type="text" aria-label=".form-control-lg example" readonly>
+      <input id="scoreInput" class="form-control text-center" :class="{'exceeds-limit': exceedsLimit}" style="height: 55px; font-size: 30px" type="text" aria-label=".form-control-lg example" readonly>
     </div>
     <div class="col p-1">
       <button id="btn-left" type="button" class="btn btn-light custom-btn-score-row">{{ leftButtonText }}</button>
@@ -48,13 +48,13 @@
     </div>
     <div class="row" style="padding-bottom: 5px;">
       <div class="col p-1">
-        <button id="btn-clr" type="button" class="btn btn-danger custom-btn-function">CLR</button>
+        <button id="btn-clr" type="button" style="font-size: 20px;" class="btn btn-danger custom-btn-function">CLR</button>
       </div>
       <div class="col p-1">
         <button id="btn-0" type="button" class="btn btn-dark custom-btn-number">0</button>
       </div>
       <div class="col p-1">
-        <button id="btn-ok" type="button" class="btn btn-success custom-btn-function">{{ okButtonText }}</button>
+        <button id="btn-ok" type="button" style="font-size: 20px;" class="btn btn-success custom-btn-function">{{ okButtonText }}</button>
       </div>
     </div>
   </div>
@@ -94,17 +94,20 @@ export default {
     // OK
     document.getElementById("btn-ok").addEventListener('click', () => {
       window.navigator.vibrate([100]);
+      console.log("XXX ", this.player1Score)
 
-      if (scoreInput.value <= 180) {
-        this.$emit('score-confirmed', scoreInput.value);
-        scoreInput.value = "";
-        this.currentInput = 0;
-      } else {
-        const scoreInputHandle = document.getElementById("scoreInput");
-        scoreInputHandle.classList.add('exceeds-limit');
-        setTimeout(() => {
-          scoreInputHandle.classList.remove('exceeds-limit');
-        }, 1000);
+      if (scoreInput.value <= this.player1Score && this.player1ToThrow) {
+        if (!this.scoreIsImpossible(scoreInput.value)) {
+          this.$emit('score-confirmed', scoreInput.value);
+          scoreInput.value = "";
+          this.currentInput = 0;
+        }
+      } else if (scoreInput.value <= this.player2Score && this.player2ToThrow) {
+        if (!this.scoreIsImpossible(scoreInput.value)) {
+          this.$emit('score-confirmed', scoreInput.value);
+          scoreInput.value = "";
+          this.currentInput = 0;
+        }
       }
     });
 
@@ -135,6 +138,10 @@ export default {
   },
 
   computed: {
+    exceedsLimit() {
+      return this.scoreIsImpossible(this.currentInput);
+    },
+
     leftButtonText() {
       // Change the button text based on player1ToThrow and whether player1Score is bogey
       if (this.player1ToThrow && this.scoreIsCeckable(this.player1Score) ||
@@ -179,6 +186,15 @@ export default {
       } else {
         false;
       }
+    },
+
+    scoreIsImpossible(score) {
+      const impossibleScores = [179, 178, 176, 175, 173, 172, 169, 166, 163, 162];
+      score = parseInt(score, 10);
+
+      if (score > 180) {
+        return true;
+      } else return impossibleScores.includes(score);
     },
   }
 };

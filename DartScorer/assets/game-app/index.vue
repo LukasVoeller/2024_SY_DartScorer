@@ -252,7 +252,9 @@ export default {
         score = 0;
       }
 
-      EventBus.emit('play-score-sound', score);
+      if (!this.scoreIsImpossible(score)) {
+        EventBus.emit('play-score-sound', score);
+      }
 
       this.score = score;
 
@@ -393,6 +395,7 @@ export default {
 
     scoreIsImpossible(score) {
       const impossibleScores = [179, 178, 176, 175, 173, 172, 169, 166, 163, 162];
+      score = parseInt(score, 10);
 
       if (score > 180) {
         return true;
