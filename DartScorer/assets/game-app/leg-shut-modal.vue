@@ -4,19 +4,20 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Leg shut</h1>
-          <!--
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          -->
+          <div class="modal-title-wrapper">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">{{ checkout }} Checkout!</h1>
+            <p style="margin: 0px">Average: {{ average }}</p>
+            <p style="margin: 0px">Darts: {{ darts }}</p>
+          </div>
         </div>
         <div class="modal-body">
           <p>How many darts were needed?</p>
 
           <div class="btn-group" role="group" aria-label="Basic radio toggle button group" style="width: 100%">
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" v-model="dartsForCheckout" value="1">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" v-model="dartsForCheckout" :disabled="oneDartCheckoutDisabled" value="1">
             <label class="btn btn-outline-dark" for="btnradio1">1</label>
 
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" v-model="dartsForCheckout" value="2">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" v-model="dartsForCheckout" :disabled="threeDartsNeeded" value="2">
             <label class="btn btn-outline-dark" for="btnradio2">2</label>
 
             <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" v-model="dartsForCheckout" value="3" checked>
@@ -25,8 +26,8 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="resumeModal">Resume</button>
-          <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="confirmModal">Save</button>
+          <button type="button" style="width: 100px;" class="btn btn-secondary" data-bs-dismiss="modal" @click="resumeModal">Resume</button>
+          <button type="button" style="width: 100px;" class="btn btn-success" data-bs-dismiss="modal" @click="confirmModal">Save</button>
         </div>
       </div>
     </div>
@@ -40,25 +41,68 @@ export default {
   name: 'LegShutModalComponent',
   data() {
     return {
-      dartsForCheckout: '3' // Default selected value
+      dartsForCheckout: 3,
+      scores: [],
+      checkout: 0,
+      average: 0,
+      darts: 0
     };
   },
   created() {
-    EventBus.on('show-leg-shut-modal', () => {
+    EventBus.on('show-leg-shut-modal', (payload) => {
+      // Reset dartsForCheckout to default
+      this.dartsForCheckout = 3;
       const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
+      this.scores = payload; // Set the data passed to the modal
+      this.checkout = this.scores[0];
+      this.calculateAverage();
       modal.show();
     });
+
+  },
+  computed: {
+    threeDartsNeeded() {
+      return this.checkout > 110
+    },
+
+    oneDartCheckoutDisabled() {
+      if (this.checkout % 2 === 0) {
+        return !(this.checkout === 50 || this.checkout <= 40);
+      } else {
+        return true;
+      }
+    },
   },
   methods: {
+    calculateAverage() {
+      if (this.scores.length > 0) {
+        const sum = this.scores.reduce((acc, score) => acc + score, 0); // Sum all elements
+        const darts = this.scores.length * 3
+        this.darts = darts - 3 + parseInt(this.dartsForCheckout);
+        const throws = this.scores.length;
+        //console.log("---> Sum: ", sum, " Darts: ", darts, " darts: ", this.darts, " throws: ", throws)
+        this.average = (sum / this.darts * 3).toFixed(1); // Calculate the average
+      } else {
+        this.average = 0; // Handle the case when there's no data
+      }
+    },
+
     confirmModal() {
       //const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
-      EventBus.emit('modal-confirmed', this.dartsForCheckout);
+      EventBus.emit('modal-confirmed', this.dartsForCheckout, this.average);
     },
 
     resumeModal() {
       //const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
-      EventBus.emit('modal-resumed', this.dartsForCheckout);
+      EventBus.emit('modal-resumed');
     }
-  }
+  },
+
+  watch: {
+    dartsForCheckout(newValue, oldValue) {
+      this.calculateAverage(); // Recalculate when darts needed changes
+    },
+  },
+
 }
 </script>

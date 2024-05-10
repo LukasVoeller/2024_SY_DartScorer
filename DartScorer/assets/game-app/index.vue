@@ -1,16 +1,17 @@
 <template>
   <div class="row px-1">
     <div class="col p-1" style="max-width: 50%;">
-      <PlayerCardComponent v-if="game" :playerName="player1.name" :score="player1.score" :toThrow="player1.toThrow" :lastThrow="player1.currentScores.join(', ')"
-                            :dartsThrown="calculateDartsThrownSum(player1)" :sets="player1.sets" :legs="player1.tempLegs"/>
+      <PlayerCardComponent v-if="game" :playerName="player1.name" :score="player1.score" :toThrow="player1.toThrow" :lastThrows="player1.currentScores.join(', ')"
+                            :dartsThrown="calculateDartsThrownSum(player1)" :sets="player1.sets" :legs="player1.tempLegs" :legAverage="player1LegAverage" :gameAverage="player1.gameAverage"/>
     </div>
     <div class="col p-1" style="max-width: 50%;">
-      <PlayerCardComponent v-if="game" :playerName="player2.name" :score="player2.score" :toThrow="player2.toThrow" :lastThrow="player2.currentScores.join(', ')"
-                            :dartsThrown="calculateDartsThrownSum(player2)" :sets="player2.sets" :legs="player2.tempLegs"/>
+      <PlayerCardComponent v-if="game" :playerName="player2.name" :score="player2.score" :toThrow="player2.toThrow" :lastThrows="player2.currentScores.join(', ')"
+                            :dartsThrown="calculateDartsThrownSum(player2)" :sets="player2.sets" :legs="player2.tempLegs" :legAverage="player2LegAverage" :gameAverage="player2.gameAverage"/>
     </div>
   </div>
 
-  <NumberpadComponent v-if="game" @score-entered="processScore" @score-cleared="clearScore" @score-confirmed="confirmScore" @score-undo="undoScore"/>
+  <NumberpadComponent v-if="game" @score-entered="processScore" @score-cleared="clearScore" @score-confirmed="confirmScore" @score-undo="undoScore" @score-left="leftScore"
+                      :player1Score="this.player1.tempScore" :player2Score="this.player2.tempScore" :player1ToThrow="this.player1.toThrow" :player2ToThrow="this.player2.toThrow"/>
 
   <LegShutModalComponent />
 
@@ -68,6 +69,8 @@ export default {
         toThrow: false,
         currentDartsThrown: [],
         totalDartsThrown: [],
+        legAverages: [],
+        gameAverage: 0,
         sets: 0,
         legs: 0,
         tempLegs: 0,
@@ -84,6 +87,8 @@ export default {
         toThrow: false,
         currentDartsThrown: [],
         totalDartsThrown: [],
+        legAverages: [],
+        gameAverage: 0,
         sets: 0,
         legs: 0,
         tempLegs: 0,
@@ -95,30 +100,69 @@ export default {
     };
   },
 
+  computed: {
+    player1LegAverage() {
+      const totalScores = this.player1.currentScores.reduce((acc, score) => acc + score, 0);  // Sum the scores
+      const scoreCount = this.player1.currentScores.length;  // Get the count of scores
+
+      if (scoreCount === 0) {  // Avoid division by zero
+        return 0;
+      }
+
+      const average = totalScores / scoreCount;
+      return average.toFixed(1);  // Return with two decimal places
+    },
+
+    player2LegAverage() {
+      const totalScores = this.player2.currentScores.reduce((acc, score) => acc + score, 0);
+      const scoreCount = this.player2.currentScores.length;
+
+      if (scoreCount === 0) {
+        return 0;  // Avoid division by zero
+      }
+
+      return (totalScores / scoreCount).toFixed(2);  // Calculate and format
+    },
+  },
+
   created() {
-    this.onModalConfirmed = (dartsForCheckout) => {
+    this.onModalConfirmed = (dartsForCheckout, average) => {
       const numberOfDarts = parseInt(dartsForCheckout);
 
       if (this.player1.toThrow) {
         this.processPlayerCheckout(this.player1);
 
-        this.player1.currentDartsThrown.unshift(numberOfDarts);
-        this.player1.totalScores.unshift(this.player1.currentScores);
-        this.player1.totalDartsThrown.unshift(this.player1.currentDartsThrown);
-        this.player2.totalScores.unshift(this.player2.currentScores);
-        this.player2.totalDartsThrown.unshift(this.player2.currentDartsThrown);
+        this.player1.legAverages.push(parseFloat(average))
+        const sumLegAverages = this.player1.legAverages.reduce((sum, current) => sum + current, 0);
+        this.player1.gameAverage = (sumLegAverages / this.player1.legAverages.length).toFixed(1);
 
-        this.logTotalInfo();
+        this.player1.currentDartsThrown.unshift(numberOfDarts);
+        this.player1.totalScores.push(this.player1.currentScores);
+        this.player1.totalDartsThrown.push(this.player1.currentDartsThrown);
+        this.player2.totalScores.push(this.player2.currentScores);
+        this.player2.totalDartsThrown.push(this.player2.currentDartsThrown);
+
+        console.log("---> LegAverages: ", this.player1.legAverages);
+        console.log("---> Scores: ", this.player1.totalScores);
+        console.log("---> Darts: ", this.player1.totalDartsThrown);
+        //this.logTotalInfo();
       } else if (this.player2.toThrow) {
         this.processPlayerCheckout(this.player2);
 
-        this.player2.currentDartsThrown.unshift(numberOfDarts);
-        this.player2.totalScores.unshift(this.player2.currentScores);
-        this.player2.totalDartsThrown.unshift(this.player2.currentDartsThrown);
-        this.player1.totalScores.unshift(this.player1.currentScores);
-        this.player1.totalDartsThrown.unshift(this.player1.currentDartsThrown);
+        this.player2.legAverages.push(parseFloat(average))
+        const sumLegAverages = this.player2.legAverages.reduce((sum, current) => sum + current, 0);
+        this.player2.gameAverage = (sumLegAverages / this.player2.legAverages.length).toFixed(1);
 
-        this.logTotalInfo();
+        this.player2.currentDartsThrown.unshift(numberOfDarts);
+        this.player2.totalScores.push(this.player2.currentScores);
+        this.player2.totalDartsThrown.push(this.player2.currentDartsThrown);
+        this.player1.totalScores.push(this.player1.currentScores);
+        this.player1.totalDartsThrown.push(this.player1.currentDartsThrown);
+
+        console.log("---> LegAverages: ", this.player2.legAverages);
+        console.log("---> Scores: ", this.player2.totalScores);
+        console.log("---> Darts: ", this.player2.totalDartsThrown);
+        //this.logTotalInfo();
       }
 
       if (this.gameState !== "Finished"){
@@ -127,7 +171,7 @@ export default {
       }
     };
 
-    this.onModalResumed = (dartsForCheckout) => {
+    this.onModalResumed = () => {
       if (this.player1.toThrow) {
         this.player1.score += this.player1.currentScores[0];
         this.player1.currentScores.shift();
@@ -185,6 +229,7 @@ export default {
     },
 
     processScore(score) {
+      console.log("--- Player1tempScore: ", this.player1.tempScore);
       score = parseInt(score.replace(/^0+/, ''), 10);
       if (isNaN(score)) {
         score = 0;
@@ -216,7 +261,7 @@ export default {
           // Checkout!
           this.player1.currentScores.unshift(score);
           //EventBus.emit('play-gameShut-sound');
-          EventBus.emit('show-leg-shut-modal');
+          EventBus.emit('show-leg-shut-modal', this.player1.currentScores);
         } else {
           this.player1.tempScore = this.player1.score;
           this.player1.currentScores.unshift(score);
@@ -229,7 +274,7 @@ export default {
           // Checkout!
           this.player2.currentScores.unshift(score);
           //EventBus.emit('play-gameShut-sound');
-          EventBus.emit('show-leg-shut-modal');
+          EventBus.emit('show-leg-shut-modal', this.player2.currentScores);
         } else {
           this.player2.tempScore = this.player2.score;
           this.player2.currentScores.unshift(score);
@@ -242,10 +287,8 @@ export default {
       this.logCurrentInfo(score);
     },
 
-    undoScore(enteredScore) {
-      if (enteredScore) {
-        this.clearScore(enteredScore);
-      }
+    undoScore(score) {
+      this.clearScore(score);
 
       if (this.player1.toThrow) {
         if (this.player2.currentScores.length > 0) {
@@ -269,6 +312,53 @@ export default {
         }
         else {
           this.player2.score = this.player1.startScore;
+        }
+      }
+    },
+
+    leftScore(score){
+      score = parseInt(score.replace(/^0+/, ''), 10);
+      if (isNaN(score)) {
+        score = 0;
+      }
+
+      if (this.player1.toThrow) {
+        if (this.scoreIsImpossible(this.player1.tempScore - score)) {
+          this.player1.score = this.player1.tempScore;
+        } else {
+          EventBus.emit('play-score-sound', this.player1.tempScore - score);
+
+          if (this.player1.score - this.player1.tempScore - score === 0) {
+            this.player1.currentScores.unshift(this.player1.tempScore);
+            this.player1.score = 0;
+            EventBus.emit('show-leg-shut-modal', this.player1.currentScores);
+          } else {
+            this.player1.score = score
+            this.player1.currentScores.unshift(this.player1.tempScore - score);
+            this.player1.tempScore = score;
+            this.player1.toThrow = false;
+            this.player2.toThrow = true;
+            this.player1.currentDartsThrown.unshift(3);
+          }
+        }
+      } else if (this.player2.toThrow) {
+        if (this.scoreIsImpossible(this.player2.tempScore - score)) {
+          this.player2.score = this.player2.tempScore;
+        } else {
+          EventBus.emit('play-score-sound', this.player2.tempScore - score);
+
+          if (this.player2.score - this.player2.tempScore - score === 0) {
+            this.player2.currentScores.unshift(this.player2.tempScore);
+            this.player2.score = 0;
+            EventBus.emit('show-leg-shut-modal', this.player2.currentScores);
+          } else {
+            this.player2.score = score
+            this.player2.currentScores.unshift(this.player2.tempScore - score);
+            this.player2.tempScore = score;
+            this.player2.toThrow = false;
+            this.player1.toThrow = true;
+            this.player2.currentDartsThrown.unshift(3);
+          }
         }
       }
     },
@@ -299,6 +389,14 @@ export default {
           this.gameState = "Finished";
         }
       }
+    },
+
+    scoreIsImpossible(score) {
+      const impossibleScores = [179, 178, 176, 175, 173, 172, 169, 166, 163, 162];
+
+      if (score > 180) {
+        return true;
+      } else return impossibleScores.includes(score);
     },
 
     resetScores() {

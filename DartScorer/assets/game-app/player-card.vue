@@ -39,16 +39,16 @@
 
     <ul class="list-group list-group-flush" style="margin-top: auto;">
       <li class="list-group-item">
-        <h1 style="font-size: 15px; white-space: nowrap; overflow: hidden;">Last: {{ lastThrow }}</h1>
+        <h1 style="font-size: 15px; white-space: nowrap; overflow: hidden;">Last: {{ lastThrows }}</h1>
 
         <div class="row">
           <div class="col">
-            <h1 style="font-size: 15px; margin: 0px;">Leg</h1>
-            <h1 style="font-size: 15px; margin: 0px;">Avg.: 0</h1>
+            <h1 style="font-size: 15px; margin: 0px;">Leg:</h1>
+            <h1 style="font-size: 15px; margin: 0px;">&empty; {{ legAverage }}</h1>
           </div>
           <div class="col">
-            <h1 style="font-size: 15px; margin: 0px;">Game</h1>
-            <h1 style="font-size: 15px; margin: 0px;">Avg.: 0</h1>
+            <h1 style="font-size: 15px; margin: 0px;">Game:</h1>
+            <h1 style="font-size: 15px; margin: 0px;">&empty; {{ gameAverage }}</h1>
           </div>
         </div>
 
@@ -80,7 +80,7 @@ export default {
   props: {
     playerName: String,
     score: Number,
-    lastThrow: Array,
+    lastThrows: Array,
     legAverage: Number,
     gameAverage: Number,
     toThrow: Boolean,

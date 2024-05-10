@@ -7,7 +7,7 @@
       <input id="scoreInput" class="form-control text-center" style="height: 55px; font-size: 30px" type="text" aria-label=".form-control-lg example" readonly>
     </div>
     <div class="col p-1">
-      <button id="btn-rest" type="button" class="btn btn-light custom-btn-score-row">Rest</button>
+      <button id="btn-left" type="button" class="btn btn-light custom-btn-score-row">{{ leftButtonText }}</button>
     </div>
   </div>
 
@@ -54,7 +54,7 @@
         <button id="btn-0" type="button" class="btn btn-dark custom-btn-number">0</button>
       </div>
       <div class="col p-1">
-        <button id="btn-ok" type="button" class="btn btn-success custom-btn-function">OK</button>
+        <button id="btn-ok" type="button" class="btn btn-success custom-btn-function">{{ okButtonText }}</button>
       </div>
     </div>
   </div>
@@ -66,7 +66,18 @@ export default {
   emits: ['score-entered', 'score-cleared', 'score-confirmed', 'score-undo'], // Declare the custom events
   props: {
     playerName: String,
+    player1Score: Number,
+    player2Score: Number,
+    player1ToThrow: Boolean,
+    player2ToThrow: Boolean
   },
+
+  data() {
+    return {
+      currentInput: 0
+    };
+  },
+
   mounted() {
     // Get scoreInput
     const scoreInput = document.getElementById("scoreInput");
@@ -77,6 +88,7 @@ export default {
 
       this.$emit('score-cleared', scoreInput.value);
       scoreInput.value = "";
+      this.currentInput = 0;
     });
 
     // OK
@@ -86,6 +98,7 @@ export default {
       if (scoreInput.value <= 180) {
         this.$emit('score-confirmed', scoreInput.value);
         scoreInput.value = "";
+        this.currentInput = 0;
       } else {
         const scoreInputHandle = document.getElementById("scoreInput");
         scoreInputHandle.classList.add('exceeds-limit');
@@ -101,6 +114,7 @@ export default {
 
       this.$emit('score-undo', scoreInput.value);
       scoreInput.value = "";
+      this.currentInput = 0;
     });
 
     // Attach click event listeners to number buttons
@@ -110,6 +124,33 @@ export default {
         this.handleButtonClick(button.textContent); // Using arrow function to retain 'this' context
       });
     });
+
+    // LEFT
+    document.getElementById("btn-left").addEventListener('click', () => {
+      window.navigator.vibrate([100]);
+      this.$emit('score-left', scoreInput.value);
+      scoreInput.value = "";
+      this.currentInput = 0;
+    });
+  },
+
+  computed: {
+    leftButtonText() {
+      // Change the button text based on player1ToThrow and whether player1Score is bogey
+      if (this.player1ToThrow && this.scoreIsCeckable(this.player1Score) ||
+          this.player2ToThrow && this.scoreIsCeckable(this.player2Score)) {
+        return "Check";
+      }
+      return "Left";
+    },
+
+    okButtonText() {
+      if (this.currentInput >= 1) {
+        return "OK";
+      } else {
+        return "No Score";
+      }
+    },
   },
 
   methods: {
@@ -123,7 +164,22 @@ export default {
         scoreInput.value += buttonValue;
         this.$emit('score-entered', scoreInput.value);
       }
-    }
+
+      this.currentInput = scoreInput.value;
+
+      console.log("CurrentInput: ", this.currentInput)
+      console.log("true: ", scoreInput.value);
+    },
+
+    scoreIsCeckable(score) {
+      const bogeyNumbers = [169, 168, 166, 165, 163, 162, 159];
+
+      if (score <= 170) {
+        return !(bogeyNumbers.includes(score));
+      } else {
+        false;
+      }
+    },
   }
 };
 </script>

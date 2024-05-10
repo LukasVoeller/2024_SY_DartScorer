@@ -1,3 +1,7 @@
+proxy:
+  appserver:
+    - symfonyproject.lndo.site
+
 services:
   database:
     portforward: 3307
