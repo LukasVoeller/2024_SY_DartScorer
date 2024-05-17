@@ -16,17 +16,18 @@
 
 body {
   /*font-family: "Open Sans", sans-serif;*/
-  color: #272829;
+  color: white;
   font-family: 'NimbusSanL-Reg', sans-serif;
+  background-color: #1B2130;
 }
 
 a {
-  color: #149ddd;
+  color: #8CF0FF;
   text-decoration: none;
 }
 
 a:hover {
-  color: #37b3ed;
+  color: #24BCD9;
   text-decoration: none;
 }
 
@@ -37,6 +38,7 @@ h4,
 h5,
 h6 {
   /*font-family: "Raleway", sans-serif;*/
+  color: white;
 }
 
 /*--------------------------------------------------------------
@@ -85,7 +87,7 @@ h6 {
   z-index: 9997;
   transition: all 0.5s;
   padding: 0 15px;
-  background: #000;
+  background: #010314;
   overflow-y: auto;
 }
 
@@ -128,7 +130,7 @@ h6 {
 }
 
 #header .profile .social-links a:hover {
-  background: #fec236;
+  background: #8CF0FF;
   color: #fff;
   text-decoration: none;
 }
@@ -208,7 +210,8 @@ h6 {
 .nav-menu .active i,
 .nav-menu .active:focus i,
 .nav-menu li:hover>a i {
-  color: #fec236;
+  /*color: #fec236;*/
+  color: #8CF0FF;
 }
 
 /* Mobile Navigation */
@@ -221,7 +224,7 @@ h6 {
   font-size: 24px;
   transition: all 0.4s;
   outline: none !important;
-  background-color: #fec236;
+  background-color: #8CF0FF;
   color: #fff;
   width: 40px;
   height: 40px;
@@ -287,7 +290,7 @@ h6 {
   color: #fff;
   padding-bottom: 4px;
   letter-spacing: 1px;
-  border-bottom: 3px solid #fec236;
+  border-bottom: 3px solid #8CF0FF;
 }
 
 @media (min-width: 1024px) {
@@ -331,7 +334,7 @@ section {
   margin-bottom: 20px;
   padding-bottom: 20px;
   position: relative;
-  color: black;
+  color: white;
 }
 
 .section-title h2::after {
@@ -340,7 +343,7 @@ section {
   display: block;
   width: 50px;
   height: 3px;
-  background: #fec236;
+  background: #1f5297;
   bottom: 0;
   left: 0;
 }
@@ -355,7 +358,7 @@ section {
 .about .content h3 {
   font-weight: 700;
   font-size: 26px;
-  color: black;
+  color: white;
 }
 
 .about .content ul {
@@ -376,7 +379,7 @@ section {
 .about .content ul i {
   font-size: 16px;
   margin-right: 5px;
-  color: #fec236;
+  color: #181E42;
   line-height: 0;
 }
 
@@ -475,12 +478,16 @@ section {
 /*--------------------------------------------------------------
 # Resume
 --------------------------------------------------------------*/
+.resume {
+  background-color: #1B2130;
+}
+
 .resume .resume-title {
   font-size: 26px;
   font-weight: 700;
   margin-top: 20px;
   margin-bottom: 20px;
-  color: #050d18;
+  color: white;
 }
 
 .resume .resume-item {
@@ -496,7 +503,7 @@ section {
   font-weight: 600;
   text-transform: uppercase;
   /*font-family: "Poppins", sans-serif;*/
-  color: #050d18;
+  color: white;
   margin-bottom: 10px;
 }
 
@@ -866,7 +873,7 @@ section {
   float: left;
   width: 44px;
   height: 44px;
-  background: #fec236;
+  background: #8CF0FF;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1008,7 +1015,7 @@ section {
 }
 
 .contact .php-email-form button[type=submit] {
-  background: #fec236;
+  background: #8CF0FF;
   border: 0;
   padding: 10px 24px;
   color: black;
@@ -1090,7 +1097,7 @@ section {
   bottom: 0;
   width: 300px;
   z-index: 9999;
-  background: #000;
+  background: #010314;
 }
 
 #footer .copyright {

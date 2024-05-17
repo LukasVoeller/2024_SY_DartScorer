@@ -1,18 +1,7 @@
-/*
-#watch-live-btn {
-    background: #fec236;
-    border: 0;
-    padding: 10px 24px;
-    color: black;
-    transition: 0.4s;
-    border-radius: 4px;
-}
-
-#watch-live-btn:hover {
-    background: #feae36ff;
+#headline {
     color: white;
+    padding-top: 15px;
 }
-*/
 
 .card {
     position: relative; /* Ensure relative positioning for absolute positioning of child */

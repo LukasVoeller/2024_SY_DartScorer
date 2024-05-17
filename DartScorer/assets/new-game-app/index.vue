@@ -1,6 +1,6 @@
 <template>
   <div class="container p-0">
-    <h1 style="padding-top: 10px; padding-bottom: 10px;">New Game</h1>
+    <h1 id="headline">New Game</h1>
 
     <div class="card shadow" style="padding: 20px">
       <form @submit.prevent="submitForm">
@@ -161,7 +161,7 @@
           </div>
 
           <div class="col-6">
-              <button type="submit" class="btn btn-primary w-100">Play</button>
+              <button id="custom-btn" type="submit" class="btn btn-primary w-100">Play</button>
           </div>
         </div>
       </form>

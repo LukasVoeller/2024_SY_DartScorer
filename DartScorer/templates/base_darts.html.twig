@@ -40,18 +40,12 @@
     <body>
         <!-- ======= Sidebar ======= -->
         <header id="header">
-            <div class="d-flex flex-column">
-                <div class="profile d-flex flex-column align-items-center">
-                    <img id="nav-profile-img" src="/homepage/assets/img/first-180.jpg" alt="" class="img-fluid rounded-circle img-hor-vert">
-                    <h1 class="text-light"><a href="index.html">Dart Scorer</a></h1>
-                    <br>
-                    {% if app.user %}
-                        <p style="color: white; text-align: center;">Welcome, {{ app.user.username }}! <a href="{{ path('logout') }}">Logout</a></p>
-                    {% endif %}
-                </div>
-
-                {% include './util/navbar_darts.html.twig' %}
+            <div id="nav-profile">
+                <img id="nav-profile-img" src="/homepage/assets/img/Logo-Scorin-Wizard_edit.png" alt="" class="img-fluid rounded-circle img-hor-vert">
+                <p style="color: white; text-align: center;">Welcome, {{ app.user.username }}! <a href="{{ path('logout') }}">Logout</a></p>
             </div>
+
+            {% include './util/navbar_darts.html.twig' %}
         </header><!-- End Sidebar -->
 
         <!-- ======= Header ======= -->
@@ -75,12 +69,8 @@
                     </div>
                     <div class="offcanvas-body">
                         <div id="nav-profile">
-                            <div class="profile">
-                                <img id="nav-profile-img" src="/homepage/assets/img/first-180.jpg" alt="" class="img-fluid rounded-circle img-hor-vert">
-                                {% if app.user %}
-                                    <p style="color: white; text-align: center;">Welcome, {{ app.user.username }}! <a href="{{ path('logout') }}">Logout</a></p>
-                                {% endif %}
-                            </div>
+                            <img id="nav-profile-img" src="/homepage/assets/img/Logo-Scorin-Wizard_edit.png" alt="" class="img-fluid rounded-circle img-hor-vert">
+                            <p style="color: white; text-align: center;">Welcome, {{ app.user.username }}! <a href="{{ path('logout') }}">Logout</a></p>
                         </div>
 
                         {% include './util/navbar_darts.html.twig' %}

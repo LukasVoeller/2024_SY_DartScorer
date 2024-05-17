@@ -1,25 +1,24 @@
 {% extends 'base_darts.html.twig' %}
 
 {% block stylesheets %}
-    <link type="text/css" href="/css/darts.css" rel="stylesheet"/>
+    <link type="text/css" href="/css/scorin-wizard/darts.css" rel="stylesheet"/>
+    <link type="text/css" href="/css/scorin-wizard/global.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block title %}RDS - Darts{% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1 style="padding-top: 15px">Latest Games</h1>
+        <h1 id="headline">Latest Games</h1>
         <!--
         <a href="/gif/bobby-george-nipple-trick-iIQuVv" title="Bobby George nipple trick"><img src="https://i.makeagif.com/media/2-03-2023/iIQuVv.gif" alt="Bobby George nipple trick"></a>
         <br>
         <br>
         -->
 
-
-
         <table class="table accordion shadow" style="border-radius: 6px; overflow: hidden;">
             <thead>
-                <tr class="table table-dark">
+                <tr class="table">
                     <th scope="col">Date</th>
                     <th scope="col">Result</th>
                     <th scope="col">Winner</th>

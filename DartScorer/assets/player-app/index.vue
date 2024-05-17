@@ -1,5 +1,5 @@
 <template>
-  <h1 style="padding-top: 15px;">Player Management</h1>
+  <h1 id="headline" >Player Management</h1>
 
   <!-- Table to display player before -->
   <div class="card shadow" style="padding: 20px; margin-bottom: 25px">
@@ -68,7 +68,7 @@
           </div>
 
           <div class="col-4">
-            <button class="btn btn-primary w-100" type="submit">Add</button>
+            <button id="custom-btn" class="btn btn-primary w-100" type="submit">Add</button>
           </div>
 
           <div style="display: flex; justify-content: center">
@@ -78,6 +78,7 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script>

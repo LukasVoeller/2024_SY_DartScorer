@@ -1,19 +1,62 @@
+body {
+    background-color: #1B2130;
+}
+
 @media (min-width: 1200px) {
     body {
         padding-left: 300px;
     }
 }
 
-#custom-btn {
-    background: #fec236;
-    border: 0;
-    padding: 10px 24px;
-    color: black;
-    transition: 0.4s;
-    border-radius: 4px;
+#sw-login-logo {
+    max-width: 500px;
 }
 
-#custom-btn:hover {
-    background: #feae36ff;
+#sw-login-card-header {
+    color: #181E42;
+    font-weight: bold;
+    font-size: 20pt;
+    text-align: center;
+    background-color: #EBFCFF;
+}
+
+#sw-login-info-card-header {
+    background-color: #EBFCFF;
+    font-weight: bold;
+}
+
+#sw-login-btn {
+    background: #2CAB73;
+    border-color: #181E42;
+    color: white;
+
+    width: 100%;
+    border-radius: 3pt;
+    font-weight: bold;
+    border-width: 0px;
+    padding: 10px 24px;
+    transition: 0.5s;
+}
+
+#sw-login-btn:hover {
+    background: #75E7A2;
+    color: white;
+}
+
+#sw-info-btn {
+    background: #2CAB73;
+    border-color: #181E42;
+    color: white;
+
+    width: 100%;
+    border-radius: 3pt;
+    font-weight: bold;
+    border-width: 0px;
+    padding: 10px 24px;
+    transition: 0.5s;
+}
+
+#sw-info-btn:hover {
+    background: #75E7A2;
     color: white;
 }

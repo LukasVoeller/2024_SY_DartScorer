@@ -37,7 +37,8 @@
 
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
-            <link type="text/css" href="/css/game.css" rel="stylesheet"/>
+            <link type="text/css" href="/css/scorin-wizard/game.css" rel="stylesheet"/>
+            <link type="text/css" href="/css/scorin-wizard/global.css" rel="stylesheet"/>
         {% endblock %}
 
         {% block javascripts %}
@@ -70,24 +71,12 @@
     <body>
         <!-- ======= Sidebar ======= -->
         <header id="header">
-            <div class="d-flex flex-column">
-                <div class="profile d-flex flex-column align-items-center">
-                    <img id="nav-profile-img" src="/homepage/assets/img/first-180.jpg" alt="" class="img-fluid rounded-circle img-hor-vert">
-                    <h1 class="text-light"><a href="index.html">Dart Scorer</a></h1>
-                    <br>
-                    {% if app.user %}
-                        <p style="color: white; text-align: center;">Welcome, {{ app.user.username }}! <a href="{{ path('logout') }}">Logout</a></p>
-                    {% endif %}
-                </div>
-
-                <nav id="navbar" class="nav-menu navbar">
-                    <ul>
-                        <li><a href="{{ path('darts') }}" class="nav-link {% if app.request.attributes.get('_route') == 'darts' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>
-                        <li><a href="{{ path('new-game') }}" class="nav-link {% if app.request.attributes.get('_route') == 'new-game' %}active{% endif %}"><i class="bx bx-home"></i> <span>New Game</span></a></li>
-                        <li><a href="{{ path('player') }}" class="nav-link {% if app.request.attributes.get('_route') == 'player' %}active{% endif %}"><i class="bx bx-play-circle"></i> <span>Player</span></a></li>
-                    </ul>
-                </nav>
+            <div id="nav-profile">
+                <img id="nav-profile-img" src="/homepage/assets/img/Logo-Scorin-Wizard_edit.png" alt="" class="img-fluid rounded-circle img-hor-vert">
+                <p style="color: white; text-align: center;">Welcome, {{ app.user.username }}! <a href="{{ path('logout') }}">Logout</a></p>
             </div>
+
+            {% include './util/navbar_darts.html.twig' %}
         </header>
         <!-- End Sidebar -->
 
@@ -129,22 +118,11 @@
                     </div>
                     <div class="offcanvas-body">
                         <div id="nav-profile">
-                            <div class="profile">
-                                <img id="nav-profile-img" src="/homepage/assets/img/first-180.jpg" alt="" class="img-fluid rounded-circle img-hor-vert">
-                                {% if app.user %}
-                                    <p style="color: white; text-align: center;">Welcome, {{ app.user.username }}! <a href="{{ path('logout') }}">Logout</a></p>
-                                {% endif %}
-                            </div>
+                            <img id="nav-profile-img" src="/homepage/assets/img/Logo-Scorin-Wizard_edit.png" alt="" class="img-fluid rounded-circle img-hor-vert">
+                            <p style="color: white; text-align: center;">Welcome, {{ app.user.username }}! <a href="{{ path('logout') }}">Logout</a></p>
                         </div>
 
-                        <nav id="navbar" class="nav-menu navbar">
-                            <ul>
-                                <li><a href="{{ path('darts') }}" class="nav-link {% if app.request.attributes.get('_route') == 'darts' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>
-                                <li><a href="{{ path('new-game') }}" class="nav-link {% if app.request.attributes.get('_route') == 'new-game' %}active{% endif %}"><i class="bx bx-home"></i> <span>New Game</span></a></li>
-                                <li><a href="{{ path('match') }}" class="nav-link {% if app.request.attributes.get('_route') == 'match' %}active{% endif %}"><i class="bx bx-play-circle"></i> <span>Match</span></a></li>
-                                <li><a href="{{ path('player') }}" class="nav-link {% if app.request.attributes.get('_route') == 'player' %}active{% endif %}"><i class="bx bx-play-circle"></i> <span>Player</span></a></li>
-                            </ul>
-                        </nav>
+                        {% include './util/navbar_darts.html.twig' %}
                     </div>
                 </div>
 

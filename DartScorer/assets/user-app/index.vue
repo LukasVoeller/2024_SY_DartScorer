@@ -1,5 +1,5 @@
 <template>
-  <h1 style="padding-top: 15px">User Management</h1>
+  <h1 id="headline">User Management</h1>
 
   <!-- Table to display user before -->
   <div class="card shadow h-100" style="padding: 20px; margin-bottom: 25px">
@@ -94,7 +94,7 @@
             </div>
 
             <div class="col-4">
-              <button type="submit" class="btn btn-primary w-100">Add</button>
+              <button id="custom-btn" type="submit" class="btn btn-primary w-100">Add</button>
             </div>
 
             <div style="display: flex; justify-content: center">

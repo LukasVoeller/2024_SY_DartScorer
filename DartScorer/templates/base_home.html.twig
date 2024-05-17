@@ -60,7 +60,10 @@
                 <nav id="navbar" class="nav-menu navbar">
                     <ul>
                         <li><a href="{{ path('home') }}" class="nav-link {% if app.request.attributes.get('_route') == 'home' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>
-                        <li><a href="{{ path('login') }}" class="nav-link {% if app.request.attributes.get('_route') == 'login' %}active{% endif %}"><i class="bx bx-play-circle"></i> <span>Darts</span></a></li>
+                        <li><a href="{{ path('login') }}" class="nav-link {% if app.request.attributes.get('_route') == 'login' %}active{% endif %}">
+                                <img style="width: 15%; padding-right: 5px; margin-left: -3px" src="/homepage/assets/img/Logo-Scorin-Wizard_edit.png">
+                                <span>Scorin Wizard</span></a>
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -91,7 +94,10 @@
                         <nav id="navbar" class="nav-menu navbar">
                             <ul>
                                 <li><a href="{{ path('home') }}" class="nav-link {% if app.request.attributes.get('_route') == 'home' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>
-                                <li><a href="{{ path('login') }}" class="nav-link {% if app.request.attributes.get('_route') == 'login' %}active{% endif %}"><i class="bx bx-play-circle"></i> <span>Darts</span></a></li>
+                                <li><a href="{{ path('login') }}" class="nav-link {% if app.request.attributes.get('_route') == 'login' %}active{% endif %}">
+                                        <img style="width: 11%; padding-right: 5px; margin-left: -3px" src="/homepage/assets/img/Logo-Scorin-Wizard_edit.png">
+                                        <span>Scorin Wizard</span></a>
+                                </li>
                             </ul>
                         </nav>
                     </div>

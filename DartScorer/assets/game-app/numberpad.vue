@@ -1,13 +1,19 @@
 <template>
   <div class="row px-1">
     <div class="col p-1">
-      <button id="btn-undo" type="button" class="btn btn-light custom-btn-score-row">Undo</button>
+      <button id="btn-undo" type="button" class="btn btn-light custom-btn-score-row">
+        <i class="bi bi-arrow-counterclockwise"></i>
+        Undo
+      </button>
     </div>
     <div class="col p-1">
-      <input id="scoreInput" class="form-control text-center" :class="{'exceeds-limit': exceedsLimit}" style="height: 55px; font-size: 30px" type="text" aria-label=".form-control-lg example" readonly>
+      <input id="scoreInput" class="form-control text-center" :class="{'exceeds-limit': exceedsLimit}" type="text" readonly>
     </div>
     <div class="col p-1">
-      <button id="btn-left" type="button" class="btn btn-light custom-btn-score-row">{{ leftButtonText }}</button>
+      <button id="btn-left" type="button" class="btn btn-light custom-btn-score-row">
+        <i class="bi bi-chevron-bar-down"></i>
+        {{ leftButtonText }}
+      </button>
     </div>
   </div>
 
@@ -48,13 +54,13 @@
     </div>
     <div class="row" style="padding-bottom: 5px;">
       <div class="col p-1">
-        <button id="btn-clr" type="button" style="font-size: 18px;" class="btn btn-danger custom-btn-function">CLR</button>
+        <button id="btn-clr" type="button" class="btn btn-danger custom-btn-clear">CLR</button>
       </div>
       <div class="col p-1">
         <button id="btn-0" type="button" class="btn btn-dark custom-btn-number">0</button>
       </div>
       <div class="col p-1">
-        <button id="btn-ok" type="button" style="font-size: 18px;" class="btn btn-success custom-btn-function">{{ okButtonText }}</button>
+        <button id="btn-ok" type="button" class="btn btn-success custom-btn-ok">{{ okButtonText }}</button>
       </div>
     </div>
   </div>
@@ -144,8 +150,8 @@ export default {
 
     leftButtonText() {
       // Change the button text based on player1ToThrow and whether player1Score is bogey
-      if (this.player1ToThrow && this.scoreIsCeckable(this.player1Score) ||
-          this.player2ToThrow && this.scoreIsCeckable(this.player2Score)) {
+      if (this.player1ToThrow && this.scoreIsCeckable(this.player1Score) && this.currentInput < 1 ||
+          this.player2ToThrow && this.scoreIsCeckable(this.player2Score) && this.currentInput < 1) {
         return "Check";
       }
       return "Left";

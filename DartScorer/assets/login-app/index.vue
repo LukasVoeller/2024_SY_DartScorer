@@ -1,14 +1,16 @@
 <template>
   <!-- ======= Login ======= -->
-  <div class="container" style="padding-top: 30px">
+  <div class="container" style="padding-top: 0px">
     <div class="row justify-content-center">
-      <div class="d-flex justify-content-center"> <!-- Flex container for centering -->
-        <h1>Welcome to my Dart App!</h1>
-      </div>
+      <img id="sw-login-logo" src="/homepage/assets/img/Logo-Scorin-Wizard_edit.png" alt="Logo.png">
+    </div>
 
+    <div class="row justify-content-center">
       <div class="col-md-6">
         <div class="card shadow">
-          <div class="card-header">Login</div>
+          <!--
+          <div class="card-header" id="sw-login-card-header">Login</div>
+          -->
           <div class="card-body">
 
             <!-- <form method="post" action="/login" @submit="login"> -->
@@ -16,32 +18,40 @@
             <!-- <form method="post" action="/login"> -->
             <form method="post" action="/login" @submit.prevent="login" ref="loginForm">
               <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
                 <input
                     type="text"
                     class="form-control"
                     id="username"
                     name="_username"
                     v-model="username"
+                    placeholder="Username"
                 required
                 >
               </div>
               <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
                 <input
                     type="password"
                     class="form-control"
                     id="password"
                     name="_password"
                     v-model="password"
+                    placeholder="Password"
                 required
                 >
               </div>
-              <button id="custom-btn" style="margin-right: 10px" type="submit" class="btn btn-primary" :disabled="isSubmitting">Login</button>
 
-              <button id="custom-btn" class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                Info
-              </button>
+              <div class="row">
+                <div class="col-8">
+                  <button id="sw-login-btn" style="margin-right: 10px" type="submit" :disabled="isSubmitting">
+                    Login
+                  </button>
+                </div>
+                <div class="col-4">
+                  <button id="sw-info-btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    Info
+                  </button>
+                </div>
+              </div>
 
               <div v-if="loginError" class="alert alert-warning mt-3" role="alert">
                 {{ loginError }}  <!-- Display the error message -->
@@ -58,7 +68,7 @@
               <div class="row justify-content-center">
                 <div class="col">
                   <div class="card" style="margin-top: 15px;">
-                    <div class="card-header">
+                    <div class="card-header" id="sw-login-info-card-header">
                       Tech Stack
                     </div>
                     <div class="card-body">
@@ -80,8 +90,8 @@
                 </div>
 
                 <div class="col">
-                  <div class="card" style="margin-top: 10px;">
-                    <div class="card-header">
+                  <div class="card" style="margin-top: 15px;">
+                    <div class="card-header" id="sw-login-info-card-header">
                       Features
                     </div>
                     <div class="card-body">
@@ -104,14 +114,14 @@
   </div>
 
   <!-- ======= RDA ======= -->
-  <div class="container" style="padding-top: 30px">
+  <div class="container" style="padding-top: 30px; padding-bottom: 30px">
     <div class="row justify-content-center">
       <div class="col-md-3 col-sm-6 align-self-start">
-        <p><strong>In association with:</strong></p>
+        <p style="color: white"><strong>In association with:</strong></p>
       </div>
 
-      <div class="col-md-3 col-sm-6 d-flex justify-content-end">
-        <img src="homepage/assets/img/logo-rda.png" alt="" style="width: 50%">
+      <div class="col-md-3 col-sm-6">
+        <img src="homepage/assets/img/logo-rda.png" alt="" style="max-width: 30%; float: right">
       </div>
     </div>
   </div>

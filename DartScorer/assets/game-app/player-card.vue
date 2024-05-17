@@ -1,7 +1,7 @@
 <template>
   <div id="player" class="card">
     <div class="card-header" :style="{
-      backgroundColor: toThrow ? 'rgb(0, 135, 84)' : '',
+      backgroundColor: toThrow ? '#2CAB73' : '',
       color: toThrow ? 'white' : 'black',  // Conditional text color
       height: '40px'
     }">

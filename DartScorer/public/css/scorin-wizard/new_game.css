@@ -1,0 +1,29 @@
+#headline {
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#custom-btn {
+    background: #75E7A2;
+    border: 0;
+    color: black;
+}
+
+#custom-btn:hover {
+    background: #2CAB73;
+    color: white;
+}
+
+/*
+#custom-btn {
+    background: #8CF0FF;
+    border: 0;
+    color: black;
+}
+
+#custom-btn:hover {
+    background: #24BCD9;
+    color: white;
+}
+*/
