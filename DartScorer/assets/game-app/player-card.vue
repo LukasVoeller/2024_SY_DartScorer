@@ -2,12 +2,15 @@
   <div id="player" class="card">
     <div class="card-header" :style="{
       backgroundColor: toThrow ? '#2CAB73' : '',
-      color: toThrow ? 'white' : 'black',  // Conditional text color
+      color: toThrow ? 'white' : 'black',
       height: '40px'
     }">
       <div class="row">
         <div class="col-7 p-0">
-          <h5>{{ playerName }}</h5>
+          <h5 :style="{
+            color: toThrow ? 'white' : 'black'
+          }">
+            {{ playerName }}</h5>
         </div>
         <div class="col-5 text-end p-0">
           <p>
@@ -39,16 +42,16 @@
 
     <ul class="list-group list-group-flush" style="margin-top: auto;">
       <li class="list-group-item">
-        <h1 style="font-size: 15px; white-space: nowrap; overflow: hidden;">Last: {{ lastThrows }}</h1>
+        <h1 class="info-text" style="font-size: 15px; white-space: nowrap; overflow: hidden;">Last: {{ lastThrows }}</h1>
 
         <div class="row">
           <div class="col" style="padding-right: 0;">
-            <h1 style="font-size: 15px; margin: 0px;">Leg:</h1>
-            <h1 style="font-size: 15px; margin: 0px;">&empty; {{ legAverage }}</h1>
+            <h1 class="info-text" style="font-size: 15px; margin: 0px;">Leg:</h1>
+            <h1 class="info-text" style="font-size: 15px; margin: 0px;">&empty; {{ legAverage }}</h1>
           </div>
           <div class="col">
-            <h1 style="font-size: 15px; margin: 0px;">Game:</h1>
-            <h1 style="font-size: 15px; margin: 0px;">&empty; {{ gameAverage }}</h1>
+            <h1 class="info-text" style="font-size: 15px; margin: 0px;">Game:</h1>
+            <h1 class="info-text" style="font-size: 15px; margin: 0px;">&empty; {{ gameAverage }}</h1>
           </div>
         </div>
 

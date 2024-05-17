@@ -18,7 +18,9 @@
     }
 }
 
-
+.info-text {
+    color: black;
+}
 
 .custom-btn-number {
     background: #343E4C;
