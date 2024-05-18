@@ -5,9 +5,9 @@
       <div class="modal-content">
         <div class="modal-header">
           <div class="modal-title-wrapper">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">{{ checkout }} Checkout!</h1>
-            <p style="margin: 0px">Average: {{ average }}</p>
-            <p style="margin: 0px">Darts: {{ darts }}</p>
+            <h1 style="color: black" class="modal-title fs-5">{{ checkout }} Checkout!</h1>
+            <p style="color: black; margin: 0px">Average: {{ average }}</p>
+            <p style="color: black; margin: 0px">Darts: {{ darts }}</p>
           </div>
         </div>
         <div class="modal-body">

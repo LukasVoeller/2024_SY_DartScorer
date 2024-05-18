@@ -121,7 +121,7 @@ export default {
         return 0;  // Avoid division by zero
       }
 
-      return (totalScores / scoreCount).toFixed(2);  // Calculate and format
+      return (totalScores / scoreCount).toFixed(1);  // Calculate and format
     },
   },
 
@@ -192,6 +192,8 @@ export default {
   },
 
   mounted() {
+    //EventBus.emit('show-leg-shut-modal', this.player1.currentScores);
+    
     // Initialize modal when component is mounted
     //const myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
     //onMounted(() => myModal.show());
@@ -253,7 +255,7 @@ export default {
       }
 
       if (!this.scoreIsImpossible(score)) {
-        EventBus.emit('play-score-sound', score);
+        //EventBus.emit('play-score-sound', score);
       }
 
       this.score = score;

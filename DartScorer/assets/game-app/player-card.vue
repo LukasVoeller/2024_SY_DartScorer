@@ -32,7 +32,14 @@
       <li class="list-group-item p-0">
         <div class="row justify-content-center">
           <div class="col-auto">
-            <h1 :style="{ fontSize: dynamicFontSize, lineHeight: '1', paddingTop: dynamicPadding, margin: '0px', color: isBogey(score) ? 'red' : 'black'}"><strong>{{ displayScore }}</strong></h1>
+            <h1 :style="{
+              fontSize: dynamicFontSize,
+              lineHeight: '1',
+              paddingTop: dynamicPadding,
+              margin: '0px',
+              color: isBogey(score) ? 'red' : 'black'}">
+              <strong>{{ displayScore }}</strong>
+            </h1>
           </div>
         </div>
 
@@ -124,6 +131,10 @@ export default {
       }
     },
     dynamicFontSize() {
+      if (this.displayScore === "bust"){
+        return '75px';
+      }
+
       if (this.possibleCheckouts === 0) {
         return '85px'; // Font size when there are checkouts
       } else if (this.possibleCheckouts === 1) {

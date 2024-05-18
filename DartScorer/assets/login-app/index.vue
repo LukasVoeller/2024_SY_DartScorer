@@ -75,14 +75,14 @@
                       <ul style="padding-left: 15px">
                         <li>Backend:</li>
                         <ul>
-                          <li>Symfony 6.4.6</li>
-                          <li>PHP 8.2.18</li>
-                          <li>MySQL 8.0.36</li>
+                          <li>Symfony 6.4</li>
+                          <li>PHP 8.2</li>
+                          <li>MySQL 8.0</li>
                         </ul>
                         <li>Frontend:</li>
                         <ul>
-                          <li>Vue.js 3.2.14</li>
-                          <li>Bootstrap 5.3.3</li>
+                          <li>Vue.js 3.2</li>
+                          <li>Bootstrap 5.3</li>
                         </ul>
                       </ul>
                     </div>
@@ -96,9 +96,7 @@
                     </div>
                     <div class="card-body">
                       <ul style="padding-left: 15px">
-                        <li>Custom deployer php</li>
-                        <li>Custom Symfony commands</li>
-                        <li>User login- and role management</li>
+                        <li>Deployer PHP</li>
                         <li>APIs secured with JWT</li>
                       </ul>
                     </div>

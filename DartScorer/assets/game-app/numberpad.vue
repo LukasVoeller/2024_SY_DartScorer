@@ -80,7 +80,7 @@ export default {
 
   data() {
     return {
-      currentInput: 0
+      currentInput: 0,
     };
   },
 
@@ -90,7 +90,11 @@ export default {
 
     // CLR
     document.getElementById("btn-clr").addEventListener('click', () => {
-      window.navigator.vibrate([100]);
+      try {
+        window.navigator.vibrate([100]);
+      } catch (error) {
+        console.warn("Your device doesn't support vibration.");
+      }
 
       this.$emit('score-cleared', scoreInput.value);
       scoreInput.value = "";
@@ -99,8 +103,11 @@ export default {
 
     // OK
     document.getElementById("btn-ok").addEventListener('click', () => {
-      window.navigator.vibrate([100]);
-      console.log("XXX ", this.player1Score)
+      try {
+        window.navigator.vibrate([100]);
+      } catch (error) {
+        console.warn("Your device doesn't support vibration.");
+      }
 
       if (scoreInput.value <= this.player1Score && this.player1ToThrow) {
         if (!this.scoreIsImpossible(scoreInput.value)) {
@@ -119,7 +126,11 @@ export default {
 
     // UNDO
     document.getElementById("btn-undo").addEventListener('click', () => {
-      window.navigator.vibrate([100]);
+      try {
+        window.navigator.vibrate([100]);
+      } catch (error) {
+        console.warn("Your device doesn't support vibration.");
+      }
 
       this.$emit('score-undo', scoreInput.value);
       scoreInput.value = "";
@@ -136,7 +147,12 @@ export default {
 
     // LEFT
     document.getElementById("btn-left").addEventListener('click', () => {
-      window.navigator.vibrate([100]);
+      try {
+        window.navigator.vibrate([100]);
+      } catch (error) {
+        console.warn("Your device doesn't support vibration.");
+      }
+
       this.$emit('score-left', scoreInput.value);
       scoreInput.value = "";
       this.currentInput = 0;
@@ -168,7 +184,11 @@ export default {
 
   methods: {
     handleButtonClick(buttonValue) {
-      window.navigator.vibrate([100]);
+      try {
+        window.navigator.vibrate([100]);
+      } catch (error) {
+        console.warn("Your device doesn't support vibration.");
+      }
 
       const scoreInput = document.getElementById("scoreInput");
       const currentInputValue = scoreInput.value;
