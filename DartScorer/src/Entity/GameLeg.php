@@ -25,7 +25,7 @@ class GameLeg
 
     #[ORM\Column(nullable: true)]
     #[Groups(['leg'])]
-    private ?int $playerIdWinner = null;
+    private ?int $winnerPlayerId = null;
 
     /**
      * @var Collection<int, GameScore>
@@ -68,14 +68,14 @@ class GameLeg
         return $this;
     }
 
-    public function getPlayerIdWinner(): ?int
+    public function getWinnerPlayerId(): ?int
     {
-        return $this->playerIdWinner;
+        return $this->winnerPlayerId;
     }
 
-    public function setPlayerIdWinner(?int $playerIdWinner): static
+    public function setWinnerPlayerId(?int $winnerPlayerId): static
     {
-        $this->playerIdWinner = $playerIdWinner;
+        $this->winnerPlayerId = $winnerPlayerId;
 
         return $this;
     }

@@ -1,12 +1,12 @@
 <template>
   <div class="row px-1">
     <div class="col p-1" style="max-width: 50%;">
-      <PlayerCardComponent v-if="game" :playerName="player1.name" :score="player1.score" :toThrow="player1.toThrow" :lastThrows="player1.currentScores.join(', ')"
-                            :dartsThrown="calculateDartsThrownSum(player1)" :sets="player1.sets" :legs="player1.tempLegs" :legAverage="player1LegAverage" :gameAverage="player1.gameAverage"/>
+      <PlayerCardComponent v-if="game" :playerName="player1.name" :playerScore="player1.score" :toThrow="player1.toThrow" :lastThrows="player1.currentScores.join(', ')"
+                            :dartsThrown="calculateDartsThrownSum(player1)" :sets="player1.sets" :legs="player1.tempLegs" :legAverage="player1LegAverage" :gameAverage="player1.gameAverage" :scoreBusted="player1.scoreBusted"/>
     </div>
     <div class="col p-1" style="max-width: 50%;">
-      <PlayerCardComponent v-if="game" :playerName="player2.name" :score="player2.score" :toThrow="player2.toThrow" :lastThrows="player2.currentScores.join(', ')"
-                            :dartsThrown="calculateDartsThrownSum(player2)" :sets="player2.sets" :legs="player2.tempLegs" :legAverage="player2LegAverage" :gameAverage="player2.gameAverage"/>
+      <PlayerCardComponent v-if="game" :playerName="player2.name" :playerScore="player2.score" :toThrow="player2.toThrow" :lastThrows="player2.currentScores.join(', ')"
+                            :dartsThrown="calculateDartsThrownSum(player2)" :sets="player2.sets" :legs="player2.tempLegs" :legAverage="player2LegAverage" :gameAverage="player2.gameAverage" :scoreBusted="player2.scoreBusted"/>
     </div>
   </div>
 
@@ -45,6 +45,7 @@ axios.interceptors.request.use(config => {
 
 export default {
   name: 'GameComponent',
+
   components: {
     PlayerCardComponent,
     NumberpadComponent,
@@ -57,13 +58,17 @@ export default {
       game: null,
       loading: true,
       error: false,
+      gameWinnerPlayerId: null,
+      legWinnerPlayerIds: [],
+      setWinnerPlayerIds: [],
 
       player1: {
         id: 0,
-        name: 'player1',
+        name: '',
         startScore: 0,
         tempScore: 0,
         score: 0,
+        scoreBusted: false,
         currentScores: [],
         totalScores: [],
         toThrow: false,
@@ -78,10 +83,11 @@ export default {
 
       player2: {
         id: 0,
-        name: 'player2',
+        name: '',
         startScore: 0,
         tempScore: 0,
         score: 0,
+        scoreBusted: false,
         currentScores: [],
         totalScores: [],
         toThrow: false,
@@ -132,9 +138,19 @@ export default {
       if (this.player1.toThrow) {
         this.processPlayerCheckout(this.player1);
 
-        this.player1.legAverages.push(parseFloat(average))
-        const sumLegAverages = this.player1.legAverages.reduce((sum, current) => sum + current, 0);
-        this.player1.gameAverage = (sumLegAverages / this.player1.legAverages.length).toFixed(1);
+        this.player1.legAverages.push(parseFloat(average));
+
+        if (this.player2.currentScores.length > 0) {
+          const sum = this.player2.currentScores.reduce((total, score) => total + score, 0);
+          const average = (sum / this.player2.currentScores.length).toFixed(1);
+          this.player2.legAverages.push(parseFloat(average));
+        }
+
+        const sumLegAveragesPlayer1 = this.player1.legAverages.reduce((sum, current) => sum + current, 0);
+        this.player1.gameAverage = (sumLegAveragesPlayer1 / this.player1.legAverages.length).toFixed(1);
+
+        const sumLegAveragesPlayer2 = this.player2.legAverages.reduce((sum, current) => sum + current, 0);
+        this.player2.gameAverage = (sumLegAveragesPlayer2 / this.player2.legAverages.length).toFixed(1);
 
         this.player1.currentDartsThrown.unshift(numberOfDarts);
         this.player1.totalScores.push(this.player1.currentScores);
@@ -142,16 +158,26 @@ export default {
         this.player2.totalScores.push(this.player2.currentScores);
         this.player2.totalDartsThrown.push(this.player2.currentDartsThrown);
 
-        console.log("---> LegAverages: ", this.player1.legAverages);
-        console.log("---> Scores: ", this.player1.totalScores);
-        console.log("---> Darts: ", this.player1.totalDartsThrown);
-        //this.logTotalInfo();
+        this.logTotalInfo();
+        if (this.gameState === "Finished") {
+          this.saveGameData();
+        }
       } else if (this.player2.toThrow) {
         this.processPlayerCheckout(this.player2);
 
-        this.player2.legAverages.push(parseFloat(average))
-        const sumLegAverages = this.player2.legAverages.reduce((sum, current) => sum + current, 0);
-        this.player2.gameAverage = (sumLegAverages / this.player2.legAverages.length).toFixed(1);
+        this.player2.legAverages.push(parseFloat(average));
+
+        if (this.player1.currentScores.length > 0) {
+          const sum = this.player1.currentScores.reduce((total, score) => total + score, 0);
+          const average = (sum / this.player1.currentScores.length).toFixed(1);
+          this.player1.legAverages.push(parseFloat(average));
+        }
+
+        const sumLegAveragesPlayer2 = this.player2.legAverages.reduce((sum, current) => sum + current, 0);
+        this.player2.gameAverage = (sumLegAveragesPlayer2 / this.player2.legAverages.length).toFixed(1);
+
+        const sumLegAveragesPlayer1 = this.player1.legAverages.reduce((sum, current) => sum + current, 0);
+        this.player1.gameAverage = (sumLegAveragesPlayer1 / this.player1.legAverages.length).toFixed(1);
 
         this.player2.currentDartsThrown.unshift(numberOfDarts);
         this.player2.totalScores.push(this.player2.currentScores);
@@ -159,10 +185,10 @@ export default {
         this.player1.totalScores.push(this.player1.currentScores);
         this.player1.totalDartsThrown.push(this.player1.currentDartsThrown);
 
-        console.log("---> LegAverages: ", this.player2.legAverages);
-        console.log("---> Scores: ", this.player2.totalScores);
-        console.log("---> Darts: ", this.player2.totalDartsThrown);
-        //this.logTotalInfo();
+        this.logTotalInfo();
+        if (this.gameState === "Finished") {
+          this.saveGameData();
+        }
       }
 
       if (this.gameState !== "Finished"){
@@ -193,7 +219,7 @@ export default {
 
   mounted() {
     //EventBus.emit('show-leg-shut-modal', this.player1.currentScores);
-    
+
     // Initialize modal when component is mounted
     //const myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
     //onMounted(() => myModal.show());
@@ -202,8 +228,6 @@ export default {
 
     if (this.gameId) {
       this.getGameData();
-      //console.log("Game loaded!");
-      //EventBus.emit('play-gameOn-sound');
     } else {
       console.error('Game ID not found in the URL');
       this.error = true;
@@ -225,23 +249,34 @@ export default {
 
       if (this.player1.toThrow) {
         this.player1.score = this.player1.tempScore;
+        this.player1.scoreBusted = false;
       } else if (this.player2.toThrow) {
         this.player2.score = this.player2.tempScore;
       }
     },
 
     processScore(score) {
-      console.log("--- Player1tempScore: ", this.player1.tempScore);
       score = parseInt(score.replace(/^0+/, ''), 10);
       if (isNaN(score)) {
         score = 0;
       }
 
       if (this.player1.toThrow) {
-        //console.log("Player Score: " + this.player1.score + " Temp Score:  " + this.player1.tempScore + " Score: " + score)
-        this.player1.score = this.player1.tempScore - score;
+        if (this.player1.tempScore - score === 0 || this.player1.tempScore - score >= 2) {
+          this.player1.scoreBusted = false;
+          this.player1.score = this.player1.tempScore - score;
+        } else {
+          this.player1.scoreBusted = true;
+          this.player1.score = this.player1.tempScore;
+        }
       } else if (this.player2.toThrow) {
-        this.player2.score = this.player2.tempScore - score;
+        if (this.player2.tempScore - score === 0 || this.player2.tempScore - score >= 2) {
+          this.player2.scoreBusted = false;
+          this.player2.score = this.player2.tempScore - score;
+        } else {
+          this.player2.scoreBusted = true;
+          this.player2.score = this.player2.tempScore;
+        }
       }
     },
 
@@ -259,6 +294,7 @@ export default {
       }
 
       this.score = score;
+      console.log("XXX Score: ", this.score);
 
       if (this.player1.toThrow) {
         if (this.player1.score === 0) {
@@ -267,6 +303,7 @@ export default {
           //EventBus.emit('play-gameShut-sound');
           EventBus.emit('show-leg-shut-modal', this.player1.currentScores);
         } else {
+          this.player1.scoreBusted = false;
           this.player1.tempScore = this.player1.score;
           this.player1.currentScores.unshift(score);
           this.player1.toThrow = false;
@@ -280,6 +317,7 @@ export default {
           //EventBus.emit('play-gameShut-sound');
           EventBus.emit('show-leg-shut-modal', this.player2.currentScores);
         } else {
+          this.player2.scoreBusted = false;
           this.player2.tempScore = this.player2.score;
           this.player2.currentScores.unshift(score);
           this.player2.toThrow = false;
@@ -288,7 +326,7 @@ export default {
         }
       }
 
-      this.logCurrentInfo(score);
+      //this.logCurrentInfo(score);
     },
 
     undoScore(score) {
@@ -371,14 +409,17 @@ export default {
       if (this.game.matchMode === "FirstToSets") {
         console.log("Leg shut");
         player.tempLegs += 1;
+        this.legWinnerPlayerIds.push(player.id);
 
         if (this.game.matchModeLegsNeeded === player.tempLegs) {
           console.log("Set shut");
-          player.tempLegs = 0;
+          this.resetLegs();
           player.sets += 1;
+          this.setWinnerPlayerIds.push(player.id);
 
           if (this.game.matchModeSetsNeeded === player.sets) {
             console.log("Game shut");
+            this.gameWinnerPlayerId = player.id;
             EventBus.emit('play-gameShutAndTheMatch-sound');
             this.gameState = "Finished";
           }
@@ -386,9 +427,11 @@ export default {
       } else if (this.game.matchMode === "FirstToLegs") {
         console.log("Leg shut");
         player.tempLegs += 1;
+        this.legWinnerPlayerIds.push(player.id);
 
         if (this.game.matchModeLegsNeeded === player.tempLegs) {
           console.log("Game shut");
+          this.gameWinnerPlayerId = player.id;
           EventBus.emit('play-gameShutAndTheMatch-sound');
           this.gameState = "Finished";
         }
@@ -415,6 +458,11 @@ export default {
       this.player2.currentDartsThrown = [];
     },
 
+    resetLegs() {
+      this.player1.tempLegs = 0;
+      this.player2.tempLegs = 0;
+    },
+
     switchToThrow() {
       if (this.playerStartsLegId === this.player1.id) {
         this.playerStartsLegId = this.player2.id
@@ -427,26 +475,31 @@ export default {
       }
     },
 
-    logCurrentInfo (score) {
-      console.log(" ");
-      console.log("----- Entered Score: " + score + " -----");
-      console.log(this.player1.name + " CurrentScores: " + this.player1.currentScores);
-      console.log(this.player2.name + " CurrentScores: " + this.player2.currentScores);
-
-      console.log(this.player1.name + " CurrentDartsThrown: " + this.player1.currentDartsThrown);
-      console.log(this.player2.name + " CurrentDartsThrown: " + this.player2.currentDartsThrown);
-    },
-
     logTotalInfo () {
       console.log(" ");
-      console.log("----- Total -----");
+      console.log("Game state: ", this.gameState);
+      console.log("Game winner id: ", this.gameWinnerPlayerId);
+      console.log("Leg winner Ids: ", this.legWinnerPlayerIds);
+      console.log("Set winner Ids: ", this.setWinnerPlayerIds);
+      console.log("#################### LOG TOTAL ####################");
 
-      console.log(this.player1.name + " TotalScores: " + JSON.stringify(this.player1.totalScores));
-      console.log(this.player2.name + " TotalScores: " + JSON.stringify(this.player2.totalScores));
+      console.log("----------", this.player1.name, " / Player 1 ----------");
+      console.log("Scores: " + JSON.stringify(this.player1.totalScores));
+      console.log("Darts: " + JSON.stringify(this.player1.totalDartsThrown));
+      console.log("Leg Averages: ", JSON.stringify(this.player1.legAverages));
+      console.log("Game Average: ", JSON.stringify(this.player1.gameAverage));
 
-      console.log(this.player1.name + " TotalDartsThrown: " + JSON.stringify(this.player1.totalDartsThrown));
-      console.log(this.player2.name + " TotalDartsThrown: " + JSON.stringify(this.player2.totalDartsThrown));
-    },
+      console.log(" ");
+
+      console.log("----------", this.player2.name, " / Player 2 ----------");
+      console.log("Scores: " + JSON.stringify(this.player2.totalScores));
+      console.log("Darts: " + JSON.stringify(this.player2.totalDartsThrown));
+      console.log("Leg Averages: ", JSON.stringify(this.player2.legAverages));
+      console.log("Game Average: ", JSON.stringify(this.player2.gameAverage));
+
+
+
+      },
 
 
 
@@ -470,27 +523,80 @@ export default {
             this.player2.tempScore = this.game.startScore;
             this.player1.score = this.game.startScore;
             this.player2.score = this.game.startScore;
-            this.player1.name = this.game.player1Name;
+            //this.player1.name = this.game.player1Id;
             this.player1.id = this.game.player1Id;
-            this.player2.name = this.game.player2Name;
+            //this.player2.name = this.game.player2Id;
             this.player2.id = this.game.player2Id;
-            this.playerStartsLegId = this.game.playerStartingId;
+            this.playerStartsLegId = this.game.startingPlayerId;
             this.gameState = this.game.state;
 
-            if (this.player1.id === this.game.playerStartingId) {
+            if (this.player1.id === this.game.startingPlayerId) {
               this.player1.toThrow = true;
               this.player2.toThrow = false;
-            } else if (this.player2.id === this.game.playerStartingId) {
+            } else if (this.player2.id === this.game.startingPlayerId) {
               this.player1.toThrow = false;
               this.player2.toThrow = true;
             }
 
             this.loading = false;
+            this.getPlayerData();
           })
           .catch(error => {
             console.error('Error fetching game data:', error);
             this.error = true;
             this.loading = false;
+          });
+    },
+
+    getPlayerData() {
+      axios.get('/api/player/id/' + this.player1.id)
+          .then(response => {
+            this.player1.name = response.data.name;
+          })
+          .catch(error => {
+            console.error('Error fetching player data:', error);
+            this.error = true;
+          });
+
+      axios.get('/api/player/id/' + this.player2.id)
+          .then(response => {
+            this.player2.name = response.data.name;
+          })
+          .catch(error => {
+            console.error('Error fetching player data:', error);
+            this.error = true;
+          });
+    },
+
+    saveGameData() {
+      const postData = {
+        gameId: this.game.id,
+        gameState: this.gameState,
+
+        gameWinnerPlayerId: this.gameWinnerPlayerId,
+        legWinnerPlayerIds: this.legWinnerPlayerIds,
+        setWinnerPlayerIds: this.setWinnerPlayerIds,
+
+        player1Id: this.player1.id,
+        player1TotalScores: this.player1.totalScores,
+        player1DartsThrown: this.player1.totalDartsThrown,
+        player1legAverages: this.player1.legAverages,
+        player1gameAverage: this.player1.gameAverage,
+
+        player2Id: this.player2.id,
+        player2TotalScores: this.player2.totalScores,
+        player2DartsThrown: this.player2.totalDartsThrown,
+        player2legAverages: this.player2.legAverages,
+        player2gameAverage: this.player2.gameAverage,
+      };
+
+      axios.post('/api/game/save', postData)
+          .then(response => {
+            console.log("Game saved successfully.");
+            window.location.reload();
+          })
+          .catch(error => {
+            console.error('Error saving the game:', error);
           });
     }
   },

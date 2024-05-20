@@ -20,9 +20,6 @@ class GameScore
     private ?int $playerId;
 
     #[ORM\ManyToOne(inversedBy: 'scores')]
-    private ?Game $relatedGame = null;
-
-    #[ORM\ManyToOne(inversedBy: 'scores')]
     private ?GameLeg $relatedLeg = null;
 
     #[ORM\Column(nullable: false)]
@@ -55,18 +52,6 @@ class GameScore
     public function setPlayerId(?int $playerId): static
     {
         $this->playerId = $playerId;
-
-        return $this;
-    }
-
-    public function getRelatedGame(): ?Game
-    {
-        return $this->relatedGame;
-    }
-
-    public function setRelatedGame(?Game $relatedGame): static
-    {
-        $this->relatedGame = $relatedGame;
 
         return $this;
     }

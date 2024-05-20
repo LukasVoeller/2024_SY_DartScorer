@@ -34,8 +34,6 @@
     color: white;
 }
 
-
-
 .custom-btn-clear {
     background: #24BCD9;
     border: 0;
@@ -54,8 +52,6 @@
     color: white;
 }
 
-
-
 .custom-btn-ok {
     background: #2CAB73;
     border: 0;
@@ -68,8 +64,6 @@
     background: #75E7A2;
     color: white;
 }
-
-
 
 #scoreInput {
     padding-top: 15px;
@@ -87,24 +81,15 @@
     /*color: red !important;*/
 }
 
-
-
 .custom-btn-score-row {
     width: 100%;
     height: 55px;
     font-size: 20px;
 }
 
-
-
-
-
-
 .disable-dbl-tap-zoom {
     touch-action: manipulation;
 }
-
-
 
 /* Scrolling Text V2 */
 .marquee {
@@ -156,6 +141,3 @@
     -o-animation-play-state: paused;
     animation-play-state: paused;
 }
-
-
-

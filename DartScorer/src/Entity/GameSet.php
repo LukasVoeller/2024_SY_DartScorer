@@ -23,7 +23,7 @@ class GameSet
 
     #[ORM\Column(nullable: true)]
     #[Groups(['set'])]
-    private ?int $playerIdWinner = null;
+    private ?int $winnerPlayerId = null;
 
     #[ORM\Column]
     #[Groups(['set'])]
@@ -58,14 +58,14 @@ class GameSet
         return $this;
     }
 
-    public function getPlayerIdWinner(): ?int
+    public function getWinnerPlayerId(): ?int
     {
-        return $this->playerIdWinner;
+        return $this->winnerPlayerId;
     }
 
-    public function setPlayerIdWinner(?int $playerIdWinner): static
+    public function setWinnerPlayerId(?int $winnerPlayerId): static
     {
-        $this->playerIdWinner = $playerIdWinner;
+        $this->winnerPlayerId = $winnerPlayerId;
 
         return $this;
     }

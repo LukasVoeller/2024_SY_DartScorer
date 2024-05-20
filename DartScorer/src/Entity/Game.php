@@ -25,17 +25,9 @@ abstract class Game
     #[Groups(['game'])]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['game'])]
-    private ?\DateTimeInterface $date = null;
-
     #[ORM\Column(nullable: false)]
     #[Groups(['game'])]
     private ?int $player1Id;
-
-    #[ORM\Column(nullable: false)]
-    #[Groups(['game'])]
-    private ?string $player1Name;
 
     #[ORM\Column(nullable: false)]
     #[Groups(['game'])]
@@ -43,15 +35,11 @@ abstract class Game
 
     #[ORM\Column(nullable: false)]
     #[Groups(['game'])]
-    private ?string $player2Name;
-
-    #[ORM\Column(nullable: false)]
-    #[Groups(['game'])]
-    private ?int $playerStartingId;
+    private ?int $startingPlayerId;
 
     #[ORM\Column(nullable: true)]
     #[Groups(['game'])]
-    private ?int $playerIdWinner = null;
+    private ?int $winnerPlayerId = null;
 
     #[ORM\Column(length: 32, nullable: true)]
     #[Groups(['game'])]
@@ -83,18 +71,14 @@ abstract class Game
     #[Groups(['game'])]
     private Collection $legs;
 
-    /**
-     * @var Collection<int, GameScore>
-     */
-    #[ORM\OneToMany(targetEntity: GameScore::class, mappedBy: 'relatedGame', orphanRemoval: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Groups(['game'])]
-    private Collection $scores;
+    private ?\DateTimeInterface $date = null;
 
     public function __construct()
     {
         $this->sets = new ArrayCollection();
         $this->legs = new ArrayCollection();
-        $this->scores = new ArrayCollection();
         $this->date = new \DateTime();
     }
 
@@ -127,18 +111,6 @@ abstract class Game
         return $this;
     }
 
-    public function getPlayer1Name(): ?string
-    {
-        return $this->player1Name;
-    }
-
-    public function setPlayer1Name(?string $player1Name): static
-    {
-        $this->player1Name = $player1Name;
-
-        return $this;
-    }
-
     public function getPlayer2Id(): ?int
     {
         return $this->player2Id;
@@ -151,38 +123,26 @@ abstract class Game
         return $this;
     }
 
-    public function getPlayer2Name(): ?string
+    public function getStartingPlayerId(): ?int
     {
-        return $this->player2Name;
+        return $this->startingPlayerId;
     }
 
-    public function setPlayer2Name(?string $player2Name): static
+    public function setStartingPlayerId(int $startingPlayerId): static
     {
-        $this->player2Name = $player2Name;
+        $this->startingPlayerId = $startingPlayerId;
 
         return $this;
     }
 
-    public function getPlayerStartingId(): ?int
+    public function getWinnerPlayerId(): ?int
     {
-        return $this->playerStartingId;
+        return $this->winnerPlayerId;
     }
 
-    public function setPlayerStartingId(int $playerStartingId): static
+    public function setWinnerPlayerId(?int $winnerPlayerId): static
     {
-        $this->playerStartingId = $playerStartingId;
-
-        return $this;
-    }
-
-    public function getPlayerIdWinner(): ?int
-    {
-        return $this->playerIdWinner;
-    }
-
-    public function setPlayerIdWinner(?int $playerIdWinner): static
-    {
-        $this->playerIdWinner = $playerIdWinner;
+        $this->winnerPlayerId = $winnerPlayerId;
 
         return $this;
     }
@@ -289,36 +249,6 @@ abstract class Game
             // set the owning side to null (unless already changed)
             if ($leg->getGame() === $this) {
                 $leg->setGame(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, GameScore>
-     */
-    public function getScores(): Collection
-    {
-        return $this->scores;
-    }
-
-    public function addScore(GameScore $score): static
-    {
-        if (!$this->scores->contains($score)) {
-            $this->scores->add($score);
-            $score->setGame($this);
-        }
-
-        return $this;
-    }
-
-    public function removeScore(GameScore $score): static
-    {
-        if ($this->scores->removeElement($score)) {
-            // set the owning side to null (unless already changed)
-            if ($score->getGame() === $this) {
-                $score->setGame(null);
             }
         }
 

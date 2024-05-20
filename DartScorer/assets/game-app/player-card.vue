@@ -37,13 +37,15 @@
               lineHeight: '1',
               paddingTop: dynamicPadding,
               margin: '0px',
-              color: isBogey(score) ? 'red' : 'black'}">
+              color: isBogey(playerScore) ? 'red' : 'black'}">
               <strong>{{ displayScore }}</strong>
             </h1>
           </div>
         </div>
 
-        <CalculateCheckouts :score="score" @checkouts-calculated="calculatedCheckouts" />
+        <!-- <CalculateCheckouts :score="playerScore" @checkouts-calculated="calculatedCheckouts"/> -->
+        <CalculateCheckouts v-if="!scoreBusted" :score="playerScore" @checkouts-calculated="calculatedCheckouts" />
+
       </li>
     </ul>
 
@@ -80,7 +82,6 @@
 
 <script>
 import CalculateCheckouts from './calculate-checkouts.vue';
-import calculateCheckouts from "./calculate-checkouts.vue";
 
 export default {
   name: 'PlayerCardComponent',
@@ -89,7 +90,8 @@ export default {
   },
   props: {
     playerName: String,
-    score: Number,
+    playerScore: Number,
+    scoreBusted: Boolean,
     lastThrows: Array,
     legAverage: Number,
     gameAverage: Number,
@@ -108,20 +110,26 @@ export default {
       const bogeyScores = [169, 168, 166, 165, 163, 162, 159];
       return bogeyScores.includes(score);
     },
+
     calculatedCheckouts(checkouts) {
-      //console.log("Possible checkouts: " + checkouts);
-      this.possibleCheckouts = checkouts; // Store the checkouts in data
+      this.possibleCheckouts = checkouts;
     }
   },
+
   computed: {
-    // TODO: Delete
-    calculateCheckouts() {
-      return calculateCheckouts
-    },
     displayScore() {
-      return this.score < 0 ? "bust" : this.score;
+      if (this.scoreBusted) {
+        return 'bust';
+      } else {
+        return this.playerScore;
+      }
     },
+
     dynamicPadding() {
+      if (this.displayScore === "bust"){
+        return '30px';
+      }
+
       if (this.possibleCheckouts === 0) {
         return '25px'; // Font size when there are checkouts
       } else if (this.possibleCheckouts === 1) {
@@ -130,6 +138,7 @@ export default {
         return '17px'; // Font size when there are no checkouts
       }
     },
+
     dynamicFontSize() {
       if (this.displayScore === "bust"){
         return '75px';

@@ -109,17 +109,33 @@ export default {
         console.warn("Your device doesn't support vibration.");
       }
 
-      if (scoreInput.value <= this.player1Score && this.player1ToThrow) {
-        if (!this.scoreIsImpossible(scoreInput.value)) {
-          this.$emit('score-confirmed', scoreInput.value);
+      if (this.player1ToThrow) {
+        if (scoreInput.value > this.player1Score) {
+          this.$emit('score-confirmed', "0");
           scoreInput.value = "";
           this.currentInput = 0;
+        } else if (scoreInput.value <= this.player1Score) {
+          if (this.player1Score - scoreInput.value >= 2 || this.player1Score - scoreInput.value === 0) {
+            if (!this.scoreIsImpossible(scoreInput.value)) {
+              this.$emit('score-confirmed', scoreInput.value);
+              scoreInput.value = "";
+              this.currentInput = 0;
+            }
+          }
         }
-      } else if (scoreInput.value <= this.player2Score && this.player2ToThrow) {
-        if (!this.scoreIsImpossible(scoreInput.value)) {
-          this.$emit('score-confirmed', scoreInput.value);
+      } else if (this.player2ToThrow) {
+        if (scoreInput.value > this.player2Score) {
+          this.$emit('score-confirmed', "0");
           scoreInput.value = "";
           this.currentInput = 0;
+        } else if (scoreInput.value <= this.player2Score) {
+          if (this.player2Score - scoreInput.value >= 2 || this.player2Score - scoreInput.value === 0) {
+            if (!this.scoreIsImpossible(scoreInput.value)) {
+              this.$emit('score-confirmed', scoreInput.value);
+              scoreInput.value = "";
+              this.currentInput = 0;
+            }
+          }
         }
       }
     });
@@ -166,14 +182,34 @@ export default {
 
     leftButtonText() {
       // Change the button text based on player1ToThrow and whether player1Score is bogey
-      if (this.player1ToThrow && this.scoreIsCeckable(this.player1Score) && this.currentInput < 1 ||
-          this.player2ToThrow && this.scoreIsCeckable(this.player2Score) && this.currentInput < 1) {
+      if (this.player1ToThrow && this.scoreIsCheckable(this.player1Score) && this.currentInput < 1 ||
+          this.player2ToThrow && this.scoreIsCheckable(this.player2Score) && this.currentInput < 1) {
         return "Check";
       }
       return "Left";
     },
 
     okButtonText() {
+      if (this.player1ToThrow) {
+        if (this.currentInput - this.player1Score === 0) {
+          return "Check";
+        }
+      } else if (this.player2ToThrow) {
+        if (this.currentInput - this.player2Score === 0) {
+          return "Check";
+        }
+      }
+
+      if (this.player1ToThrow) {
+        if (this.currentInput > this.player1Score) {
+          return "No Score";
+        }
+      } else if (this.player2ToThrow) {
+        if (this.currentInput > this.player2Score) {
+          return "No Score";
+        }
+      }
+
       if (this.currentInput >= 1) {
         return "OK";
       } else {
@@ -204,7 +240,7 @@ export default {
       console.log("true: ", scoreInput.value);
     },
 
-    scoreIsCeckable(score) {
+    scoreIsCheckable(score) {
       const bogeyNumbers = [169, 168, 166, 165, 163, 162, 159];
 
       if (score <= 170) {

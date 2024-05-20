@@ -1,4 +1,6 @@
 import {createApp} from "vue";
 import App from './player-app/index.vue';
 
-createApp(App).mount('#player-app');
+const app = createApp(App);
+
+app.mount('#player-app');

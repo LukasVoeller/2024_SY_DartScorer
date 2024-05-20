@@ -1,4 +1,6 @@
 import {createApp} from "vue";
 import App from './new-game-app/index.vue';
 
-createApp(App).mount('#new-game-app');
+const app = createApp(App);
+
+app.mount('#new-game-app');

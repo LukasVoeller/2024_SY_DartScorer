@@ -114,11 +114,14 @@ api_get_game:
   requirements:
     id: '\d+' # Ensure that the id parameter is a digit
 
-api_post_game:
-  path: '/api/game'
-  controller: 'App\Controller\GameController::postGame'
+api_create_game:
+  path: '/api/game/create'
+  controller: 'App\Controller\GameController::createGame'
   methods: ['POST']
 
-
+api_save_game:
+  path: '/api/game/save'
+  controller: 'App\Controller\GameController::saveGame'
+  methods: ['POST']
 
 

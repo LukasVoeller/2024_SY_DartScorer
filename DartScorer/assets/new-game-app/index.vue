@@ -225,16 +225,14 @@ export default {
         postData.matchModeLegsNeeded = this.selectedMatchModeLegs;
       }
 
-      axios.post('/api/game', postData)
+      axios.post('/api/game/create', postData)
           .then(response => {
-            // Handle success response
             console.log("Game started successfully.");
             this.gameId = response.data.gameId;
             window.location.href = `/game/${this.gameId}`;
           })
           .catch(error => {
-            // Handle error response
-            console.error('Error starting game:', error);
+            console.error('Error starting the game:', error);
           });
     }
   }

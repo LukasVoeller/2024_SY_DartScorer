@@ -1,0 +1,99 @@
+{#
+{% extends 'base_darts.html.twig' %}
+#}
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- TODO: Cleanup like in base_darts.html -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+
+        <title>{% block title %}Not found{% endblock %}</title>
+        {# <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>"> #}
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        {# Include Vue.js from CDN #}
+        <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+        {# Include Axios for making HTTP requests #}
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+        <!-- Homepage CSS files -->
+        <link href="/homepage/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+        <!-- Vendor CSS Files -->
+        <link href="/homepage/vendor/aos/aos.css" rel="stylesheet">
+        <link href="/homepage/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+        <link href="/homepage/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+        <link href="/homepage/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+        <!-- Template Main CSS File -->
+        <link href="/homepage/assets/css/style.css" rel="stylesheet">
+        <link type="text/css" href="/css/base_darts.css" rel="stylesheet"/>
+
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+            <link type="text/css" href="/css/scorin-wizard/game.css" rel="stylesheet"/>
+            <link type="text/css" href="/css/scorin-wizard/global.css" rel="stylesheet"/>
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+            {{ encore_entry_script_tags('gameApp') }}
+        {% endblock %}
+    </head>
+
+    <body>
+        <!-- ======= Sidebar ======= -->
+        <header id="header">
+            <div id="nav-profile">
+                <img id="nav-profile-img" src="/homepage/assets/img/Logo-Scorin-Wizard_edit.png" alt="" class="img-fluid rounded-circle img-hor-vert">
+                <p style="color: white; text-align: center;">Welcome, {{ app.user.username }}! <a href="{{ path('logout') }}">Logout</a></p>
+            </div>
+
+            {% include './util/navbar_darts.html.twig' %}
+        </header>
+        <!-- End Sidebar -->
+
+        <!-- ======= Header ======= -->
+        <nav class="navbar navbar-dark fixed-top d-xl-none" style="background-color: #000">
+            <div class="container-fluid">
+
+                <div class="col-2 p-0">
+                    <div id="game-id" style="padding-right: 5px">
+
+                    </div>
+                </div>
+                <div class="col-2 d-flex justify-content-end p-0">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel" style="background-color: #000">
+                    <div class="offcanvas-header">
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <div id="nav-profile">
+                            <img id="nav-profile-img" src="/homepage/assets/img/Logo-Scorin-Wizard_edit.png" alt="" class="img-fluid rounded-circle img-hor-vert">
+                            <p style="color: white; text-align: center;">Welcome, {{ app.user.username }}! <a href="{{ path('logout') }}">Logout</a></p>
+                        </div>
+
+                        {% include './util/navbar_darts.html.twig' %}
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+        <!-- End Header -->
+
+        <div style="display: flex; justify-content: center; align-items: center; height: 80vh;">
+            <h1 style="padding-top: 20px;">No game found with Id {{ gameId }}.</h1>
+        </div>
+    </body>
+</html>
