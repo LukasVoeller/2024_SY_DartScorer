@@ -111,7 +111,6 @@ class GameController extends AbstractController
             return false;
         }
 
-        // Assuming each set contains exactly 3 legs
         $setsNeeded = $game->getMatchModeSetsNeeded();
         $legsNeeded = $game->getMatchModeLegsNeeded();
         $legsPerSetPlayed = $data['legsPerSetPlayed'];

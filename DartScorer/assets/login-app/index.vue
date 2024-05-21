@@ -104,7 +104,7 @@
                 </div>
 
               </div>
-              <p style="float: right; padding-top: 10px">v0.9.0</p>
+              <p style="float: right; padding-top: 10px">v0.9.2</p>
             </div>
           </div>
         </div>
