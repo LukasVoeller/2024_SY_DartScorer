@@ -1,44 +1,170 @@
 <template>
-  <h1 style="padding-top: 15px">Game shut!</h1>
-
   <div v-if="game">
+    <h1 style="padding-top: 15px">ID: {{ game.id }} - Game shut!</h1>
+
     <div class="card" >
       <div class="card-body">
-        {{ game.id }}
-        {{ game.startScore }}
-        {{ game.matchMode }}
+        <div class="row">
+          <div class="col-3">Start: {{ game.startScore }}</div>
+          <div class="col-4">Finish: {{ game.finishType }}</div>
+          <div class="col-5">Mode: {{ game.matchMode }}, ({{ game.matchModeLegsNeeded }})</div>
+        </div>
       </div>
     </div>
 
-    <div v-for="(leg, index) in legs" :key="index">
-      <div class="row" style="padding-top: 20px">
+    <div class="row" style="padding-top: 20px">
+      <div class="col-6" style="padding-right: 3px">
+        <div class="card" :style="game.winnerPlayerId === player1.id ? {backgroundColor: '#2CAB73'} : {}">
+          <div class="card-body">
+            <h5 :style="game.winnerPlayerId === player1.id ? {color: 'white'} : {color: 'black'}">{{ player1.name }}</h5>
+          </div>
+        </div>
+      </div>
 
-        <div class="col-6">
-          <div class="card" :style="leg.winnerPlayerId === player1.id ? {border: '5px solid #2CAB73'} : {}">
-            <div class="card-body">
-              <h5 style="color: black;">{{ player1.name }} - Leg {{ index + 1 }}</h5>
-              <ul>
-                <li v-for="score in leg.player1Scores" :key="score.id">
-                  Score: {{ score.value }}, ({{ score.dartsThrown }})
-                </li>
-              </ul>
+      <div class="col-6" style="padding-left: 3px">
+        <div class="card" :style="game.winnerPlayerId === player2.id ? {backgroundColor: '#2CAB73'} : {}">
+          <div class="card-body">
+            <h5 :style="game.winnerPlayerId === player2.id ? {color: 'white'} : {color: 'black'}">{{ player2.name }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Match mode legs -->
+    <div v-if="game.matchMode === 'FirstToLegs'">
+      <div v-for="(leg, index) in legs" :key="index">
+        <!-- Leg Scores -->
+        <div class="row" style="padding-top: 20px">
+          <p>Leg {{ index + 1 }}</p>
+
+          <!-- Player 1 -->
+          <div class="col-6" style="padding-right: 3px">
+            <button class="btn btn-primary"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    :href="'#collapseExample' + (index + 1)"
+                    aria-expanded="false"
+                    :aria-controls="'collapseExample' + (index + 1)"
+                    :style="leg.winnerPlayerId === player1.id ? {backgroundColor: '#2CAB73'} : {backgroundColor: 'white', color: 'black'}"
+                    style="width: 100%; border: none;"
+                    @click="leg.player1IsExpanded = !leg.player1IsExpanded"
+            >
+              <div class="row">
+                <div class="col-6" style="text-align: left; padding-right: 0px">
+                  {{ averageScorePerLeg(leg.player1Scores) }}
+                  &empty;
+                </div>
+                <div class="col-4 d-flex justify-content-end" style="padding-left: 0px">
+                  {{ totalDartsThrown(leg.player1Scores) }}
+                  <img src="/homepage/assets/img/dart-arrow-32px.png"
+                       alt="dart arrow"
+                       style="max-width: 20px; max-height: 20px"
+                       :style="leg.winnerPlayerId === player1.id ? {filter: 'invert(100%)'} : {}"
+                  >
+                </div>
+                <div class="col-2" style="padding: 0px">
+                  <i v-if="!leg.player1IsExpanded" class="bi bi-chevron-down"></i>
+                  <i v-else class="bi bi-chevron-up"></i>
+                </div>
+              </div>
+            </button>
+
+            <div class="collapse" :id="'collapseExample' + (index + 1)">
+              <div class="card" :style="leg.winnerPlayerId === player1.id ? {backgroundColor: '#2CAB73'} : {}">
+                <div class="card-body" style="padding: 10px">
+                  <div v-for="(score, index) in leg.player1Scores" :key="score.id"
+                       :style="index === 0 && leg.winnerPlayerId === player1.id ? {color: 'white', fontWeight: 'bold'} : {}">
+                    {{ score.value }}
+                    <span v-if="index === 0 && leg.winnerPlayerId === player1.id">({{ score.dartsThrown }})</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Player 2 -->
+          <div class="col-6" style="padding-left: 3px">
+            <button class="btn btn-primary"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    :href="'#collapseExample' + (index + 100)"
+                    aria-expanded="false"
+                    :aria-controls="'collapseExample' + (index + 100)"
+                    :style="leg.winnerPlayerId === player2.id ? {backgroundColor: '#2CAB73'} : {backgroundColor: 'white', color: 'black'}"
+                    style="width: 100%; border: none;"
+                    @click="leg.player2IsExpanded = !leg.player2IsExpanded"
+            >
+              <div class="row">
+                <div class="col-6" style="text-align: left; padding-right: 0px">
+                  {{ averageScorePerLeg(leg.player2Scores) }}
+                  &empty;
+                </div>
+                <div class="col-4 d-flex justify-content-end" style="padding-left: 0px">
+                  {{ totalDartsThrown(leg.player2Scores) }}
+                  <img src="/homepage/assets/img/dart-arrow-32px.png"
+                       alt="dart arrow"
+                       style="max-width: 20px; max-height: 20px"
+                       :style="leg.winnerPlayerId === player2.id ? {filter: 'invert(100%)'} : {}"
+                  >
+                </div>
+                <div class="col-2" style="padding: 0px">
+                  <i v-if="!leg.player2IsExpanded" class="bi bi-chevron-down"></i>
+                  <i v-else class="bi bi-chevron-up"></i>
+                </div>
+              </div>
+            </button>
+
+            <div class="collapse" :id="'collapseExample' + (index + 100)">
+              <div class="card" :style="leg.winnerPlayerId === player2.id ? {backgroundColor: '#2CAB73'} : {}">
+                <div class="card-body" style="padding: 10px">
+                  <div v-for="(score, index) in leg.player2Scores" :key="score.id"
+                       :style="index === 0 && leg.winnerPlayerId === player2.id ? {color: 'white', fontWeight: 'bold'} : {}">
+                    {{ score.value }}
+                    <span v-if="index === 0 && leg.winnerPlayerId === player2.id">({{ score.dartsThrown }})</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- Match mode sets -->
+    <div v-if="game.matchMode === 'FirstToSets'">
+      <div v-for="(set, setIndex) in sets" :key="'set' + setIndex" class="set-container">
+        <h3>Set {{ setIndex + 1 }}</h3>
+        <div v-for="(leg, legIndex) in set.legs" :key="'leg' + legIndex" class="leg-container">
+          <h4>Leg {{ legIndex + 1 }}</h4>
+          <div class="row">
+            <!-- Player 1 Score Display -->
+            <div class="col-6">
+              <div class="card" :style="{ backgroundColor: leg.winnerPlayerId === player1.id ? '#2CAB73' : '' }">
+                <div class="card-body">
+                  <h5 :style="{ color: leg.winnerPlayerId === player1.id ? 'white' : 'black' }">{{ player1.name }}</h5>
+                  <div v-for="(score, scoreIndex) in leg.player1Scores" :key="score.id">
+                    {{ score.value }} ({{ score.dartsThrown }} darts)
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Player 2 Score Display -->
+            <div class="col-6">
+              <div class="card" :style="{ backgroundColor: leg.winnerPlayerId === player2.id ? '#2CAB73' : '' }">
+                <div class="card-body">
+                  <h5 :style="{ color: leg.winnerPlayerId === player2.id ? 'white' : 'black' }">{{ player2.name }}</h5>
+                  <div v-for="(score, scoreIndex) in leg.player2Scores" :key="score.id">
+                    {{ score.value }} ({{ score.dartsThrown }} darts)
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        <div class="col-6">
-            <div class="card" :style="leg.winnerPlayerId === player2.id ? {border: '5px solid #2CAB73'} : {}">
-            <div class="card-body">
-              <h5 style="color: black;">{{ player2.name }} - Leg {{ index + 1 }}</h5>
-              <ul>
-                <li v-for="score in leg.player2Scores" :key="score.id">
-                  Score: {{ score.value }}, ({{ score.dartsThrown }})
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
 
@@ -76,7 +202,8 @@ export default {
         name: '',
       },
 
-      legs: []
+      legs: [],
+      sets: []
     };
   },
 
@@ -146,12 +273,37 @@ export default {
     */
 
     extractScores() {
-      this.legs = this.game.legs.map(leg => ({
-        winnerPlayerId: leg.winnerPlayerId,  // Extract winner ID from each leg
-        player1Scores: leg.scores.filter(score => score.playerId === this.player1.id),
-        player2Scores: leg.scores.filter(score => score.playerId === this.player2.id)
-      }));
+      if (this.game.matchMode === "FirstToLegs") {
+        this.legs = this.game.legs.map(leg => ({
+          winnerPlayerId: leg.winnerPlayerId,
+          player1Scores: leg.scores.filter(score => score.playerId === this.player1.id),
+          player2Scores: leg.scores.filter(score => score.playerId === this.player2.id)
+        }));
+      } else if (this.game.matchMode === "FirstToSets") {
+        this.sets = this.game.sets.map(set => ({
+          winnerPlayerId: set.winnerPlayerId,
+          legs: set.legs.map(leg => ({
+            winnerPlayerId: leg.winnerPlayerId,
+            player1Scores: leg.scores.filter(score => score.playerId === this.player1.id),
+            player2Scores: leg.scores.filter(score => score.playerId === this.player2.id)
+          }))
+        }));
+      }
     },
+
+    totalDartsThrown(scores) {
+      return scores.reduce((total, score) => total + score.dartsThrown, 0);
+    },
+
+    totalScores(scores) {
+      return scores.reduce((total, score) => total + score.value, 0);
+    },
+
+    averageScorePerLeg(scores) {
+      const totalScores = this.totalScores(scores);
+      const dartsThrown = this.totalDartsThrown(scores);
+      return dartsThrown > 0 ? ((totalScores / dartsThrown) * 3).toFixed(1) : 0; // toFixed(2) to limit the decimal places to 2
+    }
 
   }
 }

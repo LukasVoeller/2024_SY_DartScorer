@@ -112,38 +112,40 @@ class GameController extends AbstractController
         }
 
         // Assuming each set contains exactly 3 legs
-        $totalSets = $game->getMatchModeSetsNeeded();
-        $legsPerSet = $game->getMatchModeLegsNeeded();
+        $setsNeeded = $game->getMatchModeSetsNeeded();
+        $legsNeeded = $game->getMatchModeLegsNeeded();
+        $legsPerSetPlayed = $data['legsPerSetPlayed'];
 
         if ($game->getMatchMode() == "FirstToSets") {
-            for ($setIndex = 0; $setIndex < $totalSets; $setIndex++) {
+            for ($setIndex = 0; $setIndex < $setsNeeded; $setIndex++) {
                 $set = new GameSet();
                 $set->setRelatedGame($game);
                 $set->setWinnerPlayerId($data['setWinnerPlayerIds'][$setIndex]);
-                $set->setMatchModeLegsNeeded($game->getMatchModeLegsNeeded());
+                $set->setMatchModeLegsNeeded($legsNeeded);
                 $this->entityManager->persist($set);
 
-                for ($legIndex = 0; $legIndex < $legsPerSet; $legIndex++) {
+                $legsInThisSet = $legsPerSetPlayed[$setIndex];
+                for ($legIndex = 0; $legIndex < $legsInThisSet; $legIndex++) {
                     $leg = new GameLeg();
-                    $leg->setRelatedGame($game);
                     $leg->setRelatedSet($set);
-                    $leg->setWinnerPlayerId($data['legWinnerPlayerIds'][$legIndex]);
+                    $globalLegIndex = array_sum(array_slice($legsPerSetPlayed, 0, $setIndex)) + $legIndex;
+                    $leg->setWinnerPlayerId($data['legWinnerPlayerIds'][$globalLegIndex]);
                     $this->entityManager->persist($leg);
 
                     // Handle scores for Player 1
                     $this->createPlayerScores(
                         $leg,
                         $data['player1Id'],
-                        $data['player1TotalScores'][$legIndex],
-                        $data['player1DartsThrown'][$legIndex] ?? []
+                        $data['player1TotalScores'][$globalLegIndex],
+                        $data['player1DartsThrown'][$globalLegIndex] ?? []
                     );
 
                     // Handle scores for Player 2
                     $this->createPlayerScores(
                         $leg,
                         $data['player2Id'],
-                        $data['player2TotalScores'][$legIndex],
-                        $data['player2DartsThrown'][$legIndex] ?? []
+                        $data['player2TotalScores'][$globalLegIndex],
+                        $data['player2DartsThrown'][$globalLegIndex] ?? []
                     );
                 }
             }

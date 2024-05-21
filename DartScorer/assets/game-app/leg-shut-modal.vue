@@ -1,8 +1,9 @@
 <template>
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="legShutModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="legShutModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
+
         <div class="modal-header">
           <div class="modal-title-wrapper">
             <h1 style="color: black" class="modal-title fs-5">{{ checkout }} Checkout!</h1>
@@ -10,6 +11,7 @@
             <p style="color: black; margin: 0px">Darts: {{ darts }}</p>
           </div>
         </div>
+
         <div class="modal-body">
           <p style="color: black">How many darts were needed?</p>
 
@@ -23,12 +25,13 @@
             <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" v-model="dartsForCheckout" value="3" checked>
             <label class="btn btn-outline-dark" for="btnradio3">3</label>
           </div>
-
         </div>
+
         <div class="modal-footer">
           <button type="button" style="width: 100px;" class="btn btn-secondary" data-bs-dismiss="modal" @click="resumeModal">Resume</button>
           <button type="button" style="width: 100px;" class="btn btn-success" data-bs-dismiss="modal" @click="confirmModal">Save</button>
         </div>
+
       </div>
     </div>
   </div>
@@ -39,6 +42,7 @@ import {EventBus} from '../event-bus';
 
 export default {
   name: 'LegShutModalComponent',
+
   data() {
     return {
       dartsForCheckout: 3,
@@ -48,11 +52,12 @@ export default {
       darts: 0
     };
   },
+
   created() {
     EventBus.on('show-leg-shut-modal', (payload) => {
       // Reset dartsForCheckout to default
       this.dartsForCheckout = 3;
-      const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
+      const modal = new bootstrap.Modal(document.getElementById('legShutModal'));
       this.scores = payload; // Set the data passed to the modal
       this.checkout = this.scores[0];
       this.calculateAverage();
@@ -60,6 +65,7 @@ export default {
     });
 
   },
+
   computed: {
     threeDartsNeeded() {
       return this.checkout > 110
@@ -73,6 +79,7 @@ export default {
       }
     },
   },
+
   methods: {
     calculateAverage() {
       if (this.scores.length > 0) {
@@ -88,13 +95,13 @@ export default {
     },
 
     confirmModal() {
-      //const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
-      EventBus.emit('modal-confirmed', this.dartsForCheckout, this.average);
+      //const modal = new bootstrap.Modal(document.getElementById('legShutModal'));
+      EventBus.emit('leg-shut-modal-confirmed', this.dartsForCheckout, this.average);
     },
 
     resumeModal() {
-      //const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
-      EventBus.emit('modal-resumed');
+      //const modal = new bootstrap.Modal(document.getElementById('legShutModal'));
+      EventBus.emit('leg-shut-modal-resumed');
     }
   },
 
@@ -103,6 +110,5 @@ export default {
       this.calculateAverage(); // Recalculate when darts needed changes
     },
   },
-
 }
 </script>

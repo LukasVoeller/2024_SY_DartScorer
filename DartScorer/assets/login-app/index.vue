@@ -57,7 +57,7 @@
                 {{ loginError }}  <!-- Display the error message -->
               </div>
 
-              <div style="display: flex; justify-content: center">
+              <div style="display: flex; justify-content: center; padding-top: 10px">
                 <VueSpinnerDots v-if="isSubmitting" size="40" color="black" />
               </div>
             </form>

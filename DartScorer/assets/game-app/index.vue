@@ -15,6 +15,8 @@
 
   <LegShutModalComponent />
 
+  <GameShutModalComponent />
+
   <Caller />
 
 </template>
@@ -29,6 +31,7 @@
 import PlayerCardComponent from './player-card.vue';
 import NumberpadComponent from './numberpad.vue';
 import LegShutModalComponent from './leg-shut-modal.vue';
+import GameShutModalComponent from './game-shut-modal.vue';
 import Caller from './caller.vue';
 import axios from 'axios';
 import { EventBus } from '../event-bus';
@@ -50,6 +53,7 @@ export default {
     PlayerCardComponent,
     NumberpadComponent,
     LegShutModalComponent,
+    GameShutModalComponent,
     Caller
   },
 
@@ -61,6 +65,11 @@ export default {
       gameWinnerPlayerId: null,
       legWinnerPlayerIds: [],
       setWinnerPlayerIds: [],
+      score: 0,
+      gameState: "",
+      legsPlayed: 0,
+      legsPerSetPlayed: [],
+      startsLegPlayerId: null,
 
       player1: {
         id: 0,
@@ -99,10 +108,6 @@ export default {
         legs: 0,
         tempLegs: 0,
       },
-
-      score: 0,
-      gameState: "",
-      playerStartsLegId: null
     };
   },
 
@@ -132,7 +137,7 @@ export default {
   },
 
   created() {
-    this.onModalConfirmed = (dartsForCheckout, average) => {
+    this.onLegShutModalConfirmed = (dartsForCheckout, average) => {
       const numberOfDarts = parseInt(dartsForCheckout);
 
       if (this.player1.toThrow) {
@@ -197,7 +202,7 @@ export default {
       }
     };
 
-    this.onModalResumed = () => {
+    this.onLegShutModalResumed = () => {
       if (this.player1.toThrow) {
         this.player1.score += this.player1.currentScores[0];
         this.player1.currentScores.shift();
@@ -207,24 +212,33 @@ export default {
       }
     };
 
-    EventBus.on('modal-confirmed', this.onModalConfirmed);
-    EventBus.on('modal-resumed', this.onModalResumed);
+
+    this.onGameShutModalConfirmed = () => {
+      window.location.reload();
+    };
+
+    this.onGameShutModalResumed = () => {
+      window.location.href = `/new-game`;
+    };
+
+    EventBus.on('leg-shut-modal-confirmed', this.onLegShutModalConfirmed);
+    EventBus.on('leg-shut-modal-resumed', this.onLegShutModalResumed);
+    EventBus.on('game-shut-modal-confirmed', this.onGameShutModalConfirmed);
+    EventBus.on('game-shut-modal-resumed', this.onGameShutModalResumed);
   },
 
   beforeDestroy() {
     // Remove event listeners to avoid memory leaks
-    EventBus.off('modal-confirmed', this.onModalConfirmed);
-    EventBus.off('modal-resumed', this.onModalResumed);
+    EventBus.off('leg-shut-modal-confirmed', this.onLegShutModalConfirmed);
+    EventBus.off('leg-shut-modal-resumed', this.onLegShutModalResumed);
+    EventBus.off('game-shut-modal-confirmed', this.onGameShutModalConfirmed);
+    EventBus.off('game-shut-modal-resumed', this.onGameShutModalResumed);
   },
 
   mounted() {
-    //EventBus.emit('show-leg-shut-modal', this.player1.currentScores);
-
-    // Initialize modal when component is mounted
-    //const myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
-    //onMounted(() => myModal.show());
-
     this.gameId = this.getGameIdFromUrl();
+    //EventBus.emit('show-game-shut-modal');
+    //EventBus.emit('show-leg-shut-modal', this.player1.currentScores);
 
     if (this.gameId) {
       this.getGameData();
@@ -408,11 +422,14 @@ export default {
     processPlayerCheckout(player){
       if (this.game.matchMode === "FirstToSets") {
         console.log("Leg shut");
+        this.legsPlayed += 1;
         player.tempLegs += 1;
         this.legWinnerPlayerIds.push(player.id);
 
         if (this.game.matchModeLegsNeeded === player.tempLegs) {
           console.log("Set shut");
+          this.legsPerSetPlayed.push(this.legsPlayed);
+          this.legsPlayed = 0;
           this.resetLegs();
           player.sets += 1;
           this.setWinnerPlayerIds.push(player.id);
@@ -426,6 +443,7 @@ export default {
         }
       } else if (this.game.matchMode === "FirstToLegs") {
         console.log("Leg shut");
+        this.legsPlayed += 1;
         player.tempLegs += 1;
         this.legWinnerPlayerIds.push(player.id);
 
@@ -464,12 +482,12 @@ export default {
     },
 
     switchToThrow() {
-      if (this.playerStartsLegId === this.player1.id) {
-        this.playerStartsLegId = this.player2.id
+      if (this.startsLegPlayerId === this.player1.id) {
+        this.startsLegPlayerId = this.player2.id
         this.player1.toThrow = false;
         this.player2.toThrow = true;
-      } else if (this.playerStartsLegId === this.player2.id) {
-        this.playerStartsLegId = this.player1.id
+      } else if (this.startsLegPlayerId === this.player2.id) {
+        this.startsLegPlayerId = this.player1.id
         this.player1.toThrow = true;
         this.player2.toThrow = false;
       }
@@ -479,8 +497,9 @@ export default {
       console.log(" ");
       console.log("Game state: ", this.gameState);
       console.log("Game winner id: ", this.gameWinnerPlayerId);
-      console.log("Leg winner Ids: ", this.legWinnerPlayerIds);
-      console.log("Set winner Ids: ", this.setWinnerPlayerIds);
+      console.log("Leg winner Ids: ", JSON.stringify(this.legWinnerPlayerIds));
+      console.log("Set winner Ids: ", JSON.stringify(this.setWinnerPlayerIds));
+      console.log("Legs per set played: ", JSON.stringify(this.legsPerSetPlayed));
       console.log("#################### LOG TOTAL ####################");
 
       console.log("----------", this.player1.name, " / Player 1 ----------");
@@ -496,10 +515,7 @@ export default {
       console.log("Darts: " + JSON.stringify(this.player2.totalDartsThrown));
       console.log("Leg Averages: ", JSON.stringify(this.player2.legAverages));
       console.log("Game Average: ", JSON.stringify(this.player2.gameAverage));
-
-
-
-      },
+    },
 
 
 
@@ -527,7 +543,7 @@ export default {
             this.player1.id = this.game.player1Id;
             //this.player2.name = this.game.player2Id;
             this.player2.id = this.game.player2Id;
-            this.playerStartsLegId = this.game.startingPlayerId;
+            this.startsLegPlayerId = this.game.startingPlayerId;
             this.gameState = this.game.state;
 
             if (this.player1.id === this.game.startingPlayerId) {
@@ -572,6 +588,7 @@ export default {
       const postData = {
         gameId: this.game.id,
         gameState: this.gameState,
+        legsPerSetPlayed: this.legsPerSetPlayed,
 
         gameWinnerPlayerId: this.gameWinnerPlayerId,
         legWinnerPlayerIds: this.legWinnerPlayerIds,
@@ -593,7 +610,7 @@ export default {
       axios.post('/api/game/save', postData)
           .then(response => {
             console.log("Game saved successfully.");
-            window.location.reload();
+            EventBus.emit('show-game-shut-modal');
           })
           .catch(error => {
             console.error('Error saving the game:', error);
