@@ -1,7 +1,7 @@
 <template>
   <div id="player" class="card">
     <div class="card-header" :style="{
-      backgroundColor: toThrow ? '#2CAB73' : '',
+      backgroundColor: toThrow ? '#50BE96' : '',
       color: toThrow ? 'white' : 'black',
       height: '40px'
     }">
@@ -37,7 +37,7 @@
               lineHeight: '1',
               paddingTop: dynamicPadding,
               margin: '0px',
-              color: isBogey(playerScore) ? 'red' : 'black'}">
+              color: isBogey(playerScore) ? '#FAA094' : 'black'}">
               <strong>{{ displayScore }}</strong>
             </h1>
           </div>

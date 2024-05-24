@@ -222,18 +222,24 @@ export default {
       window.location.href = `/new-game`;
     };
 
+    this.onGameShutModalHome = () => {
+      window.location.href = `/darts`;
+    };
+
+
     EventBus.on('leg-shut-modal-confirmed', this.onLegShutModalConfirmed);
     EventBus.on('leg-shut-modal-resumed', this.onLegShutModalResumed);
     EventBus.on('game-shut-modal-confirmed', this.onGameShutModalConfirmed);
-    EventBus.on('game-shut-modal-resumed', this.onGameShutModalResumed);
+    EventBus.on('game-shut-modal-new-game', this.onGameShutModalResumed);
+    EventBus.on('game-shut-modal-home', this.onGameShutModalHome);
   },
 
   beforeDestroy() {
-    // Remove event listeners to avoid memory leaks
     EventBus.off('leg-shut-modal-confirmed', this.onLegShutModalConfirmed);
     EventBus.off('leg-shut-modal-resumed', this.onLegShutModalResumed);
     EventBus.off('game-shut-modal-confirmed', this.onGameShutModalConfirmed);
-    EventBus.off('game-shut-modal-resumed', this.onGameShutModalResumed);
+    EventBus.off('game-shut-modal-new-game', this.onGameShutModalResumed);
+    EventBus.off('game-shut-modal-home', this.onGameShutModalHome);
   },
 
   mounted() {
@@ -611,7 +617,7 @@ export default {
       axios.post('/api/game/save', postData)
           .then(response => {
             console.log("Game saved successfully.");
-            EventBus.emit('show-game-shut-modal');
+            EventBus.emit('show-game-shut-modal', this.player1.name);
           })
           .catch(error => {
             console.error('Error saving the game:', error);

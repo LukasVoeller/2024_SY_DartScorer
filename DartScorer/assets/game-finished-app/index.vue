@@ -1,6 +1,6 @@
 <template>
   <div v-if="game">
-    <h1 style="padding-top: 15px">ID: {{ game.id }} - Game shut!</h1>
+    <h1 style="padding-top: 15px">ID: {{ game.id }} - Game shot!</h1>
 
     <div class="card" >
       <div class="card-body">

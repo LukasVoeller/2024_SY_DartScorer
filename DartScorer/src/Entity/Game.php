@@ -13,11 +13,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 //#[ORM\Entity]
 #[ORM\Entity(repositoryClass: GameRepository::class)]
 #[ORM\InheritanceType("SINGLE_TABLE")]
-#[ORM\DiscriminatorColumn(name: "game_type", type: "string")]
+#[ORM\DiscriminatorColumn(name: "game_mode", type: "string")]
 #[ORM\DiscriminatorMap([
-    "x01" => "GameTypeX01",
-    "cricket" => "GameTypeCricket",
-    "shanghai" => "GameTypeShanghai",
+    "X01" => "GameTypeX01",
+    "Cricket" => "GameTypeCricket",
+    "Shanghai" => "GameTypeShanghai",
 ])]
 abstract class Game
 {
@@ -42,10 +42,6 @@ abstract class Game
     #[ORM\Column(nullable: true)]
     #[Groups(['game'])]
     private ?int $winnerPlayerId = null;
-
-    #[ORM\Column(length: 32, nullable: true)]
-    #[Groups(['game'])]
-    private ?string $mode = null;
 
     #[ORM\Column(length: 32, nullable: true)]
     #[Groups(['game'])]
@@ -149,18 +145,6 @@ abstract class Game
     public function setWinnerPlayerId(?int $winnerPlayerId): static
     {
         $this->winnerPlayerId = $winnerPlayerId;
-
-        return $this;
-    }
-
-    public function getMode(): ?string
-    {
-        return $this->mode;
-    }
-
-    public function setMode(?string $mode): static
-    {
-        $this->mode = $mode;
 
         return $this;
     }
@@ -271,5 +255,20 @@ abstract class Game
         }
 
         return $this;
+    }
+
+    #[Groups(['game'])]
+    public function getGameMode(): string
+    {
+        static $mode = null;
+        if ($mode === null) {
+            $mode = [
+                GameTypeX01::class => 'X01',
+                GameTypeCricket::class => 'Cricket',
+                GameTypeShanghai::class => 'Shanghai',
+            ];
+        }
+
+        return $mode[static::class] ?? 'unknown';
     }
 }

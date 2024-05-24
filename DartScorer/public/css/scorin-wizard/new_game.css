@@ -4,18 +4,28 @@
     padding-bottom: 10px;
 }
 
+.filter-option-inner-inner {
+    color: white;
+}
+
+.dropdown-menu li a:focus{
+    background-color: #50BE96 !important;
+    color: #fff !important;
+}
+
 .btn-check:checked + .btn-outline-success {
-    background-color: #2CAB73;
+    background-color: #50BE96;
     color: white;
 }
 
 .btn-outline-success {
     color: black;
-    border-color: #1B2130;
+    border-color: #50BE96;
 }
 
 .btn-success {
-    background-color: #2CAB73;
+    background-color: #50BE96;
+    color: white;
 }
 
 /*

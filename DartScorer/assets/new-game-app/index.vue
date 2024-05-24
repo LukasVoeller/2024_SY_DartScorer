@@ -7,7 +7,7 @@
         <div class="row">
           <div class="col">
             <select class="selectpicker" data-live-search="true" data-width="100%" data-style="btn-success" data-size="5" title="Player 1" v-model="selectedPlayer1" required>
-              <option v-for="player in players" :key="player.id" :value="player.id">{{ player.name }}</option>
+              <option :style="isSelectedPlayer1(player.id) ? 'background: #4FBE96; color: #fff;' : ''" v-for="player in players" :key="player.id" :value="player.id">{{ player.name }}</option>
             </select>
           </div>
         </div>
@@ -17,7 +17,7 @@
         <div class="row">
           <div class="col">
             <select class="selectpicker" data-live-search="true" data-width="100%" data-style="btn-success" data-size="5" title="Player 2" v-model="selectedPlayer2" required>
-              <option v-for="player in filteredPlayers" :key="player.id" :value="player.id">{{ player.name }}</option>
+              <option :style="isSelectedPlayer2(player.id) ? 'background: #4FBE96; color: #fff;' : ''" v-for="player in filteredPlayers" :key="player.id" :value="player.id">{{ player.name }}</option>
             </select>
           </div>
         </div>
@@ -267,6 +267,14 @@ export default {
   },
 
   methods: {
+    isSelectedPlayer1(playerId) {
+      return playerId === this.selectedPlayer1;
+    },
+
+    isSelectedPlayer2(playerId) {
+      return playerId === this.selectedPlayer2;
+    },
+
     fetchPlayers() {
       // Fetch players from the API
       axios.get('/api/player')

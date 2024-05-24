@@ -98,7 +98,6 @@ class GameController extends AbstractController
         $player1 = $this->entityManager->getRepository(Player::class)->find($data['player1Id']);
         $player2 = $this->entityManager->getRepository(Player::class)->find($data['player2Id']);
 
-        $game->setMode($data['gameMode']);
         $game->setStartScore($data['startScore']);
         $game->setFinishType($data['finishType']);
         $game->setMatchMode($data['matchMode']);

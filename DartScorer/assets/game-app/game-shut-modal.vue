@@ -1,18 +1,33 @@
 <template>
+  <div class="pyro" v-if="winner === 'Lukas'">
+    <link type="text/css" href="/css/scorin-wizard/firework.css" rel="stylesheet"/>
+    <div class="before"></div>
+    <div class="after"></div>
+  </div>
+
   <!-- Modal -->
-  <div class="modal fade" id="gameShutModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="gameShutModalLabel" aria-hidden="true">
+    <div class="modal fade" id="gameShutModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="gameShutModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
 
         <div class="modal-header">
           <div class="modal-title-wrapper">
-            <h1 style="color: black" class="modal-title fs-5">Game shot and the match!</h1>
+            <h1 style="color: black" class="modal-title fs-5">Game shot and the match! {{ winner }}</h1>
           </div>
         </div>
 
-        <div class="modal-footer">
-          <button type="button" style="width: 150px;" class="btn btn-secondary" data-bs-dismiss="modal" @click="resumeModal">New Game</button>
-          <button type="button" style="width: 150px;" class="btn btn-success" data-bs-dismiss="modal" @click="confirmModal">Details</button>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col">
+              <button type="button" style="width: 100%;" class="btn btn-secondary" data-bs-dismiss="modal" @click="homeModal">Home</button>
+            </div>
+            <div class="col">
+              <button type="button" style="width: 100%;" class="btn btn-secondary" data-bs-dismiss="modal" @click="newGameModal">Rematch</button>
+            </div>
+            <div class="col">
+              <button type="button" style="width: 100%;" class="btn btn-success" data-bs-dismiss="modal" @click="detailsModal">Details</button>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -26,9 +41,17 @@ import {EventBus} from '../event-bus';
 export default {
   name: 'GameShutModalComponent',
 
+  data() {
+    return {
+      winner: ""
+    };
+  },
+
   created() {
     EventBus.on('show-game-shut-modal', (payload) => {
       // Reset dartsForCheckout to default
+      console.log("--->", payload);
+      this.winner = payload;
       const modal = new bootstrap.Modal(document.getElementById('gameShutModal'));
       modal.show();
     });
@@ -36,15 +59,17 @@ export default {
   },
 
   methods: {
-    confirmModal() {
-      //const modal = new bootstrap.Modal(document.getElementById('gameShutModal'));
-      EventBus.emit('game-shut-modal-confirmed', this.dartsForCheckout, this.average);
+    homeModal() {
+      EventBus.emit('game-shut-modal-home');
     },
 
-    resumeModal() {
-      //const modal = new bootstrap.Modal(document.getElementById('gameShutModal'));
-      EventBus.emit('game-shut-modal-resumed');
-    }
+    newGameModal() {
+      EventBus.emit('game-shut-modal-new-game');
+    },
+
+    detailsModal() {
+      EventBus.emit('game-shut-modal-confirmed', this.dartsForCheckout, this.average);
+    },
   },
 }
 </script>
