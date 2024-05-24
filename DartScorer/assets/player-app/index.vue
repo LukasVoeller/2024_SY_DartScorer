@@ -208,7 +208,7 @@ export default {
       const confirmed = window.confirm('Are you sure you want to delete this player?');
 
       if (confirmed) {
-        axios.delete(`/api/player/${playerId}`)
+        axios.delete(`/api/player/id/${playerId}`)
             .then(() => {
               this.players = this.players.filter(player => player.id !== playerId);
               if (this.currentPage > this.totalPages) {

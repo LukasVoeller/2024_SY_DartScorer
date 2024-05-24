@@ -1,160 +1,20 @@
 {% extends 'base_darts.html.twig' %}
 
 {% block stylesheets %}
-    <link type="text/css" href="/css/scorin-wizard/darts.css" rel="stylesheet"/>
-    <link type="text/css" href="/css/scorin-wizard/global.css" rel="stylesheet"/>
+    <!-- <link type="text/css" href="/css/scorin-wizard/game-finished.css" rel="stylesheet"/> -->
+    <link type="text/css" href="/css/scorin-wizard/home.css" rel="stylesheet"/>
 {% endblock %}
 
-{% block title %}Scorin Wizard{% endblock %}
+{% block title %}Home{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('homeApp') }}
+{% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1 id="headline">Latest Games</h1>
-        <!--
-        <a href="/gif/bobby-george-nipple-trick-iIQuVv" title="Bobby George nipple trick"><img src="https://i.makeagif.com/media/2-03-2023/iIQuVv.gif" alt="Bobby George nipple trick"></a>
-        <br>
-        <br>
-        -->
+        <div id="home-app">
 
-        <table class="table accordion shadow" style="border-radius: 6px; overflow: hidden;">
-            <thead>
-                <tr class="table">
-                    <th scope="col">Date</th>
-                    <th scope="col">Result</th>
-                    <th scope="col">Winner</th>
-                    <th scope="col">Looser</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr data-bs-toggle="collapse" data-bs-target="#r1">
-                    <td>26.03.24</td>
-                    <td>3:2</td>
-                    <td>Florian</td>
-                    <td>Lukas</td>
-                </tr>
-
-                <tr class="collapse accordion-collapse" id="r1" data-bs-parent=".table">
-                    <td colspan="5" style="padding: 0px;">
-                        <div class="container" style="padding-top: 10px">
-                            <p style="margin: 0px">[ID: 1] 501 Double Out</p>
-                            <p style="margin: 0px">First to Legs, Legs: 3 </p>
-                        </div>
-
-
-                        <table class="table table-striped" style="margin: 0px;">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Result</th>
-                                    <th scope="col">Winner</th>
-                                    <th scope="col">Looser</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr>
-                                    <td>1:0</td>
-                                    <td>36,5</td>
-                                    <td>42,6</td>
-                                </tr>
-                                <tr>
-                                    <td>1:1</td>
-                                    <td>46,3</td>
-                                    <td>32,6</td>
-                                </tr>
-                                <tr>
-                                    <td>2:1</td>
-                                    <td>35,2</td>
-                                    <td>50,2</td>
-                                </tr>
-                                <tr>
-                                    <td>2:2</td>
-                                    <td>46,2</td>
-                                    <td>41,2</td>
-                                </tr>
-                                <tr>
-                                    <td>3:2</td>
-                                    <td>39,5</td>
-                                    <td>38,1</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-
-                <tr data-bs-toggle="collapse" data-bs-target="#r2">
-                    <td>24.03.24</td>
-                    <td>3:0</td>
-                    <td>Florian</td>
-                    <td>Lukas</td>
-                </tr>
-                <tr class="collapse accordion-collapse" id="r2" data-bs-parent=".table">
-                    <td colspan="5">Lorem ipsum</td>
-                </tr>
-
-                <tr data-bs-toggle="collapse" data-bs-target="#r3">
-                    <td>24.03.24</td>
-                    <td>3:1</td>
-                    <td>Lukas</td>
-                    <td>Florian</td>
-                </tr>
-                <tr class="collapse accordion-collapse" id="r3" data-bs-parent=".table">
-                    <td colspan="5">Lorem ipsum</td>
-                </tr>
-            </tbody>
-        </table>
-
-
-
-        <div class="card shadow" style="margin-top: 20px">
-            <div class="card-body">
-
-                <div class="row">
-                    <div class="col">
-                        <div class="live-circle"></div>
-                        <h5 class="card-title" style="padding-left: 30px">Livegame</h5>
-                    </div>
-                    <div class="col text-end">
-                        <a id="watch-live-btn" href="#" class="btn btn-warning">Watch Live</a>
-                    </div>
-                </div>
-
-                <br>
-
-                <!--
-                <div class="live-circle"></div>
-                <h5 class="card-title" style="padding-left: 30px">Livegame</h5>
-                -->
-                    <div class="row">
-                        <div class="col-5 col-sm-5 col-md-5">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Lukas</h5>
-                                    <h1 style="font-size: 25px">441</h1>
-                                    <h1 style="font-size: 15px">Last: 60</h1>
-                                    <h1 style="font-size: 15px">&empty; 52.3</h1>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-2 col-sm-2 col-md-2 d-flex align-items-center justify-content-center">
-                            <h1>VS</h1>
-                        </div>
-                        <div class="col-5 col-sm-5 col-md-5">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Florian</h5>
-                                    <h1 style="font-size: 25px">475</h1>
-                                    <h1 style="font-size: 15px">Last: 26</h1>
-                                    <h1 style="font-size: 15px">&empty; 45.6</h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                <!--
-                <a id="watch-live-btn" href="#" class="btn btn-warning" style="margin-top: 10px">Watch Live</a>
-                -->
-            </div>
         </div>
-
     </div>
 {% endblock %}

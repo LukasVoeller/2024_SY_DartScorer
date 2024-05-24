@@ -2,6 +2,10 @@ body {
     background-color: #1B2130;
 }
 
+#navbar-top {
+    background-color: #010314;
+}
+
 a {
     color: #8CF0FF;
     text-decoration: none;

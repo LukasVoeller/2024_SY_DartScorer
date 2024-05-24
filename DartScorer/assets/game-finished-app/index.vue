@@ -301,7 +301,7 @@ export default {
     },
 
     getGameData() {
-      axios.get('/api/game/' + this.gameId)
+      axios.get('/api/game/id/' + this.gameId)
           .then(response => {
             this.game = response.data;
             this.player1.id = this.game.player1Id;

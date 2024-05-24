@@ -28,7 +28,7 @@ class PlayerController extends AbstractController
         return $this->render('player/index.html.twig');
     }
 
-    #[Route('/api/player', name: 'api_get_players', methods: ['GET'])]
+    #[Route('/api/player', name: 'api_get_player', methods: ['GET'])]
     public function getPlayers(Request $request): JsonResponse
     {
         $players = $this->entityManager->getRepository(Player::class)->findAll();
@@ -76,8 +76,8 @@ class PlayerController extends AbstractController
         return new JsonResponse($data, Response::HTTP_CREATED, [], true);
     }
 
-    #[Route('/api/player/{id}', name: 'api_delete_player', methods: ['DELETE'])]
-    public function deletePlayer(int $id): JsonResponse
+    #[Route('/api/player/id/{id}', name: 'api_delete_player_by_id', methods: ['DELETE'])]
+    public function deletePlayerById(int $id): JsonResponse
     {
         $player = $this->entityManager->getRepository(Player::class)->find($id);
 

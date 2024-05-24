@@ -28,13 +28,6 @@
  # - Don't allow input of impossible numbers blow 180
  # - Reset score after resume on "How many darts needed?"
  */
-import PlayerCardComponent from './player-card.vue';
-import NumberpadComponent from './numberpad.vue';
-import LegShutModalComponent from './leg-shut-modal.vue';
-import GameShutModalComponent from './game-shut-modal.vue';
-import Caller from './caller.vue';
-import axios from 'axios';
-import { EventBus } from '../event-bus';
 
 axios.interceptors.request.use(config => {
   const token = localStorage.getItem('jwt_token');  // Retrieve JWT token from localStorage
@@ -45,6 +38,14 @@ axios.interceptors.request.use(config => {
 }, error => {
   return Promise.reject(error);
 });
+
+import PlayerCardComponent from './player-card.vue';
+import NumberpadComponent from './numberpad.vue';
+import LegShutModalComponent from './leg-shut-modal.vue';
+import GameShutModalComponent from './game-shut-modal.vue';
+import Caller from './caller.vue';
+import axios from 'axios';
+import { EventBus } from '../event-bus';
 
 export default {
   name: 'GameComponent',
@@ -530,7 +531,7 @@ export default {
     },
 
     getGameData() {
-      axios.get('/api/game/' + this.gameId)
+      axios.get('/api/game/id/' + this.gameId)
           .then(response => {
             this.game = response.data;
             this.player1.startScore = this.game.startScore;

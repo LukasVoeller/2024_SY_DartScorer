@@ -4,15 +4,18 @@
     padding-bottom: 10px;
 }
 
-#custom-btn {
-    background: #75E7A2;
-    border: 0;
-    color: black;
+.btn-check:checked + .btn-outline-success {
+    background-color: #2CAB73;
+    color: white;
 }
 
-#custom-btn:hover {
-    background: #2CAB73;
-    color: white;
+.btn-outline-success {
+    color: black;
+    border-color: #1B2130;
+}
+
+.btn-success {
+    background-color: #2CAB73;
 }
 
 /*

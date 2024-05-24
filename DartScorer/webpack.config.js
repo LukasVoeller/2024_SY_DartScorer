@@ -28,6 +28,7 @@ Encore
     .addEntry('playerApp', './assets/player-app.js')
     .addEntry('userApp', './assets/user-app.js')
     .addEntry('loginApp', './assets/login-app.js')
+    .addEntry('homeApp', './assets/home-app.js')
 
     // Enable vue plugins
     .addPlugin(new webpack.DefinePlugin({

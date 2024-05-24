@@ -52,13 +52,35 @@ class GameController extends AbstractController
         ]);
     }
 
+    #[Route('/api/game', name: 'api_get_game', methods: ['GET'])]
+    public function getGames(Request $request): JsonResponse
+    {
+        $games = $this->entityManager->getRepository(Game::class)->findAll();
+        $serializedGames = $this->serializer->serialize($games, 'json', ['groups' => ['game', 'set', 'leg', 'score']]);
+        return new JsonResponse($serializedGames, Response::HTTP_OK, [], true);
+    }
+
+    #[Route('/api/game/latest-five', name: 'api_get_game_latest_five', methods: ['GET'])]
+    public function getGamesLatestFive(Request $request): JsonResponse
+    {
+        $games = $this->entityManager->getRepository(Game::class)->findLatestFiveGames();
+        $serializedGames = $this->serializer->serialize($games, 'json', ['groups' => ['game', 'set', 'leg', 'score']]);
+        return new JsonResponse($serializedGames, Response::HTTP_OK, [], true);
+    }
+
+    #[Route('/api/game/id/{id}', name: 'api_get_game_by_id', methods: ['GET'])]
+    public function getGameById(int $id): JsonResponse
+    {
+        $game = $this->entityManager->getRepository(Game::class)->find($id);
+        $serializedGame = $this->serializer->serialize($game, 'json', ['groups' => ['game', 'set', 'leg', 'score']]);
+        return new JsonResponse($serializedGame, Response::HTTP_OK, [], true);
+    }
+
     #[Route('/api/game/create', name: 'api_create_game', methods: ['POST'])]
     public function createGame(Request $request): Response
     {
         $data = json_decode($request->getContent(), true);
-
         $gameId = $this->createNewGameX01($data);
-
         return $this->json(['gameId' => $gameId]);
     }
 
@@ -66,20 +88,8 @@ class GameController extends AbstractController
     public function saveGame(Request $request): Response
     {
         $data = json_decode($request->getContent(), true);
-
         $success = $this->saveGameX01($data);
-
         return $this->json(['success' => $success]);
-    }
-
-    #[Route('/api/game/{id}', name: 'api_get_game', methods: ['GET'])]
-    public function getGame(int $id): JsonResponse
-    {
-        $game = $this->entityManager->getRepository(Game::class)->find($id);
-
-        $serializedGame = $this->serializer->serialize($game, 'json', ['groups' => ['game', 'set', 'leg', 'score']]);
-
-        return new JsonResponse($serializedGame, 200, [], true);
     }
 
     private function createNewGameX01($data): int
@@ -88,6 +98,7 @@ class GameController extends AbstractController
         $player1 = $this->entityManager->getRepository(Player::class)->find($data['player1Id']);
         $player2 = $this->entityManager->getRepository(Player::class)->find($data['player2Id']);
 
+        $game->setMode($data['gameMode']);
         $game->setStartScore($data['startScore']);
         $game->setFinishType($data['finishType']);
         $game->setMatchMode($data['matchMode']);

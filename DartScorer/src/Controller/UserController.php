@@ -40,7 +40,7 @@ class UserController extends AbstractController
         return new JsonResponse($data, Response::HTTP_OK, [], true);
     }
 
-    #[Route('/api/user/{id}', name: 'api_get_user', methods: ['GET'])]
+    #[Route('/api/user/id/{id}', name: 'api_get_user_by_id', methods: ['GET'])]
     public function getUserById(int $id): JsonResponse
     {
         $user = $this->entityManager->getRepository(User::class)->find($id);
@@ -84,8 +84,8 @@ class UserController extends AbstractController
         return new JsonResponse($data, Response::HTTP_CREATED, [], true);
     }
 
-    #[Route('/api/user/{id}', name: 'api_delete_user', methods: ['DELETE'])]
-    public function deleteUser(int $id): JsonResponse
+    #[Route('/api/user/id/{id}', name: 'api_delete_user_by_id', methods: ['DELETE'])]
+    public function deleteUserById(int $id): JsonResponse
     {
         $user = $this->entityManager->getRepository(User::class)->find($id);
 

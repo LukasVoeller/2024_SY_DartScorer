@@ -2,6 +2,10 @@ body {
     padding-top: 56px;
 }
 
+#navbar-top {
+    background-color: #010314;
+}
+
 /* base.css */
 /* Offcanvas Navbar */
 #nav-profile .profile img {

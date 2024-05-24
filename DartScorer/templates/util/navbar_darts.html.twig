@@ -1,4 +1,4 @@
-<nav id="navbar" class="nav-menu navbar">
+<nav id="navbar" class="nav-menu navbar" style="padding-top: 0px">
     <ul>
         {% if 'ROLE_ADMIN' in app.user.roles %}
             <li><a href="{{ path('darts') }}" class="nav-link {% if app.request.attributes.get('_route') == 'darts' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>

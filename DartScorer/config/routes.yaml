@@ -42,13 +42,6 @@ login:
 logout:
   path: '/logout'
 
-# TODO: Remove
-match:
-  path: '/match'
-  controller: 'App\Controller\MatchController::index'
-
-
-
 
 
 ######################## API Routes #######################
@@ -58,7 +51,7 @@ api_login_check:
 
 ############ Player
 
-api_get_players:
+api_get_player:
   path: '/api/player'
   controller: 'App\Controller\PlayerController::getPlayers'
   methods: ['GET']
@@ -78,20 +71,22 @@ api_post_player:
   controller: 'App\Controller\PlayerController::postPlayer'
   methods: ['POST']
 
-api_delete_player:
-  path: '/api/player/{id}'
-  controller: 'App\Controller\PlayerController::deletePlayer'
+api_delete_player_by_id:
+  path: '/api/player/id/{id}'
+  controller: 'App\Controller\PlayerController::deletePlayerById'
   methods: ['DELETE']
+  requirements:
+    id: '\d+'
 
 ############ User
 
-api_get_users:
+api_get_user:
   path: '/api/user'
   controller: 'App\Controller\UserController::getUsers'
   methods: ['GET']
 
-api_get_user:
-  path: '/api/user/{id}'
+api_get_user_by_id:
+  path: '/api/user/id/{id}'
   controller: 'App\Controller\UserController::getUserById'
   methods: ['GET']
 
@@ -100,19 +95,31 @@ api_post_user:
   controller: 'App\Controller\UserController::postUser'
   methods: ['POST']
 
-api_delete_user:
-  path: '/api/user/{id}'
-  controller: 'App\Controller\UserController::deleteUser'
+api_delete_user_by_id:
+  path: '/api/user/id/{id}'
+  controller: 'App\Controller\UserController::deleteUserById'
   methods: ['DELETE']
+  requirements:
+    id: '\d+'
 
 ############ Game
 
 api_get_game:
-  path: '/api/game/{id}'
-  controller: 'App\Controller\GameController::getGame'
+  path: '/api/game'
+  controller: 'App\Controller\GameController::getGames'
+  methods: ['GET']
+
+api_get_game_latest_five:
+  path: '/api/game/latest-five'
+  controller: 'App\Controller\GameController::getGamesLatestFive'
+  methods: [ 'GET' ]
+
+api_get_game_by_id:
+  path: '/api/game/id/{id}'
+  controller: 'App\Controller\GameController::getGameById'
   methods: ['GET']
   requirements:
-    id: '\d+' # Ensure that the id parameter is a digit
+    id: '\d+'
 
 api_create_game:
   path: '/api/game/create'

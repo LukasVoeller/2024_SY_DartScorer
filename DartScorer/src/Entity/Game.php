@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\GameRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -9,7 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 //#[ORM\MappedSuperclass]
-#[ORM\Entity]
+//#[ORM\Entity]
+#[ORM\Entity(repositoryClass: GameRepository::class)]
 #[ORM\InheritanceType("SINGLE_TABLE")]
 #[ORM\DiscriminatorColumn(name: "game_type", type: "string")]
 #[ORM\DiscriminatorMap([
@@ -40,6 +42,10 @@ abstract class Game
     #[ORM\Column(nullable: true)]
     #[Groups(['game'])]
     private ?int $winnerPlayerId = null;
+
+    #[ORM\Column(length: 32, nullable: true)]
+    #[Groups(['game'])]
+    private ?string $mode = null;
 
     #[ORM\Column(length: 32, nullable: true)]
     #[Groups(['game'])]
@@ -143,6 +149,18 @@ abstract class Game
     public function setWinnerPlayerId(?int $winnerPlayerId): static
     {
         $this->winnerPlayerId = $winnerPlayerId;
+
+        return $this;
+    }
+
+    public function getMode(): ?string
+    {
+        return $this->mode;
+    }
+
+    public function setMode(?string $mode): static
+    {
+        $this->mode = $mode;
 
         return $this;
     }

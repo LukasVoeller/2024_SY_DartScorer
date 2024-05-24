@@ -4,3 +4,4 @@
 .DS_Store
 /vendor/
 /DartScorer/public/homepage/assets/img/
+/node_modules/
