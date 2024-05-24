@@ -37,7 +37,7 @@
               lineHeight: '1',
               paddingTop: dynamicPadding,
               margin: '0px',
-              color: isBogey(playerScore) ? '#FAA094' : 'black'}">
+              color: isBogey(playerScore) ? '#FF5E5E' : 'black'}">
               <strong>{{ displayScore }}</strong>
             </h1>
           </div>

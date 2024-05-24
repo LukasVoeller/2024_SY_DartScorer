@@ -30,7 +30,7 @@
             {{ getPlayerName(game.player2Id) }}
           </td>
           <td>
-            <i v-if="game.state === 'Live'" style="color: #FAA094" class="bi bi-record-circle"></i>
+            <i v-if="game.state === 'Live'" style="color: #FF5E5E" class="bi bi-record-circle"></i>
             <i v-else-if="game.state === 'Finished'" style="color: #50BE96" class="bi bi-check-circle"></i>
           </td>
         </tr>
