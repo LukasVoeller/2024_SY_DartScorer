@@ -1,5 +1,5 @@
 <template>
-  <div class="pyro" v-if="winner === 'Lukas'">
+  <div class="pyro" v-if="winner === 1">
     <link type="text/css" href="/css/scorin-wizard/firework.css" rel="stylesheet"/>
     <div class="before"></div>
     <div class="after"></div>
@@ -12,7 +12,7 @@
 
         <div class="modal-header">
           <div class="modal-title-wrapper">
-            <h1 style="color: black" class="modal-title fs-5">Game shot and the match! {{ winner }}</h1>
+            <h1 style="color: black" class="modal-title fs-5">Game shot and the match!</h1>
           </div>
         </div>
 

@@ -14,7 +14,7 @@
 
     <div class="row" style="padding-top: 20px">
       <div class="col-6" style="padding-right: 3px">
-        <div class="card" :style="game.winnerPlayerId === player1.id ? {backgroundColor: '#2CAB73'} : {}">
+        <div class="card" :style="game.winnerPlayerId === player1.id ? {backgroundColor: '#50BE96'} : {}">
           <div class="card-body">
             <h5 :style="game.winnerPlayerId === player1.id ? {color: 'white'} : {color: 'black'}">{{ player1.name }}</h5>
           </div>
@@ -22,7 +22,7 @@
       </div>
 
       <div class="col-6" style="padding-left: 3px">
-        <div class="card" :style="game.winnerPlayerId === player2.id ? {backgroundColor: '#2CAB73'} : {}">
+        <div class="card" :style="game.winnerPlayerId === player2.id ? {backgroundColor: '#50BE96'} : {}">
           <div class="card-body">
             <h5 :style="game.winnerPlayerId === player2.id ? {color: 'white'} : {color: 'black'}">{{ player2.name }}</h5>
           </div>
@@ -45,7 +45,7 @@
                     :href="'#player1LegsCollapse' + '_' + legIndex"
                     aria-expanded="false"
                     :aria-controls="'player1LegsCollapse' + '_' + legIndex"
-                    :style="leg.winnerPlayerId === player1.id ? {backgroundColor: '#2CAB73'} : {backgroundColor: 'white', color: 'black'}"
+                    :style="leg.winnerPlayerId === player1.id ? {backgroundColor: '#50BE96'} : {backgroundColor: 'white', color: 'black'}"
                     style="width: 100%; border: none;"
                     @click="leg.player1IsExpanded = !leg.player1IsExpanded"
             >
@@ -70,7 +70,7 @@
             </button>
 
             <div class="collapse" :id="'player1LegsCollapse' + '_' + legIndex">
-              <div class="card" :style="leg.winnerPlayerId === player1.id ? {backgroundColor: '#2CAB73'} : {}">
+              <div class="card" :style="leg.winnerPlayerId === player1.id ? {backgroundColor: '#50BE96'} : {}">
                 <div class="card-body" style="padding: 10px">
                   <div v-for="(score, scoreIndex) in leg.player1Scores" :key="score.id"
                        :style="scoreIndex === 0 && leg.winnerPlayerId === player1.id ? {color: 'white', fontWeight: 'bold'} : {}">
@@ -90,7 +90,7 @@
                     :href="'#player2LegsCollapse' + '_' + legIndex"
                     aria-expanded="false"
                     :aria-controls="'player2LegsCollapse' + '_' + legIndex"
-                    :style="leg.winnerPlayerId === player2.id ? {backgroundColor: '#2CAB73'} : {backgroundColor: 'white', color: 'black'}"
+                    :style="leg.winnerPlayerId === player2.id ? {backgroundColor: '#50BE96'} : {backgroundColor: 'white', color: 'black'}"
                     style="width: 100%; border: none;"
                     @click="leg.player2IsExpanded = !leg.player2IsExpanded"
             >
@@ -115,7 +115,7 @@
             </button>
 
             <div class="collapse" :id="'player2LegsCollapse' + '_' + legIndex">
-              <div class="card" :style="leg.winnerPlayerId === player2.id ? {backgroundColor: '#2CAB73'} : {}">
+              <div class="card" :style="leg.winnerPlayerId === player2.id ? {backgroundColor: '#50BE96'} : {}">
                 <div class="card-body" style="padding: 10px">
                   <div v-for="(score, scoreIndex) in leg.player2Scores" :key="score.id"
                        :style="scoreIndex === 0 && leg.winnerPlayerId === player2.id ? {color: 'white', fontWeight: 'bold'} : {}">
@@ -153,7 +153,7 @@
                         :href="'#player1SetsCollapse' + '_' + setIndex + '_' + legIndex"
                         aria-expanded="false"
                         :aria-controls="'player1SetsCollapse' + '_' + setIndex + '_' + legIndex"
-                        :style="leg.winnerPlayerId === player1.id ? {backgroundColor: '#2CAB73'} : {backgroundColor: 'white', color: 'black'}"
+                        :style="leg.winnerPlayerId === player1.id ? {backgroundColor: '#50BE96'} : {backgroundColor: 'white', color: 'black'}"
                         style="width: 100%; border: none;"
                         @click="leg.player1IsExpanded = !leg.player1IsExpanded"
                 >
@@ -178,7 +178,7 @@
                 </button>
 
                 <div class="collapse" :id="'player1SetsCollapse' + '_' + setIndex + '_' + legIndex">
-                  <div class="card" :style="leg.winnerPlayerId === player1.id ? {backgroundColor: '#2CAB73'} : {}">
+                  <div class="card" :style="leg.winnerPlayerId === player1.id ? {backgroundColor: '#50BE96'} : {}">
                     <div class="card-body" style="padding: 10px">
                       <div v-for="(score, index) in leg.player1Scores" :key="score.id"
                            :style="index === 0 && leg.winnerPlayerId === player1.id ? {color: 'white', fontWeight: 'bold'} : {}">
@@ -198,7 +198,7 @@
                         :href="'#player2SetsCollapse' + '_' + setIndex + '_' + legIndex"
                         aria-expanded="false"
                         :aria-controls="'player2SetsCollapse' + '_' + setIndex + '_' + legIndex"
-                        :style="leg.winnerPlayerId === player2.id ? {backgroundColor: '#2CAB73'} : {backgroundColor: 'white', color: 'black'}"
+                        :style="leg.winnerPlayerId === player2.id ? {backgroundColor: '#50BE96'} : {backgroundColor: 'white', color: 'black'}"
                         style="width: 100%; border: none;"
                         @click="leg.player2IsExpanded = !leg.player2IsExpanded"
                 >
@@ -223,7 +223,7 @@
                 </button>
 
                 <div class="collapse" :id="'player2SetsCollapse' + '_' + setIndex + '_' + legIndex">
-                  <div class="card" :style="leg.winnerPlayerId === player2.id ? {backgroundColor: '#2CAB73'} : {}">
+                  <div class="card" :style="leg.winnerPlayerId === player2.id ? {backgroundColor: '#50BE96'} : {}">
                     <div class="card-body" style="padding: 10px">
                       <div v-for="(score, index) in leg.player2Scores" :key="score.id"
                            :style="index === 0 && leg.winnerPlayerId === player2.id ? {color: 'white', fontWeight: 'bold'} : {}">

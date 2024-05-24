@@ -6,47 +6,47 @@
     <VueSpinnerDots size="40" color="black" />
   </div>
 
-  <div class="card shadow">
-    <h1 style="color: black; align-self: center; padding-top: 15px">Latest 5</h1>
+  <div class="card shadow" style="background-color: #343E4C">
+    <h1 style="color: black; align-self: center; padding-top: 15px; color: white">Latest 5</h1>
     <table v-if="games.length > 0" class="table table-hover">
       <thead class="table">
       <tr>
-        <th>Date</th>
-        <th>Mode</th>
-        <th>Player 1</th>
-        <th>Player 2</th>
-        <th></th>
+        <th style="background-color: #343E4C; color:white;">Date</th>
+        <th style="background-color: #343E4C; color:white;">Mode</th>
+        <th style="background-color: #343E4C; color:white;">Player 1</th>
+        <th style="background-color: #343E4C; color:white;">Player 2</th>
+        <th style="background-color: #343E4C; color:white;"></th>
       </tr>
       </thead>
       <tbody>
       <template v-for="game in games">
         <tr data-bs-toggle="collapse" :data-bs-target="'#collapse' + game.id">
-          <td>{{ formatDate(game.date) }}</td>
-          <td>{{ game.gameMode }}</td>
-          <td :style="{ color: game.winnerPlayerId === game.player1Id ? '#50BE96' : 'black' }">
+          <td style="background-color: #343E4C; color:white;">{{ formatDate(game.date) }}</td>
+          <td style="background-color: #343E4C; color:white;">{{ game.gameMode }}</td>
+          <td :style="{ color: game.winnerPlayerId === game.player1Id ? '#50BE96' : 'white' }" style="background-color: #343E4C">
             {{ getPlayerName(game.player1Id) }}
           </td>
-          <td :style="{ color: game.winnerPlayerId === game.player2Id ? '#50BE96' : 'black' }">
+          <td :style="{ color: game.winnerPlayerId === game.player2Id ? '#50BE96' : 'white' }" style="background-color: #343E4C">
             {{ getPlayerName(game.player2Id) }}
           </td>
-          <td>
+          <td style="background-color: #343E4C">
             <i v-if="game.state === 'Live'" style="color: #FF5E5E" class="bi bi-record-circle"></i>
             <i v-else-if="game.state === 'Finished'" style="color: #50BE96" class="bi bi-check-circle"></i>
           </td>
         </tr>
 
         <tr>
-          <td colspan="5" style="padding: 0px;">
+          <td colspan="5" style="padding: 0px; background-color: #343E4C">
             <div :id="'collapse' + game.id" class="collapse">
 
-              <div style="padding: 10px">
+              <div style="padding: 10px;">
                 <div class="row">
-                  <div class="col-8">
-                    <p>ID: {{ game.id }}</p>
-                    <p>Start score: {{ game.startScore }}</p>
-                    <p>Finish type: {{ game.finishType }}</p>
-                    <p>Match mode: {{ game.matchMode }}</p>
-                    <p>Date: {{ new Date(game.date).toLocaleString() }}</p>
+                  <div class="col-8" style="color: white;">
+                    <p style="margin-bottom: 5px">ID: {{ game.id }}</p>
+                    <p style="margin-bottom: 5px">Start score: {{ game.startScore }}</p>
+                    <p style="margin-bottom: 5px">Finish type: {{ game.finishType }}</p>
+                    <p style="margin-bottom: 5px">Match mode: {{ game.matchMode }}</p>
+                    <p style="margin-bottom: 5px">Date: {{ new Date(game.date).toLocaleString() }}</p>
 
                   </div>
                   <div class="col-4 d-flex flex-column align-items-end align-items-bottom">

@@ -2,7 +2,7 @@
   <div class="container p-0">
     <h1 id="headline">New Game</h1>
 
-    <div class="card shadow" style="padding: 20px">
+    <div class="card shadow" style="padding: 20px; background-color: #343E4C">
       <form @submit.prevent="submitForm">
         <div class="row">
           <div class="col">
@@ -132,7 +132,7 @@
         <div class="row">
           <div class="col" v-if="selectedMatchMode === 'FirstToSets'">
             <br>
-            <p>Sets:</p>
+            <p style="color: white">Sets:</p>
             <div class="btn-group" role="group" style="width: 100%">
               <input type="radio" class="btn-check" name="matchModeSets" id="btnradio16" autocomplete="off"
                      v-model="selectedMatchModeSets" value="2" checked required>
@@ -150,7 +150,7 @@
 
           <div class="col" v-if="selectedMatchMode === 'FirstToSets'">
             <br>
-            <p>Legs:</p>
+            <p style="color: white;">Legs:</p>
             <div class="btn-group" role="group" style="width: 100%">
               <input type="radio" class="btn-check" name="matchModeLegs" id="btnradio19" autocomplete="off"
                      v-model="selectedMatchModeSetsLegs" value="2" checked required>
@@ -170,7 +170,7 @@
         <div class="row">
           <div class="col" v-if="selectedMatchMode === 'FirstToLegs'">
             <br>
-            <p>Legs:</p>
+            <p style="color: white">Legs:</p>
             <div class="btn-group" role="group" style="width: 100%">
               <input type="radio" class="btn-check" name="matchModeLegs" id="btnradio19" autocomplete="off"
                      v-model="selectedMatchModeLegs" value="1" checked required>
@@ -191,7 +191,7 @@
 
         <div class="row">
           <div class="col-6">
-            <select class="form-select" aria-label="Default select example" v-model="selectedPlayerStarting"
+            <select class="form-select" aria-label="Default select example" v-model="selectedPlayerStarting" style="background-color: white; border-color: #50BE96"
                     :disabled="!selectedPlayer2" required>
               <option disabled value="">Throw first</option>
               <option v-for="player in filteredStartingPlayers" :key="player.id" :value="player.id">{{

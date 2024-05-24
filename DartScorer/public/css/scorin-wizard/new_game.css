@@ -19,6 +19,16 @@
 }
 
 .btn-outline-success {
+    background-color: white;
+    color: black;
+}
+
+.btn-outline-success:hover {
+    background-color: white !important;
+    color: black !important;
+}
+
+.btn-outline-success {
     color: black;
     border-color: #50BE96;
 }

@@ -617,7 +617,7 @@ export default {
       axios.post('/api/game/save', postData)
           .then(response => {
             console.log("Game saved successfully.");
-            EventBus.emit('show-game-shut-modal', this.player1.name);
+            EventBus.emit('show-game-shut-modal', this.gameWinnerPlayerId);
           })
           .catch(error => {
             console.error('Error saving the game:', error);
