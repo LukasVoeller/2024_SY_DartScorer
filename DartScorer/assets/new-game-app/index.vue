@@ -4,6 +4,25 @@
 
     <div class="card shadow" style="padding: 20px">
       <form @submit.prevent="submitForm">
+        <div class="row">
+          <div class="col">
+            <select class="selectpicker" data-live-search="true" data-width="100%" data-style="btn-success" data-size="5" title="Player 1" v-model="selectedPlayer1" required>
+              <option v-for="player in players" :key="player.id" :value="player.id">{{ player.name }}</option>
+            </select>
+          </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+          <div class="col">
+            <select class="selectpicker" data-live-search="true" data-width="100%" data-style="btn-success" data-size="5" title="Player 2" v-model="selectedPlayer2" required>
+              <option v-for="player in filteredPlayers" :key="player.id" :value="player.id">{{ player.name }}</option>
+            </select>
+          </div>
+        </div>
+
+        <br>
 
         <!-- Game Mode -->
         <div class="row">
@@ -165,26 +184,6 @@
                      v-model="selectedMatchModeLegs" value="3" required>
               <label class="btn btn-outline-success" for="btnradio21">3</label>
             </div>
-          </div>
-        </div>
-
-        <br>
-
-        <div class="row">
-          <div class="col">
-            <select class="selectpicker" data-live-search="true" data-width="100%" data-style="btn-success" data-size="5" title="Player 1" v-model="selectedPlayer1" required>
-              <option v-for="player in players" :key="player.id" :value="player.id">{{ player.name }}</option>
-            </select>
-          </div>
-        </div>
-
-        <br>
-
-        <div class="row">
-          <div class="col">
-            <select class="selectpicker" data-live-search="true" data-width="100%" data-style="btn-success" data-size="5" title="Player 2" v-model="selectedPlayer2" required>
-              <option v-for="player in filteredPlayers" :key="player.id" :value="player.id">{{ player.name }}</option>
-            </select>
           </div>
         </div>
 
