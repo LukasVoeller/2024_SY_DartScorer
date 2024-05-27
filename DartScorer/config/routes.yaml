@@ -1,3 +1,11 @@
+app_mercure:
+  path: '/mercure'
+  controller: 'App\Controller\MercureController::index'
+
+publish_event:
+  path: '/publish'
+  controller: 'App\Controller\PublishController::publish'
+
 ############### Routes for displaying pages ###############
 
 home:

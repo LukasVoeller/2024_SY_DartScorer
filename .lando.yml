@@ -33,6 +33,21 @@ services:
       retry: 5
       delay: 5000
 
+  mercure:
+    #app_mount: false
+    type: compose
+    services:
+      image: dunglas/mercure
+      command: caddy run -c /etc/caddy/Caddyfile.dev
+      environment:
+        SERVER_NAME: ':80'
+        MERCURE_PUBLISHER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
+        MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
+      ports:
+        - 3000:80
+      #volumes:
+        #- ./.lando/Caddyfile.dev:/etc/caddy/Caddyfile.dev
+
 tooling:
   console:
     service: appserver
