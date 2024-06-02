@@ -1,5 +1,8 @@
 const Encore = require('@symfony/webpack-encore');
 const webpack = require('webpack');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -34,7 +37,8 @@ Encore
     .addPlugin(new webpack.DefinePlugin({
         __VUE_OPTIONS_API__: 'true',
         __VUE_PROD_DEVTOOLS__: 'false',
-        __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false'
+        __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false',
+        'process.env.MERCURE_PUBLIC_URL': JSON.stringify(process.env.MERCURE_PUBLIC_URL)
     }))
 
     // Add a rule for handling audio files (mp3, wav, etc.)

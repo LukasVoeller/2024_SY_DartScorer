@@ -59,6 +59,18 @@ abstract class Game
     #[Groups(['game'])]
     private ?int $matchModeLegsNeeded = null;
 
+    #[ORM\Column(nullable: true)]
+    #[Groups(['game'])]
+    private ?int $toThrowPlayerId = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['game'])]
+    private ?int $currentLegId = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['game'])]
+    private ?int $currentSetId = null;
+
     /**
      * @var Collection<int, GameSet>
      */
@@ -193,6 +205,42 @@ abstract class Game
     public function setMatchModeLegsNeeded(?int $matchModeLegsNeeded): static
     {
         $this->matchModeLegsNeeded = $matchModeLegsNeeded;
+
+        return $this;
+    }
+
+    public function getToThrowPlayerId(): ?int
+    {
+        return $this->toThrowPlayerId;
+    }
+
+    public function setToThrowPlayerId(?int $toThrowPlayerId): static
+    {
+        $this->toThrowPlayerId = $toThrowPlayerId;
+
+        return $this;
+    }
+
+    public function getCurrentLegId(): ?int
+    {
+        return $this->currentLegId;
+    }
+
+    public function setCurrentLegId(?int $currentLegId): static
+    {
+        $this->currentLegId = $currentLegId;
+
+        return $this;
+    }
+
+    public function getCurrentSetId(): ?int
+    {
+        return $this->currentSetId;
+    }
+
+    public function setCurrentSetId(?int $currentSetId): static
+    {
+        $this->currentSetId = $currentSetId;
 
         return $this;
     }
