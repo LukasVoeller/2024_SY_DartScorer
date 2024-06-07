@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240524183736 extends AbstractMigration
+final class Version20240607204412 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,7 +20,7 @@ final class Version20240524183736 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE game (id INT AUTO_INCREMENT NOT NULL, player1_id INT NOT NULL, player2_id INT NOT NULL, starting_player_id INT NOT NULL, winner_player_id INT DEFAULT NULL, state VARCHAR(32) DEFAULT NULL, match_mode VARCHAR(32) NOT NULL, match_mode_sets_needed INT DEFAULT NULL, match_mode_legs_needed INT DEFAULT NULL, date DATETIME NOT NULL, game_mode VARCHAR(255) NOT NULL, start_score INT DEFAULT NULL, finish_type VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE game (id INT AUTO_INCREMENT NOT NULL, player1_id INT NOT NULL, player2_id INT NOT NULL, starting_player_id INT NOT NULL, winner_player_id INT DEFAULT NULL, state VARCHAR(32) DEFAULT NULL, match_mode VARCHAR(32) NOT NULL, match_mode_sets_needed INT DEFAULT NULL, match_mode_legs_needed INT DEFAULT NULL, to_throw_player_id INT DEFAULT NULL, current_leg_id INT DEFAULT NULL, current_set_id INT DEFAULT NULL, date DATETIME NOT NULL, game_mode VARCHAR(255) NOT NULL, start_score INT DEFAULT NULL, player1_score INT DEFAULT NULL, player2_score INT DEFAULT NULL, finish_type VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE game_leg (id INT AUTO_INCREMENT NOT NULL, related_game_id INT DEFAULT NULL, related_set_id INT DEFAULT NULL, winner_player_id INT DEFAULT NULL, INDEX IDX_6E8A938ADB9613A0 (related_game_id), INDEX IDX_6E8A938ABC3775BE (related_set_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE game_score (id INT AUTO_INCREMENT NOT NULL, related_leg_id INT DEFAULT NULL, player_id INT NOT NULL, value INT NOT NULL, darts_thrown INT NOT NULL, dart1 INT DEFAULT NULL, dart2 INT DEFAULT NULL, dart3 INT DEFAULT NULL, INDEX IDX_AA4EDEC1B3D81 (related_leg_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE game_set (id INT AUTO_INCREMENT NOT NULL, related_game_id INT NOT NULL, winner_player_id INT DEFAULT NULL, match_mode_legs_needed INT NOT NULL, INDEX IDX_FD4E3619DB9613A0 (related_game_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
