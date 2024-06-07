@@ -3,7 +3,7 @@
     <div class="col p-1">
       <button id="btn-undo" type="button" class="btn btn-light custom-btn-score-row">
         <i class="bi bi-arrow-counterclockwise"></i>
-        Undo
+        {{ undoButtonText }}
       </button>
     </div>
     <div class="col p-1">
@@ -69,13 +69,15 @@
 <script>
 export default {
   name: 'NumberpadComponent',
-  emits: ['score-entered', 'score-cleared', 'score-confirmed', 'score-undo'], // Declare the custom events
+  emits: ['score-entered', 'score-cleared', 'score-confirmed', 'score-undo', 'score-left'],
   props: {
-    playerName: String,
+    //playerName: String,
     player1Score: Number,
     player2Score: Number,
     player1ToThrow: Boolean,
-    player2ToThrow: Boolean
+    player2ToThrow: Boolean,
+    player1LastScores: Array,
+    player2LastScores: Array
   },
 
   data() {
@@ -185,8 +187,18 @@ export default {
       if (this.player1ToThrow && this.scoreIsCheckable(this.player1Score) && this.currentInput < 1 ||
           this.player2ToThrow && this.scoreIsCheckable(this.player2Score) && this.currentInput < 1) {
         return "Check";
+      } else {
+        return "Left";
       }
-      return "Left";
+    },
+
+    undoButtonText() {
+      // Change the button text based on player1ToThrow and whether player1Score is bogey
+      if (this.player1LastScores.length === 0 && this.player2LastScores.length === 0) {
+        return "Throw";
+      } else {
+        return "Undo";
+      }
     },
 
     okButtonText() {
@@ -236,8 +248,8 @@ export default {
 
       this.currentInput = scoreInput.value;
 
-      console.log("CurrentInput: ", this.currentInput)
-      console.log("true: ", scoreInput.value);
+      //console.log("CurrentInput: ", this.currentInput)
+      //console.log("true: ", scoreInput.value);
     },
 
     scoreIsCheckable(score) {

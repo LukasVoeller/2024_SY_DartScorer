@@ -1,3 +1,11 @@
+app_mercure:
+  path: '/mercure'
+  controller: 'App\Controller\MercureController::index'
+
+publish_event:
+  path: '/publish'
+  controller: 'App\Controller\PublishController::publish'
+
 ############### Routes for displaying pages ###############
 
 home:
@@ -102,6 +110,23 @@ api_delete_user_by_id:
   requirements:
     id: '\d+'
 
+############ Score
+
+api_confirm_score:
+  path: '/api/score/confirm'
+  controller: 'App\Controller\ScoreController::confirmScore'
+  methods: ['POST']
+
+api_undo_score:
+  path: '/api/score/undo'
+  controller: 'App\Controller\ScoreController::undoScore'
+  methods: ['POST']
+
+api_last_scores:
+  path: '/api/score/last'
+  controller: 'App\Controller\ScoreController::lastScores'
+  methods: ['POST']
+
 ############ Game
 
 api_get_game:
@@ -131,4 +156,7 @@ api_save_game:
   controller: 'App\Controller\GameController::saveGame'
   methods: ['POST']
 
-
+api_to_throw_game:
+  path: '/api/game/to-throw'
+  controller: 'App\Controller\GameController::setToThrow'
+  methods: ['POST']

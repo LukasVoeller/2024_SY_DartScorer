@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\GameTypeX01;
@@ -92,13 +94,35 @@ class GameController extends AbstractController
         return $this->json(['success' => $success]);
     }
 
+    #[Route('/api/game/to-throw', name: 'api_to_throw_game', methods: ['POST'])]
+    public function setToThrow(Request $request, HubInterface $hub): Response
+    {
+        $data = json_decode($request->getContent(), true);
+        $game = $this->entityManager->getRepository(Game::class)->find($data['gameId']);
+        $game->setToThrowPlayerId($data['playerId']);
+        $this->entityManager->flush();
+
+        $updateUrl = 'https://vllr.lu/game/' . $data['gameId'];
+        $update = new Update(
+            $updateUrl,
+            json_encode([
+                'eventType' => 'throw',
+                'toThrowPlayerId' => $data['playerId'],
+            ])
+        );
+
+        $hub->publish($update);
+
+        return $this->json(['success' => true]);
+    }
+
     private function createNewGameX01($data): int
     {
         $game = new GameTypeX01();
-        $player1 = $this->entityManager->getRepository(Player::class)->find($data['player1Id']);
-        $player2 = $this->entityManager->getRepository(Player::class)->find($data['player2Id']);
 
         $game->setStartScore($data['startScore']);
+        $game->setPlayer1Score($data['startScore']);
+        $game->setPlayer2Score($data['startScore']);
         $game->setFinishType($data['finishType']);
         $game->setMatchMode($data['matchMode']);
         $game->setMatchModeSetsNeeded($data['matchModeSetsNeeded']);
@@ -106,9 +130,33 @@ class GameController extends AbstractController
         $game->setPlayer1Id($data['player1Id']);
         $game->setPlayer2Id($data['player2Id']);
         $game->setStartingPlayerId($data['playerStartingId']);
+        $game->setToThrowPlayerId($data['playerStartingId']);
         $game->setState("Live");
 
+        if ($game->getMatchMode() == "FirstToLegs") {
+            $leg = new GameLeg();
+            $leg->setRelatedGame($game);
+            $this->entityManager->persist($leg);
+        } elseif ($game->getMatchMode() == "FirstToSets") {
+            $set = new GameSet();
+            $set->setRelatedGame($game);
+            $set->setMatchModeLegsNeeded($game->getMatchModeLegsNeeded());
+            $leg = new GameLeg();
+            $leg->setRelatedSet($set);
+            $this->entityManager->persist($set);
+            $this->entityManager->persist($leg);
+        }
+
         $this->entityManager->persist($game);
+        $this->entityManager->flush();
+
+        if ($game->getMatchMode() == "FirstToLegs") {
+            $game->setCurrentLegId($leg->getId());
+        } elseif ($game->getMatchMode() == "FirstToSets") {
+            $game->setCurrentLegId($leg->getId());
+            $game->setCurrentSetId($set->getId());
+        }
+
         $this->entityManager->flush();
 
         return $game->getId();

@@ -21,6 +21,30 @@ class ScoreRepository extends ServiceEntityRepository
         parent::__construct($registry, GameScore::class);
     }
 
+    public function findLastScoresByPlayerIdAndLegId(int $playerId, int $legId)
+    {
+        return $this->createQueryBuilder('s')
+            ->where('s.playerId = :playerId')
+            ->andWhere('s.relatedLeg = :legId')
+            ->setParameter('playerId', $playerId)
+            ->setParameter('legId', $legId)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findLatestScoreByPlayerIdAndLegId(int $playerId, int $legId)
+    {
+        return $this->createQueryBuilder('s')
+            ->where('s.playerId = :playerId')
+            ->andWhere('s.relatedLeg = :legId')
+            ->setParameter('playerId', $playerId)
+            ->setParameter('legId', $legId)
+            ->orderBy('s.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     //    /**
     //     * @return Score[] Returns an array of Score objects
     //     */
