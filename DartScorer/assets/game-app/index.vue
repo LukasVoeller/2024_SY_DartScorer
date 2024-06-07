@@ -91,8 +91,7 @@ export default {
       startsLegPlayerId: null,
       toThrowPlayerId: null,
       eventSourceState: 0,
-      //eventSource: null,
-      eventSources: [],
+      eventSource: null,
 
       player1: {
         id: 0,
@@ -263,7 +262,7 @@ export default {
     EventBus.off('game-shut-modal-new-game', this.onGameShutModalResumed);
     EventBus.off('game-shut-modal-home', this.onGameShutModalHome);
 
-    this.eventSources.forEach(es => es.close());
+    this.eventSource.close();
   },
 
   mounted() {
@@ -272,10 +271,13 @@ export default {
     if (this.gameId) {
       this.apiGetGameData();
 
-      // TODO: I would highly recommend, IMHO, that you have one EventSource object per SSE-providing service, and then emit the messages using different types.
-      this.mercurePublishConfirm(this.gameId);
+      // CHECK TODO: Only use one EventSource
+      // CHECK TODO: Only call api when EventSource=1
+      // TODO: Display blocking modal if EventSource!=1
+      //this.mercurePublishConfirm(this.gameId);
       //this.mercurePublishUndo(this.gameId);
       //this.mercurePublishToThrow(this.gameId);
+      this.subscribeToGameEvents(this.gameId);
 
       console.log(this.eventSources);
     } else {
@@ -289,18 +291,42 @@ export default {
   },
 
   methods: {
+    subscribeToGameEvents(gameId) {
+      const mercureUrl = process.env.MERCURE_PUBLIC_URL;
+      const eventSource = new EventSource(`${mercureUrl}?topic=https://vllr.lu/game/${gameId}`);
+      this.eventSource = eventSource; // Ensure you handle closing this connection when not needed
+
+      eventSource.onopen = () => { this.eventSourceState = eventSource.readyState; };
+      eventSource.onerror = () => { this.eventSourceState = eventSource.readyState; };
+
+      eventSource.onmessage = event => {
+        const data = JSON.parse(event.data);
+        switch (data.eventType) {
+          case 'confirm':
+            console.log("PUBLISH RECEIVED - CONFIRM: ", data);
+            this.setPlayerScore(data.playerId, data.newTotalScore);
+            this.addPlayerLastScore(data.playerId, data.thrownScore);
+            this.switchToThrow();
+            break;
+          case 'undo':
+            console.log("PUBLISH RECEIVED - UNDO: ", data);
+            this.setPlayerScore(data.playerId, data.newTotalScore);
+            this.removePlayerLastScore(data.playerId);
+            this.switchToThrow();
+            break;
+          case 'throw':
+            console.log("PUBLISH RECEIVED - THROW: ", data);
+            this.switchToThrow();
+            break;
+        }
+      };
+    },
+
+    /*
     mercurePublishConfirm(gameId) {
       const mercureUrl = process.env.MERCURE_PUBLIC_URL;
       const eventSource = new EventSource(`${mercureUrl}?topic=https://vllr.lu/score/confirm/${gameId}`);
       this.eventSources.push(eventSource);
-
-      eventSource.onopen = () => {
-        this.eventSourceState = eventSource.readyState;
-      };
-
-      eventSource.onerror = () => {
-        this.eventSourceState = eventSource.readyState;
-      };
 
       eventSource.onmessage = event => {
         const data = JSON.parse(event.data);
@@ -337,6 +363,7 @@ export default {
         this.switchToThrow();
       };
     },
+     */
 
     formatScores(scores) {
       return scores.reverse().map(score => score.value);
@@ -408,26 +435,18 @@ export default {
       if (playerTotalScore - score === 0) {
         if (this.eventSourceState === 1) {
           this.apiConfirmScore(this.game.id, this.toThrowPlayerId, score, 3);
-        } else if (this.eventSourceState === 0) {
-          //this.addPlayerLastScore(this.toThrowPlayerId, score)
-          this.switchToThrow();
         }
       }
       // Scoring
       else if (playerTotalScore - score >= 2) {
         if (this.eventSourceState === 1) {
           this.apiConfirmScore(this.game.id, this.toThrowPlayerId, score, 3);
-        } else if (this.eventSourceState === 0) {
-          //this.addPlayerLastScore(this.toThrowPlayerId, score)
-          this.switchToThrow();
         }
       }
       // Bust
       else if (playerTotalScore - score < 2) {
         if (this.eventSourceState === 1) {
           this.apiConfirmScore(this.game.id, this.toThrowPlayerId, score, 3);
-        } else if (this.eventSourceState === 0) {
-          this.switchToThrow();
         }
       }
 
@@ -472,13 +491,12 @@ export default {
         if (this.eventSourceState === 1) {
           this.apiSetPlayerToThrow(this.game.id, this.getNotToThrowPlayerId())
         }
-        else if (this.eventSourceState === 0) {
-          this.switchToThrow();
-        }
       } else {
         this.clearScore(score);
         const playerId = this.getNotToThrowPlayerId();
-        this.apiUndoScore(this.game.id, playerId);
+        if (this.eventSourceState === 1) {
+          this.apiUndoScore(this.game.id, playerId);
+        }
       }
     },
 
@@ -513,9 +531,8 @@ export default {
         EventBus.emit('play-score-sound', thrownScore);
         //player.lastScores.unshift(thrownScore);
         player.currentDartsThrown.unshift(3);
-        this.apiConfirmScore(this.game.id, player.id, thrownScore, 3)
-        if (this.eventSourceState === 0) {
-          this.switchToThrow();
+        if (this.eventSourceState === 1) {
+          this.apiConfirmScore(this.game.id, player.id, thrownScore, 3)
         }
         this.setPlayerScore(player.id, score);
         EventBus.emit('show-leg-shut-modal', player.lastScores);
@@ -527,9 +544,8 @@ export default {
         EventBus.emit('play-score-sound', thrownScore);
         //player.lastScores.unshift(thrownScore);
         player.currentDartsThrown.unshift(3);
-        this.apiConfirmScore(this.game.id, player.id, thrownScore, 3)
-        if (this.eventSourceState === 0) {
-          this.switchToThrow();
+        if (this.eventSourceState === 1) {
+          this.apiConfirmScore(this.game.id, player.id, thrownScore, 3)
         }
         this.setPlayerScore(player.id, score);
         //this.switchToThrow();

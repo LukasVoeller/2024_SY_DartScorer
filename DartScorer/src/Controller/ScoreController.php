@@ -57,10 +57,11 @@ class ScoreController extends AbstractController
             $game->setToThrowPlayerId($game->getPlayer1Id());
         }
 
-        $updateUrl = 'https://vllr.lu/score/confirm/' . $data['gameId'];
+        $updateUrl = 'https://vllr.lu/game/' . $data['gameId'];
         $update = new Update(
             $updateUrl,
             json_encode([
+                'eventType' => 'confirm',
                 'playerId' => $playerId,
                 'thrownScore' => $thrownScore,
                 'newTotalScore' => $newTotalScore,
@@ -117,10 +118,11 @@ class ScoreController extends AbstractController
 
         $this->entityManager->flush();
 
-        $updateUrl = 'https://vllr.lu/score/undo/' . $data['gameId'];
+        $updateUrl = 'https://vllr.lu/game/' . $data['gameId'];
         $update = new Update(
             $updateUrl,
             json_encode([
+                'eventType' => 'undo',
                 'playerId' => $playerId,
                 'newTotalScore' => $newTotalScore
             ])
