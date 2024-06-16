@@ -1,7 +1,7 @@
 <template>
   <!-- Alert Box -->
   <transition name="slide-fade">
-    <div v-if="alertShow" :class="['alert', alertClass, 'overlay-alert']" role="alert">
+    <div v-if="alertShow" :class="['alert', alertClass, 'overlay-alert']">
       {{ alertMessage }}
     </div>
   </transition>
