@@ -54,26 +54,56 @@
 /* Overlay Alert Style */
 .overlay-alert {
     position: fixed;
-    top: 25px; /* Initial top position, adjust if needed after animation */
-    right: -10px; /* Center horizontally */
+    top: 25px; /* Initial top position */
+    right: -110px;
     width: 210px;
-    transform: translate(-50%, 0); /* Center at the middle top */
+    transform: translateX(-50%); /* Center horizontally */
     z-index: 1050;
-    animation: slideInAndUp 3s ease-out forwards; /* Animation duration, easing, and behavior */
+    animation: slideInAndUp 3s ease-out forwards; /* Animation details */
 }
 
 /* Keyframes for the alert animation */
 @keyframes slideInAndUp {
     0% {
-        transform: translate(100%, 0); /* Start from the right offscreen */
+        transform: translateX(100%); /* Start from the right offscreen */
     }
     10% {
-        transform: translate(0%, 0); /* Move to the center horizontally, complete at 2s */
+        transform: translateX(-50%); /* Move to the center horizontally */
     }
     90% {
-        transform: translate(0%, 0); /* Stay in the center for 1s */
+        transform: translateX(-50%); /* Hold in the center */
     }
     100% {
-        transform: translate(0%, -150%); /* Move upwards after the pause */
+        transform: translateX(-50%) translateY(-150%); /* Move upwards */
     }
 }
+
+
+/* Overlay Alert Style
+.overlay-alert {
+    position: fixed;
+    top: 25px;
+    right: -10px;
+    width: 210px;
+    transform: translate(-50%, 0);
+    z-index: 1050;
+    animation: slideInAndUp 3s ease-out forwards;
+}
+
+
+
+@keyframes slideInAndUp {
+    0% {
+        transform: translate(100%, 0);
+    }
+    10% {
+        transform: translate(0%, 0);
+    }
+    90% {
+        transform: translate(0%, 0);
+    }
+    100% {
+        transform: translate(0%, -150%);
+    }
+}
+*/

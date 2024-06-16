@@ -280,9 +280,8 @@ export default defineComponent({
         postData.matchModeLegsNeeded = Number(this.selectedMatchModeLegs);
       }
 
-      console.log("SUBMITTING:", postData);
+      //console.log("SUBMITTING:", postData);
 
-      /*
       axios.post('/api/game/create', postData)
           .then(response => {
             console.log("Game started successfully.");
@@ -292,7 +291,6 @@ export default defineComponent({
           .catch(error => {
             console.error('Error starting the game:', error);
           });
-      */
     },
 
     /*
