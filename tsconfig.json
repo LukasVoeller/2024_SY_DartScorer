@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "esnext",
+    "strict": true,
+    "jsx": "preserve",
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "types": ["vue", "jquery"],
+    "paths": {
+      "@/*": ["./assets/*"]
+    },
+    "lib": ["esnext", "dom"]
+  },
+  "include": [
+    "assets/**/*.ts",
+    "assets/**/*.tsx",
+    "assets/**/*.vue",
+    "shims-vue.d.ts",
+    "types/**/*.d.ts",
+    "jquery-global.d.ts"
+  ],
+  "exclude": ["node_modules"]
+}

@@ -1,1 +1,51 @@
-{}
+{
+    "devDependencies": {
+        "@babel/core": "^7.24.7",
+        "@babel/preset-env": "^7.16.0",
+        "@hotwired/stimulus": "^3.0.0",
+        "@hotwired/turbo": "^7.1.1 || ^8.0",
+        "@symfony/stimulus-bridge": "^3.2.0",
+        "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/assets",
+        "@symfony/webpack-encore": "^4.6.1",
+        "@types/jquery": "^3.5.30",
+        "@typescript-eslint/eslint-plugin": "^7.13.0",
+        "@typescript-eslint/parser": "^7.13.0",
+        "@vue/cli-service": "^5.0.8",
+        "@vue/compiler-sfc": "^3.4.29",
+        "@vue/runtime-dom": "^3.4.29",
+        "core-js": "^3.23.0",
+        "eslint": "^8.57.0",
+        "regenerator-runtime": "^0.13.9",
+        "ts-loader": "^9.5.1",
+        "typescript": "^5.4.5",
+        "vue": "^3.4.29",
+        "vue-loader": "^17.4.2",
+        "webpack": "^5.74.0",
+        "webpack-cli": "^4.10.0",
+        "webpack-notifier": "^1.15.0"
+    },
+    "license": "UNLICENSED",
+    "private": true,
+    "scripts": {
+        "dev-server": "encore dev-server",
+        "dev": "encore dev",
+        "watch": "encore dev --watch",
+        "build": "encore production --progress"
+    },
+    "dependencies": {
+        "axios": "^1.7.2",
+        "bootstrap-vue": "^2.23.1",
+        "dotenv": "^16.4.5",
+        "file-loader": "^6.2.0",
+        "gensync": "^1.0.0-beta.2",
+        "jquery": "^3.7.1",
+        "lodash": "^4.17.21",
+        "p-try": "^3.0.0",
+        "pkg-up": "^5.0.0",
+        "to-fast-properties": "^4.0.0",
+        "tslib": "^2.6.3",
+        "vue-router": "^4.3.0",
+        "vue3-spinners": "^1.2.2",
+        "vuelidate": "^0.7.7"
+    }
+}
