@@ -55,10 +55,10 @@
 .overlay-alert {
     position: fixed;
     top: 25px; /* Initial top position, adjust if needed after animation */
-    left: 50%; /* Center horizontally */
+    right: -10px; /* Center horizontally */
+    width: 210px;
     transform: translate(-50%, 0); /* Center at the middle top */
     z-index: 1050;
-    width: 80%;
     animation: slideInAndUp 3s ease-out forwards; /* Animation duration, easing, and behavior */
 }
 

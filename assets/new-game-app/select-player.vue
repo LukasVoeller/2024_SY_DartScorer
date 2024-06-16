@@ -26,7 +26,7 @@
   <!-- To throw and add player row" -->
   <div class="row">
     <div class="col-6">
-      <select class="selectpicker" data-width="100%" data-style="btn-success" data-size="5" title="To Throw first" v-model="selectedPlayerStartingId" :disabled="!selectedPlayer1Id" required>
+      <select class="selectpicker" data-width="100%" data-style="btn-success" data-size="5" title="To Throw first" v-model="selectedPlayerStartingId" :disabled="!selectedPlayer1Id" @change="emitPlayerStartingId" required>
         <option :style="isSelectedPlayer1(player.id) ? 'background: #4FBE96; color: #fff;' : ''" v-for="player in startingPlayerOptions" :key="player.id" :value="player.id">{{ player.name }} begins</option>
       </select>
     </div>
@@ -117,11 +117,14 @@ export default defineComponent({
 
   methods: {
     emitPlayer1Id() {
-      console.log("emitPlayer1Id")
-      this.$emit('update:selectedPlayer1Id', this.selectedPlayer1Id);
+      this.$emit('update:selectedPlayer1Id', Number(this.selectedPlayer1Id));
     },
     emitPlayer2Id() {
-      this.$emit('update:selectedPlayer2Id', this.selectedPlayer2Id);
+      this.$emit('update:selectedPlayer2Id', Number(this.selectedPlayer2Id));
+    },
+    emitPlayerStartingId() {
+      console.log("emitPlayerStartingId")
+      this.$emit('update:selectedPlayerStartingId', Number(this.selectedPlayerStartingId));
     },
 
     triggerAlert(message: string, type: string) {
@@ -135,7 +138,18 @@ export default defineComponent({
     },
 
     submitNewPlayer() {
+      if (this.newPlayerName.trim() === '') {
+        this.triggerAlert(`Empty player name!`, 'warning');
+        return;
+      }
+
       if (this.newPlayerName.trim() !== '') {
+        const playerExists = this.players.some(player => player.name.toLowerCase() === this.newPlayerName.trim().toLowerCase());
+
+        if (playerExists) {
+          this.triggerAlert(`${this.newPlayerName} already exists!`, 'danger');
+          return;
+        }
 
         axios.post('/api/player', {
           name: this.newPlayerName,
@@ -144,12 +158,13 @@ export default defineComponent({
               // TODO: Use this.players.push(response.data) instead of this.fetchPlayers()
               //this.players.push(response.data);
               //console.log("RESPONSE:", response.data);
-              //this.selectedPlayer1Id = response.data.id;
+              this.selectedPlayer1Id = response.data.id;
+              this.emitPlayer1Id()
               this.fetchPlayers();
               this.newPlayerName = '';
 
               let playerName = response.data.name;
-              this.triggerAlert(`${playerName} added successfully!`, 'success');
+              this.triggerAlert(`${playerName} added!`, 'success');
             })
             .catch((error) => {
               console.error('Error adding player:', error);
@@ -199,6 +214,7 @@ export default defineComponent({
     selectedPlayer1Id(newVal) {
       if (newVal) {
         this.selectedPlayerStartingId = newVal;
+        this.emitPlayerStartingId()
       }
       this.refreshSelectPickers();
     },
@@ -214,4 +230,3 @@ export default defineComponent({
 
 })
 </script>
-

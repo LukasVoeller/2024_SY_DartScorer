@@ -8,9 +8,21 @@
         <PlayerSelection
             @update:selectedPlayer1Id="selectedPlayer1Id = $event"
             @update:selectedPlayer2Id="selectedPlayer2Id = $event"
+            @update:selectedPlayerStartingId="selectedPlayerStartingId = $event"
+        />
+
+        <GameSelection
+            @update:selectedGameMode="selectedGameMode = $event"
+            @update:selectedStartScoreX01="selectedStartScoreX01 = $event"
+            @update:selectedFinishType="selectedFinishType = $event"
+            @update:selectedMatchMode="selectedMatchMode = $event"
+            @update:selectedMatchModeSets="selectedMatchModeSets = $event"
+            @update:selectedMatchModeSetsLegs="selectedMatchModeSetsLegs = $event"
+            @update:selectedMatchModeLegs="selectedMatchModeLegs = $event"
         />
 
         <!-- Game Mode -->
+        <!--
         <div class="row">
           <div class="col">
             <div class="btn-group" role="group" style="width: 100%">
@@ -31,20 +43,20 @@
 
         <br>
 
-        <!-- Game Mode Options -->
+        <!-- Game Mode Options
         <div class="row">
           <div class="col" v-if="selectedGameMode === 'X01'">
             <div class="btn-group" role="group" style="width: 100%">
               <input type="radio" class="btn-check" name="startScoreX01" id="btnradio4" autocomplete="off"
-                     v-model.number="selectedStartScoreX01" :value=501 checked required>
+                     v-model="selectedStartScoreX01" :value=501 checked required>
               <label class="btn btn-outline-success" for="btnradio4">501</label>
 
               <input type="radio" class="btn-check" name="startScoreX01" id="btnradio5" autocomplete="off"
-                     v-model.number="selectedStartScoreX01" :value=301 required>
+                     v-model="selectedStartScoreX01" :value=301 required>
               <label class="btn btn-outline-success" for="btnradio5">301</label>
 
               <input type="radio" class="btn-check" name="startScoreX01" id="btnradio6" autocomplete="off"
-                     v-model.number="selectedStartScoreX01" :value=101 required>
+                     v-model="selectedStartScoreX01" :value=101 required>
               <label class="btn btn-outline-success" for="btnradio6">101</label>
             </div>
           </div>
@@ -99,7 +111,7 @@
 
         <br>
 
-        <!-- Match Mode Options -->
+        <!-- Match Mode Options
         <div class="row">
           <div class="col">
             <div class="btn-group" role="group" style="width: 100%">
@@ -121,15 +133,15 @@
             <p style="color: white">Sets:</p>
             <div class="btn-group" role="group" style="width: 100%">
               <input type="radio" class="btn-check" name="matchModeSets" id="btnradio16" autocomplete="off"
-                     v-model="selectedMatchModeSets" value="2" checked required>
+                     v-model="selectedMatchModeSets" :value=2 checked required>
               <label class="btn btn-outline-success" for="btnradio16">2</label>
 
               <input type="radio" class="btn-check" name="matchModeSets" id="btnradio17" autocomplete="off"
-                     v-model="selectedMatchModeSets" value="3" required>
+                     v-model="selectedMatchModeSets" :value=3 required>
               <label class="btn btn-outline-success" for="btnradio17">3</label>
 
               <input type="radio" class="btn-check" name="matchModeSets" id="btnradio18" autocomplete="off"
-                     v-model="selectedMatchModeSets" value="4" required>
+                     v-model="selectedMatchModeSets" :value=4 required>
               <label class="btn btn-outline-success" for="btnradio18">4</label>
             </div>
           </div>
@@ -139,15 +151,15 @@
             <p style="color: white;">Legs:</p>
             <div class="btn-group" role="group" style="width: 100%">
               <input type="radio" class="btn-check" name="matchModeLegs" id="btnradio19" autocomplete="off"
-                     v-model="selectedMatchModeSetsLegs" value="2" checked required>
+                     v-model="selectedMatchModeSetsLegs" :value=2 checked required>
               <label class="btn btn-outline-success" for="btnradio19">2</label>
 
               <input type="radio" class="btn-check" name="matchModeLegs" id="btnradio20" autocomplete="off"
-                     v-model="selectedMatchModeSetsLegs" value="3" required>
+                     v-model="selectedMatchModeSetsLegs" :value=3 required>
               <label class="btn btn-outline-success" for="btnradio20">3</label>
 
               <input type="radio" class="btn-check" name="matchModeLegs" id="btnradio21" autocomplete="off"
-                     v-model="selectedMatchModeSetsLegs" value="4" required>
+                     v-model="selectedMatchModeSetsLegs" :value=4 required>
               <label class="btn btn-outline-success" for="btnradio21">4</label>
             </div>
           </div>
@@ -159,19 +171,20 @@
             <p style="color: white">Legs:</p>
             <div class="btn-group" role="group" style="width: 100%">
               <input type="radio" class="btn-check" name="matchModeLegs" id="btnradio19" autocomplete="off"
-                     v-model="selectedMatchModeLegs" value="1" checked required>
+                     v-model="selectedMatchModeLegs" :value=1 checked required>
               <label class="btn btn-outline-success" for="btnradio19">1</label>
 
               <input type="radio" class="btn-check" name="matchModeLegs" id="btnradio20" autocomplete="off"
-                     v-model="selectedMatchModeLegs" value="2" required>
+                     v-model="selectedMatchModeLegs" :value=2 required>
               <label class="btn btn-outline-success" for="btnradio20">2</label>
 
               <input type="radio" class="btn-check" name="matchModeLegs" id="btnradio21" autocomplete="off"
-                     v-model="selectedMatchModeLegs" value="3" required>
+                     v-model="selectedMatchModeLegs" :value=3 required>
               <label class="btn btn-outline-success" for="btnradio21">3</label>
             </div>
           </div>
         </div>
+        -->
 
         <br>
 
@@ -190,7 +203,8 @@
 import axios from 'axios';
 import 'jquery';
 import { defineComponent } from 'vue';
-import PlayerSelection from './player-selection.vue';
+import PlayerSelection from './select-player.vue';
+import GameSelection from './select-game.vue';
 
 axios.interceptors.request.use(config => {
   const token = localStorage.getItem('jwt_token');  // Retrieve JWT token from localStorage
@@ -212,12 +226,24 @@ export default defineComponent({
 
   components: {
     PlayerSelection,
+    GameSelection,
   },
 
   data() {
     return {
       gameId: 0 as Number,
-      players: [] as Player[],
+
+      // PlayerSelection
+      //players: [] as Player[],
+      selectedPlayer1Id: 0 as Number,
+      selectedPlayer2Id: 0 as Number,
+      selectedPlayerStartingId: 0 as Number,
+      //newPlayerName: '' as String,
+      //showAlert: false as Boolean,
+      //alertMessage: '' as String,
+      //alertClass: 'alert-success' as String
+
+      // Game Selection
       selectedGameMode: "X01" as String,
       selectedStartScoreX01: 501 as Number,
       selectedStartScoreCricket: 0 as Number,
@@ -227,13 +253,6 @@ export default defineComponent({
       selectedMatchModeSets: 2 as Number,
       selectedMatchModeSetsLegs: 2 as Number,
       selectedMatchModeLegs: 1 as Number,
-      selectedPlayer1Id: 0 as Number,
-      selectedPlayer2Id: 0 as Number,
-      selectedPlayerStartingId: 0 as Number,
-      newPlayerName: '' as String,
-      showAlert: false as Boolean,
-      alertMessage: '' as String,
-      alertClass: 'alert-success' as String
     };
   },
 
@@ -254,15 +273,16 @@ export default defineComponent({
       };
 
       if (this.selectedMatchMode === 'FirstToSets') {
-        postData.matchModeSetsNeeded = this.selectedMatchModeSets;
-        postData.matchModeLegsNeeded = this.selectedMatchModeSetsLegs;
+        postData.matchModeSetsNeeded = Number(this.selectedMatchModeSets);
+        postData.matchModeLegsNeeded = Number(this.selectedMatchModeSetsLegs);
       } else if (this.selectedMatchMode === 'FirstToLegs') {
         postData.matchModeSetsNeeded = 0;
-        postData.matchModeLegsNeeded = this.selectedMatchModeLegs;
+        postData.matchModeLegsNeeded = Number(this.selectedMatchModeLegs);
       }
 
       console.log("SUBMITTING:", postData);
 
+      /*
       axios.post('/api/game/create', postData)
           .then(response => {
             console.log("Game started successfully.");
@@ -272,13 +292,16 @@ export default defineComponent({
           .catch(error => {
             console.error('Error starting the game:', error);
           });
+      */
     },
 
+    /*
     refreshSelectPickers() {
       this.$nextTick(() => {
         $('.selectpicker').selectpicker('refresh');
       });
     }
+    */
   },
 })
 </script>
