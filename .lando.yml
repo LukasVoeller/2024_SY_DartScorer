@@ -2,13 +2,13 @@ name: symfonyproject
 recipe: symfony
 
 excludes:
-  - "DartScorer/var/cache"
-  - "DartScorer/vendor"
-  - "DartScorer/node_modules"
+  - "var/cache"
+  - "vendor"
+  - "node_modules"
 
 services:
   appserver:
-    webroot: ./DartScorer/public
+    webroot: ./public
     type: 'php:8.2'
     via: 'apache:2.4'
     ssl: true
@@ -38,32 +38,56 @@ services:
     type: compose
     services:
       image: dunglas/mercure
-      command: caddy run -c /etc/caddy/Caddyfile.dev
+      command: caddy run -c /etc/caddy/dev.Caddyfile
       environment:
         SERVER_NAME: ':80'
         MERCURE_PUBLISHER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
         MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
       ports:
         - 3000:80
-      #volumes:
+        #volumes:
         #- ./.lando/Caddyfile.dev:/etc/caddy/Caddyfile.dev
 
 tooling:
   console:
     service: appserver
     cmd: php bin/console
-    dir: /app/DartScorer
+    dir: /app
     description: Runs console commands
+
+  composer:
+    service: appserver
+    cmd: composer
+    dir: /app
+    description: Runs composer commands
 
   node:install:
     service: appserver
-    cmd: ./install-nodejs.sh
+    cmd: /app/.lando/install-nodejs.sh
     user: root
     dir: /app/.lando
-    description: Installs NodeJS
+    description: Install NodeJS
 
-  npm-watch:
+  npm:watch:
     service: appserver
     cmd: npm run watch
-    dir: /app/DartScorer
+    dir: /app
     description: Starts npm watcher
+
+  npm:build:
+    service: appserver
+    cmd: npm run build
+    dir: /app
+    description: Builds javascript
+
+  npm:install:
+    service: appserver
+    cmd: npm install
+    dir: /app
+    description: Starts installs packages
+
+  ecs:
+    service: appserver
+    cmd: ./vendor/bin/ecs
+    dir: /app
+    description: Check code against code standard
