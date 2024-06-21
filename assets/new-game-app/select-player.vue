@@ -1,10 +1,8 @@
 <template>
   <!-- Alert Box -->
-  <transition name="slide-fade">
-    <div v-if="alertShow" :class="['alert', alertClass, 'overlay-alert']">
-      {{ alertMessage }}
-    </div>
-  </transition>
+  <div v-if="alertShow" :class="['alert', alertClass, 'overlay-alert']">
+    {{ alertMessage }}
+  </div>
 
   <!-- Select player row" -->
   <div class="row">
@@ -84,7 +82,7 @@ export default defineComponent({
       alertShow: false as Boolean,
       alertMessage: '' as String,
       alertClass: 'alert-success' as String,
-      isLoading: false as Boolean
+      loading: false as Boolean
     }
   },
 
@@ -158,7 +156,12 @@ export default defineComponent({
               // TODO: Use this.players.push(response.data) instead of this.fetchPlayers()
               //this.players.push(response.data);
               //console.log("RESPONSE:", response.data);
-              this.selectedPlayer1Id = response.data.id;
+              if (!this.selectedPlayer1Id) {
+                this.selectedPlayer1Id = response.data.id;
+              } else {
+                this.selectedPlayer2Id = response.data.id;
+              }
+
               this.emitPlayer1Id()
               this.fetchPlayers();
               this.newPlayerName = '';
@@ -185,16 +188,16 @@ export default defineComponent({
     },
 
     fetchPlayers() {
-      this.isLoading = true;
+      this.loading = true;
       // Fetch players from the API
       axios.get('/api/player')
           .then(response => {
-            this.isLoading = false;
+            this.loading = false;
             // Sort players alphabetically by name
             this.players = response.data.sort((a: Player, b: Player) => a.name.localeCompare(b.name));
           })
           .catch(error => {
-            this.isLoading = false;
+            this.loading = false;
             console.error('Error fetching players:', error);
           });
     },

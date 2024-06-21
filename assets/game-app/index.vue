@@ -88,7 +88,7 @@ export default {
       gameState: "",
       legsPlayed: 0,
       legsPerSetPlayed: [],
-      startsLegPlayerId: null,
+      //startsLegPlayerId: null,
       toThrowPlayerId: null,
       eventSourceState: 0,
       eventSource: null,
@@ -140,7 +140,7 @@ export default {
       const totalScores = this.player1.lastScores.reduce((acc, score) => acc + score, 0);  // Sum the scores
       const scoreCount = this.player1.lastScores.length;  // Get the count of scores
 
-      if (scoreCount === 0) {  // Avoid division by zero
+      if (scoreCount === 0) {
         return "0";
       }
 
@@ -153,7 +153,7 @@ export default {
       const scoreCount = this.player2.lastScores.length;
 
       if (scoreCount === 0) {
-        return "0";  // Avoid division by zero
+        return "0";
       }
 
       return (totalScores / scoreCount).toFixed(1);
@@ -164,14 +164,14 @@ export default {
     this.onLegShutModalConfirmed = (dartsForCheckout, average) => {
       const numberOfDarts = parseInt(dartsForCheckout);
 
-      if (this.player1.toThrow) {
+      if (this.player1.id === this.toThrowPlayerId) {
         this.processPlayerCheckout(this.player1);
 
         this.player1.legAverages.push(parseFloat(average));
 
-        if (this.player2.currentScores.length > 0) {
-          const sum = this.player2.currentScores.reduce((total, score) => total + score, 0);
-          const average = (sum / this.player2.currentScores.length).toFixed(1);
+        if (this.player2.lastScores.length > 0) {
+          const sum = this.player2.lastScores.reduce((total, score) => total + score, 0);
+          const average = (sum / this.player2.lastScores.length).toFixed(1);
           this.player2.legAverages.push(parseFloat(average));
         }
 
@@ -182,23 +182,23 @@ export default {
         this.player2.gameAverage = (sumLegAveragesPlayer2 / this.player2.legAverages.length).toFixed(1);
 
         this.player1.currentDartsThrown.unshift(numberOfDarts);
-        this.player1.totalScores.push(this.player1.currentScores);
+        this.player1.totalScores.push(this.player1.lastScores);
         this.player1.totalDartsThrown.push(this.player1.currentDartsThrown);
-        this.player2.totalScores.push(this.player2.currentScores);
+        this.player2.totalScores.push(this.player2.lastScores);
         this.player2.totalDartsThrown.push(this.player2.currentDartsThrown);
 
         this.logTotalInfo();
         if (this.gameState === "Finished") {
           this.apiSaveGameData();
         }
-      } else if (this.player2.toThrow) {
+      } else if (this.player2.id === this.toThrowPlayerId) {
         this.processPlayerCheckout(this.player2);
 
         this.player2.legAverages.push(parseFloat(average));
 
-        if (this.player1.currentScores.length > 0) {
-          const sum = this.player1.currentScores.reduce((total, score) => total + score, 0);
-          const average = (sum / this.player1.currentScores.length).toFixed(1);
+        if (this.player1.lastScores.length > 0) {
+          const sum = this.player1.lastScores.reduce((total, score) => total + score, 0);
+          const average = (sum / this.player1.lastScores.length).toFixed(1);
           this.player1.legAverages.push(parseFloat(average));
         }
 
@@ -209,9 +209,9 @@ export default {
         this.player1.gameAverage = (sumLegAveragesPlayer1 / this.player1.legAverages.length).toFixed(1);
 
         this.player2.currentDartsThrown.unshift(numberOfDarts);
-        this.player2.totalScores.push(this.player2.currentScores);
+        this.player2.totalScores.push(this.player2.lastScores);
         this.player2.totalDartsThrown.push(this.player2.currentDartsThrown);
-        this.player1.totalScores.push(this.player1.currentScores);
+        this.player1.totalScores.push(this.player1.lastScores);
         this.player1.totalDartsThrown.push(this.player1.currentDartsThrown);
 
         this.logTotalInfo();
@@ -227,13 +227,24 @@ export default {
     };
 
     this.onLegShutModalResumed = () => {
+      console.log("--- RESUMED ---")
+
+      const lastScore = this.getPlayerLastScore(this.toThrowPlayerId);
+      this.setPlayerScore(this.toThrowPlayerId, lastScore);
+      this.removePlayerLastScore(this.toThrowPlayerId);
+      this.apiUndoScore(this.gameId, this.toThrowPlayerId, false);
+
+      /*
       if (this.player1.toThrow) {
-        this.player1.displayScore += this.player1.currentScores[0];
-        this.player1.currentScores.shift();
+        this.player1.displayScore += this.player1.lastScores[0];
+        this.player1.displayScore = 10;
+        this.player1.lastScores.shift();
       } else if (this.player2.toThrow) {
-        this.player2.displayScore += this.player2.currentScores[0];
-        this.player2.currentScores.shift();
+        this.player2.displayScore += this.player2.lastScores[0];
+        this.player2.displayScore = 10;
+        this.player2.lastScores.shift();
       }
+      */
     };
 
     this.onGameShutModalConfirmed = () => {
@@ -269,7 +280,7 @@ export default {
     this.gameId = this.getGameIdFromUrl();
 
     if (this.gameId) {
-      this.apiGetGameData();
+      this.apiFetchGameData();
 
       // CHECK TODO: Only use one EventSource
       // CHECK TODO: Only call api when EventSource=1
@@ -302,6 +313,13 @@ export default {
       eventSource.onmessage = event => {
         const data = JSON.parse(event.data);
         switch (data.eventType) {
+          case 'checkout':
+            console.log("PUBLISH RECEIVED - CHECKOUT: ", data);
+            this.setPlayerScore(data.playerId, data.newTotalScore);
+            this.addPlayerLastScore(data.playerId, data.thrownScore);
+            //this.switchToThrow();
+            EventBus.emit('show-leg-shut-modal', this.getPlayerLastScores(data.playerId));
+            break;
           case 'confirm':
             console.log("PUBLISH RECEIVED - CONFIRM: ", data);
             this.setPlayerScore(data.playerId, data.newTotalScore);
@@ -312,7 +330,9 @@ export default {
             console.log("PUBLISH RECEIVED - UNDO: ", data);
             this.setPlayerScore(data.playerId, data.newTotalScore);
             this.removePlayerLastScore(data.playerId);
-            this.switchToThrow();
+            if(data.switchToThrow){
+              this.switchToThrow();
+            }
             break;
           case 'throw':
             console.log("PUBLISH RECEIVED - THROW: ", data);
@@ -321,49 +341,6 @@ export default {
         }
       };
     },
-
-    /*
-    mercurePublishConfirm(gameId) {
-      const mercureUrl = process.env.MERCURE_PUBLIC_URL;
-      const eventSource = new EventSource(`${mercureUrl}?topic=https://vllr.lu/score/confirm/${gameId}`);
-      this.eventSources.push(eventSource);
-
-      eventSource.onmessage = event => {
-        const data = JSON.parse(event.data);
-        console.log("PUBLISH RECEIVED - CONFIRM: ", data);
-        this.setPlayerScore(data.playerId, data.newTotalScore);
-        console.log("ADDING: ", data.thrownScore)
-        this.addPlayerLastScore(data.playerId, data.thrownScore)
-        this.switchToThrow();
-      };
-    },
-
-    mercurePublishUndo(gameId) {
-      const mercureUrl = process.env.MERCURE_PUBLIC_URL;
-      const eventSource = new EventSource(`${mercureUrl}?topic=https://vllr.lu/score/undo/${gameId}`);
-      this.eventSources.push(eventSource);
-
-      eventSource.onmessage = event => {
-        const data = JSON.parse(event.data);
-        console.log("PUBLISH RECEIVED - UNDO: ", data);
-        this.setPlayerScore(data.playerId, data.newTotalScore);
-        this.removePlayerLastScore(data.playerId);
-        this.switchToThrow();
-      };
-    },
-
-    mercurePublishToThrow(gameId) {
-      const mercureUrl = process.env.MERCURE_PUBLIC_URL;
-      const eventSource = new EventSource(`${mercureUrl}?topic=https://vllr.lu/game/throw/${gameId}`);
-      this.eventSources.push(eventSource);
-
-      eventSource.onmessage = event => {
-        const data = JSON.parse(event.data);
-        console.log("PUBLISH RECEIVED - THROW: ", data);
-        this.switchToThrow();
-      };
-    },
-     */
 
     formatScores(scores) {
       return scores.reverse().map(score => score.value);
@@ -449,40 +426,6 @@ export default {
           this.apiConfirmScore(this.game.id, this.toThrowPlayerId, score, 3);
         }
       }
-
-      //this.score = score;
-
-      /*
-      if (this.toThrowPlayerId === this.player1.id) {
-        if (this.player1.displayScore === 0) {
-          // Checkout!
-          //this.player1.lastScores.unshift(score);
-          //EventBus.emit('play-gameShut-sound');
-          EventBus.emit('show-leg-shut-modal', this.player1.currentScores);
-        } else {
-          this.player1.scoreBusted = false;
-          this.player1.totalScore = this.player1.displayScore;
-          //this.player1.lastScores.unshift(score);
-          //this.player1.toThrow = false;
-          //this.player2.toThrow = true;
-          this.player1.currentDartsThrown.unshift(3);
-        }
-      } else if (this.toThrowPlayerId === this.player2.id) {
-        if (this.player2.displayScore === 0) {
-          // Checkout!
-          //this.player2.lastScores.unshift(score);
-          //EventBus.emit('play-gameShut-sound');
-          EventBus.emit('show-leg-shut-modal', this.player2.currentScores);
-        } else {
-          this.player2.scoreBusted = false;
-          this.player2.totalScore = this.player2.displayScore;
-          //this.player2.lastScores.unshift(score);
-          //this.player2.toThrow = false;
-          //this.player1.toThrow = true;
-          this.player2.currentDartsThrown.unshift(3);
-        }
-      }
-       */
     },
 
     undoScore(score) {
@@ -495,7 +438,7 @@ export default {
         this.clearScore(score);
         const playerId = this.getNotToThrowPlayerId();
         if (this.eventSourceState === 1) {
-          this.apiUndoScore(this.game.id, playerId);
+          this.apiUndoScore(this.game.id, playerId, true);
         }
       }
     },
@@ -601,11 +544,11 @@ export default {
     },
 
     resetScores() {
-      this.player1.currentScores = [];
+      this.player1.lastScores = [];
       this.player1.displayScore = this.player1.startScore;
       this.player1.totalScore = this.player1.startScore;
       this.player1.currentDartsThrown = [];
-      this.player2.currentScores = [];
+      this.player2.lastScores = [];
       this.player2.displayScore = this.player2.startScore;
       this.player2.totalScore = this.player2.startScore;
       this.player2.currentDartsThrown = [];
@@ -624,13 +567,13 @@ export default {
       }
     },
 
-    setPlayerScore(playerId, playerScore) {
+    setPlayerScore(playerId, score) {
       if (playerId === this.player1.id) {
-        this.player1.displayScore = playerScore;
-        this.player1.totalScore = playerScore;
+        this.player1.totalScore = score;
+        this.player1.displayScore = score;
       } else if (playerId === this.player2.id) {
-        this.player2.displayScore = playerScore;
-        this.player2.totalScore = playerScore;
+        this.player2.totalScore = score;
+        this.player2.displayScore = score;
       }
     },
 
@@ -678,6 +621,30 @@ export default {
         return this.player1.totalScore;
       } else if (playerId === this.player2.id) {
         return this.player2.totalScore;
+      }
+    },
+
+    getPlayerLastScores(playerId) {
+      if (playerId === this.player1.id) {
+        return this.player1.lastScores;
+      } else if (playerId === this.player2.id) {
+        return this.player2.lastScores;
+      }
+    },
+
+    getPlayerLastScore(playerId) {
+      if (playerId === this.player1.id) {
+        return this.player1.lastScores[0];
+      } else if (playerId === this.player2.id) {
+        return this.player2.lastScores[0];
+      }
+    },
+
+    getPlayerByID(playerId) {
+      if (playerId === this.player1.id) {
+        return this.player1;
+      } else if (playerId === this.player2.id) {
+        return this.player2;
       }
     },
 
@@ -761,21 +728,21 @@ export default {
           });
     },
 
-    apiGetGameData() {
+    apiFetchGameData() {
       axios.get('/api/game/id/' + this.gameId)
           .then(response => {
             this.game = response.data;
             this.player1.startScore = this.game.startScore;
             this.player2.startScore = this.game.startScore;
-            this.player1.totalScore = this.game.player1Score;
-            this.player2.totalScore = this.game.player2Score;
-            this.player1.displayScore = this.game.player1Score;
-            this.player2.displayScore = this.game.player2Score;
+            // this.player1.totalScore = this.game.currentScorePlayer1;
+            // this.player2.totalScore = this.game.currentScorePlayer2;
+            // this.player1.displayScore = this.game.currentScorePlayer1;
+            // this.player2.displayScore = this.game.currentScorePlayer2;
             //this.player1.name = this.game.player1Id;
             this.player1.id = this.game.player1Id;
             //this.player2.name = this.game.player2Id;
             this.player2.id = this.game.player2Id;
-            this.startsLegPlayerId = this.game.startingPlayerId;
+            //this.startsLegPlayerId = this.game.startingPlayerId;
             this.gameState = this.game.state;
 
             this.toThrowPlayerId = this.game.toThrowPlayerId;
@@ -790,13 +757,33 @@ export default {
             }
              */
 
-            this.loading = false;
             this.apiGetPlayerData();
             this.apiGetLastScores(this.gameId, this.player1.id)
             this.apiGetLastScores(this.gameId, this.player2.id)
+            this.apiFetchGameTally(this.gameId, this.player1.id)
+            this.apiFetchGameTally(this.gameId, this.player2.id)
+            this.loading = false;
           })
           .catch(error => {
             console.error('Error fetching game data:', error);
+            this.error = true;
+            this.loading = false;
+          });
+    },
+
+    // TODO:
+    // apiFetchGameTally(gameId, playerId) {
+    //   const postData = {
+    //     gameId: gameId,
+    //     playerId: playerId,
+    //   };
+    apiFetchGameTally(gameId, playerId) {
+      axios.get('/api/game/id/' + gameId + '/player/id/' + playerId)
+          .then(response => {
+            this.setPlayerScore(playerId, response.data.score);
+          })
+          .catch(error => {
+            console.error('Error fetching tally data:', error);
             this.error = true;
             this.loading = false;
           });
@@ -851,17 +838,18 @@ export default {
 
       axios.post('/api/score/confirm', postData)
           .then(response => {
-
+            console.log("CONFIRM RESPONSE: ", response.data);
           })
           .catch(error => {
             console.error('Error confirm score:', error);
           });
     },
 
-    apiUndoScore(gameId, playerId) {
+    apiUndoScore(gameId, playerId, switchToThrow) {
       const postData = {
         gameId: gameId,
         playerId: playerId,
+        switchToThrow: switchToThrow,
       };
 
       console.log("apiUndoScore Posting: ", postData);
@@ -875,11 +863,6 @@ export default {
           });
     },
 
-
-
-
-
-/*
     apiSaveGameData() {
       const postData = {
         gameId: this.game.id,
@@ -912,7 +895,6 @@ export default {
             console.error('Error saving the game:', error);
           });
     },
-*/
   },
 }
 </script>

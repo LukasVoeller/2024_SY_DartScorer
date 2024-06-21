@@ -77,7 +77,7 @@ export default {
     player1ToThrow: Boolean,
     player2ToThrow: Boolean,
     player1LastScores: Array,
-    player2LastScores: Array
+    player2LastScores: Array,
   },
 
   data() {
@@ -119,7 +119,7 @@ export default {
         } else if (scoreInput.value <= this.player1Score) {
           if (this.player1Score - scoreInput.value >= 2 || this.player1Score - scoreInput.value === 0) {
             if (!this.scoreIsImpossible(scoreInput.value)) {
-              this.$emit('score-confirmed', scoreInput.value);
+              this.$emit('score-confirmed', scoreInput.value, this.player1Id);
               scoreInput.value = "";
               this.currentInput = 0;
             }

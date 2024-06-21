@@ -191,7 +191,7 @@ export default defineComponent({
     },
 
     emitStartScoreX01() {
-      this.$emit('update:selectedStartScoreX01', String(this.selectedStartScoreX01));
+      this.$emit('update:selectedStartScoreX01', Number(this.selectedStartScoreX01));
     },
 
     emitFinishType() {
@@ -203,15 +203,15 @@ export default defineComponent({
     },
 
     emitMatchModeSets() {
-      this.$emit('update:selectedMatchModeSets', String(this.selectedMatchModeSets));
+      this.$emit('update:selectedMatchModeSets', Number(this.selectedMatchModeSets));
     },
 
     emitMatchModeSetsLegs() {
-      this.$emit('update:selectedMatchModeSetsLegs', String(this.selectedMatchModeSetsLegs));
+      this.$emit('update:selectedMatchModeSetsLegs', Number(this.selectedMatchModeSetsLegs));
     },
 
     emitMatchModeLegs() {
-      this.$emit('update:selectedMatchModeLegs', String(this.selectedMatchModeLegs));
+      this.$emit('update:selectedMatchModeLegs', Number(this.selectedMatchModeLegs));
     },
   },
 

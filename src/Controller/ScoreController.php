@@ -16,6 +16,7 @@ namespace App\Controller;
 use App\Entity\Game;
 use App\Entity\GameLeg;
 use App\Entity\GameScore;
+use App\Entity\GameTally;
 use App\Repository\ScoreRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,46 +44,52 @@ class ScoreController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        $game = $this->entityManager->getRepository(Game::class)->find($data['gameId']);
-        $leg = $this->entityManager->getRepository(GameLeg::class)->find($game->getCurrentLegId());
-        $playerId = $data['playerId'] ?? null;
+        $gameId = $data['gameId'];
+        $playerId = $data['playerId'];
         $thrownScore = $data['thrownScore'];
         $thrownDarts = $data['thrownDarts'];
+
+        $game = $this->entityManager->getRepository(Game::class)->find($gameId);
+        $tally = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $playerId);
+        $legId = $tally->getLegId();
+        $leg = $this->entityManager->getRepository(GameLeg::class)->find($legId);
 
         $score = new GameScore();
         $score->setRelatedLeg($leg);
         $score->setPlayerId($playerId);
         $score->setValue($thrownScore);
         $score->setDartsThrown($thrownDarts);
-        $this->entityManager->persist($score);
 
-        if ($game->getPlayer1Id() == $data['playerId']) {
-            $newTotalScore = $game->getPlayer1Score() - $thrownScore;
-
-            $game->setPlayer1Score($newTotalScore);
+        $currentScore = $tally->getScore();
+        if ($currentScore - $thrownScore >= 2){                                              // Scoring
+            $newTotalScore = $currentScore - $thrownScore;
+            $tally->setScore($newTotalScore);
             $game->setToThrowPlayerId($game->getPlayer2Id());
-        } elseif ($game->getPlayer2Id() == $data['playerId']) {
-            $newTotalScore = $game->getPlayer2Score() - $thrownScore;
-
-            $game->setPlayer2Score($newTotalScore);
-            $game->setToThrowPlayerId($game->getPlayer1Id());
+            $this->sendUpdate($gameId, $playerId, $thrownScore, $newTotalScore, 'confirm', $hub);
+        } elseif ($currentScore - $thrownScore == 0){                                        // Checkout
+            $newTotalScore = $currentScore - $thrownScore;
+            $tally->setScore($newTotalScore);
+            $game->setToThrowPlayerId($game->getPlayer2Id());
+            $this->sendUpdate($gameId, $playerId, $thrownScore, $newTotalScore, 'checkout', $hub);
         }
 
-        $updateUrl = 'https://vllr.lu/game/' . $data['gameId'];
+        $this->entityManager->persist($score);
+        $this->entityManager->flush();
+        return $this->json($data);
+    }
+
+    function sendUpdate($gameId, $playerId, $thrownScore, $newTotalScore, $type, $hub) {
+        $updateUrl = 'https://vllr.lu/game/' . $gameId;
         $update = new Update(
             $updateUrl,
             json_encode([
-                'eventType' => 'confirm',
+                'eventType' => $type,
                 'playerId' => $playerId,
                 'thrownScore' => $thrownScore,
                 'newTotalScore' => $newTotalScore,
             ])
         );
-
-        $this->entityManager->flush();
         $hub->publish($update);
-
-        return $this->json($data);
     }
 
     #[Route('/api/score/last', name: 'api_last_scores')]
@@ -90,10 +97,12 @@ class ScoreController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        $game = $this->entityManager->getRepository(Game::class)->find($data['gameId']);
-        $currentLeg = $game->getCurrentLegId();
+//        $game = $this->entityManager->getRepository(Game::class)->find($data['gameId']);
 
-        $scores = $scoreRepository->findLastScoresByPlayerIdAndLegId($data['playerId'], $currentLeg);
+        $tally = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($data['gameId'], $data['playerId']);
+        $currentLegId = $tally->getLegId();
+
+        $scores = $scoreRepository->findLastScoresByPlayerIdAndLegId($data['playerId'], $currentLegId);
         $serializedScores = $this->serializer->serialize($scores, 'json', ['groups' => ['score']]);
 
         return new JsonResponse($serializedScores, Response::HTTP_OK, [], true);
@@ -103,7 +112,8 @@ class ScoreController extends AbstractController
     public function undoScore(Request $request, HubInterface $hub, ScoreRepository $scoreRepository): Response
     {
         $data = json_decode($request->getContent(), true);
-        $playerId = $data['playerId'] ?? null;
+        $playerId = $data['playerId'];
+        $switchToThrow = $data['switchToThrow'];
         //$undoScore = $data['undoScore'] ?? null;
 
         $game = $this->entityManager->getRepository(Game::class)->find($data['gameId']);
@@ -111,14 +121,14 @@ class ScoreController extends AbstractController
         $latestScore = $scoreRepository->findLatestScoreByPlayerIdAndLegId($playerId, $legId);
 
         if ($game->getPlayer1Id() == $data['playerId']) {
-            $newTotalScore = $game->getPlayer1Score() + $latestScore->getValue();
+            $newTotalScore = $game->getCurrentScorePlayer1() + $latestScore->getValue();
 
-            $game->setPlayer1Score($newTotalScore);
+            $game->setCurrentScorePlayer1($newTotalScore);
             $game->setToThrowPlayerId($game->getPlayer2Id());
         } elseif ($game->getPlayer2Id() == $data['playerId']) {
-            $newTotalScore = $game->getPlayer2Score() + $latestScore->getValue();
+            $newTotalScore = $game->getCurrentScorePlayer2() + $latestScore->getValue();
 
-            $game->setPlayer2Score($newTotalScore);
+            $game->setCurrentScorePlayer2($newTotalScore);
             $game->setToThrowPlayerId($game->getPlayer1Id());
         }
 
@@ -135,7 +145,8 @@ class ScoreController extends AbstractController
             json_encode([
                 'eventType' => 'undo',
                 'playerId' => $playerId,
-                'newTotalScore' => $newTotalScore
+                'newTotalScore' => $newTotalScore,
+                'switchToThrow' => $switchToThrow,
             ])
         );
 
@@ -143,6 +154,8 @@ class ScoreController extends AbstractController
 
         return $this->json($data);
     }
+
+
 
     /*
     #[Route('/api/score/delete-latest', name: 'api_delete_latest_score')]

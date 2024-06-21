@@ -86,14 +86,6 @@ class GameController extends AbstractController
         return new JsonResponse($serializedGame, Response::HTTP_OK, [], true);
     }
 
-    #[Route('/api/game/create', name: 'api_create_game', methods: ['POST'])]
-    public function createGame(Request $request): Response
-    {
-        $data = json_decode($request->getContent(), true);
-        $gameId = $this->createNewGameX01($data);
-        return $this->json(['gameId' => $gameId]);
-    }
-
     #[Route('/api/game/save', name: 'api_save_game', methods: ['POST'])]
     public function saveGame(Request $request): Response
     {
@@ -122,52 +114,6 @@ class GameController extends AbstractController
         $hub->publish($update);
 
         return $this->json(['success' => true]);
-    }
-
-    private function createNewGameX01($data): int
-    {
-        $game = new GameTypeX01();
-
-        $game->setStartScore($data['startScore']);
-        $game->setPlayer1Score($data['startScore']);
-        $game->setPlayer2Score($data['startScore']);
-        $game->setFinishType($data['finishType']);
-        $game->setMatchMode($data['matchMode']);
-        $game->setMatchModeSetsNeeded($data['matchModeSetsNeeded']);
-        $game->setMatchModeLegsNeeded($data['matchModeLegsNeeded']);
-        $game->setPlayer1Id($data['player1Id']);
-        $game->setPlayer2Id($data['player2Id']);
-        $game->setStartingPlayerId($data['playerStartingId']);
-        $game->setToThrowPlayerId($data['playerStartingId']);
-        $game->setState("Live");
-
-        if ($game->getMatchMode() == "FirstToLegs") {
-            $leg = new GameLeg();
-            $leg->setRelatedGame($game);
-            $this->entityManager->persist($leg);
-        } elseif ($game->getMatchMode() == "FirstToSets") {
-            $set = new GameSet();
-            $set->setRelatedGame($game);
-            $set->setMatchModeLegsNeeded($game->getMatchModeLegsNeeded());
-            $leg = new GameLeg();
-            $leg->setRelatedSet($set);
-            $this->entityManager->persist($set);
-            $this->entityManager->persist($leg);
-        }
-
-        $this->entityManager->persist($game);
-        $this->entityManager->flush();
-
-        if ($game->getMatchMode() == "FirstToLegs") {
-            $game->setCurrentLegId($leg->getId());
-        } elseif ($game->getMatchMode() == "FirstToSets") {
-            $game->setCurrentLegId($leg->getId());
-            $game->setCurrentSetId($set->getId());
-        }
-
-        $this->entityManager->flush();
-
-        return $game->getId();
     }
 
     private function saveGameX01($data): bool

@@ -58,6 +58,10 @@ abstract class Game
     #[Groups(['game'])]
     private ?string $state = null;
 
+    #[ORM\Column(length: 32, nullable: true)]
+    #[Groups(['game'])]
+    private ?string $type = null;
+
     #[ORM\Column(length: 32, nullable: false)]
     #[Groups(['game'])]
     private ?string $matchMode;
@@ -73,14 +77,6 @@ abstract class Game
     #[ORM\Column(nullable: true)]
     #[Groups(['game'])]
     private ?int $toThrowPlayerId = null;
-
-    #[ORM\Column(nullable: true)]
-    #[Groups(['game'])]
-    private ?int $currentLegId = null;
-
-    #[ORM\Column(nullable: true)]
-    #[Groups(['game'])]
-    private ?int $currentSetId = null;
 
     /**
      * @var Collection<int, GameSet>
@@ -100,11 +96,18 @@ abstract class Game
     #[Groups(['game'])]
     private ?\DateTimeInterface $date = null;
 
+    /**
+     * @var Collection<int, GameTally>
+     */
+    #[ORM\OneToMany(targetEntity: GameTally::class, mappedBy: 'gameId', orphanRemoval: true)]
+    private Collection $tally;
+
     public function __construct()
     {
         $this->sets = new ArrayCollection();
         $this->legs = new ArrayCollection();
         $this->date = new \DateTime();
+        $this->tally = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -184,6 +187,18 @@ abstract class Game
         return $this;
     }
 
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
     public function getMatchMode(): ?string
     {
         return $this->matchMode;
@@ -232,30 +247,7 @@ abstract class Game
         return $this;
     }
 
-    public function getCurrentLegId(): ?int
-    {
-        return $this->currentLegId;
-    }
-
-    public function setCurrentLegId(?int $currentLegId): static
-    {
-        $this->currentLegId = $currentLegId;
-
-        return $this;
-    }
-
-    public function getCurrentSetId(): ?int
-    {
-        return $this->currentSetId;
-    }
-
-    public function setCurrentSetId(?int $currentSetId): static
-    {
-        $this->currentSetId = $currentSetId;
-
-        return $this;
-    }
-
+    /**
     /**
      * @return Collection<int, GameSet>
      */
@@ -329,5 +321,35 @@ abstract class Game
         }
 
         return $mode[static::class] ?? 'unknown';
+    }
+
+    /**
+     * @return Collection<int, GameTally>
+     */
+    public function getTally(): Collection
+    {
+        return $this->tally;
+    }
+
+    public function addTally(GameTally $tally): static
+    {
+        if (!$this->tally->contains($tally)) {
+            $this->tally->add($tally);
+            $tally->setGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTally(GameTally $tally): static
+    {
+        if ($this->tally->removeElement($tally)) {
+            // set the owning side to null (unless already changed)
+            if ($tally->getGame() === $this) {
+                $tally->setGame(null);
+            }
+        }
+
+        return $this;
     }
 }

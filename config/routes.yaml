@@ -146,9 +146,9 @@ api_get_game_by_id:
   requirements:
     id: '\d+'
 
-api_create_game:
+api_game_create:
   path: '/api/game/create'
-  controller: 'App\Controller\GameController::createGame'
+  controller: 'App\Controller\NewGameController::createGame'
   methods: ['POST']
 
 api_save_game:
@@ -160,3 +160,11 @@ api_to_throw_game:
   path: '/api/game/to-throw'
   controller: 'App\Controller\GameController::setToThrow'
   methods: ['POST']
+
+api_get_tally:
+  path: '/api/game/id/{gameId}/player/id/{playerId}'
+  controller: 'App\Controller\TallyController::getTally'
+  methods: ['GET']
+  requirements:
+    gameId: '\d+'
+    playerId: '\d+'
