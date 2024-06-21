@@ -94,20 +94,35 @@ class GameController extends AbstractController
         return $this->json(['success' => $success]);
     }
 
+    // TODO: Rename api_to_throw_game to api_game_to-throw
     #[Route('/api/game/to-throw', name: 'api_to_throw_game', methods: ['POST'])]
     public function setToThrow(Request $request, HubInterface $hub): Response
     {
         $data = json_decode($request->getContent(), true);
-        $game = $this->entityManager->getRepository(Game::class)->find($data['gameId']);
-        $game->setToThrowPlayerId($data['playerId']);
+        $gameId = $data['gameId'];
+        $game = $this->entityManager->getRepository(Game::class)->find($gameId);
+
+        $toThrowPlayerId = $game->getToThrowPlayerId();
+        $newToThrowPlayerId = null;
+        $player1Id = $game->getPlayer1Id();
+        $player2Id = $game->getPlayer2Id();
+
+        if ($toThrowPlayerId == $player1Id) {
+            $game->setToThrowPlayerId($player2Id);
+            $newToThrowPlayerId = $player2Id;
+        } elseif ($toThrowPlayerId == $player2Id) {
+            $game->setToThrowPlayerId($player1Id);
+            $newToThrowPlayerId = $player1Id;
+        }
+
         $this->entityManager->flush();
 
-        $updateUrl = 'https://vllr.lu/game/' . $data['gameId'];
+        $updateUrl = 'https://vllr.lu/game/' . $gameId;
         $update = new Update(
             $updateUrl,
             json_encode([
                 'eventType' => 'throw',
-                'toThrowPlayerId' => $data['playerId'],
+                'toThrowPlayerId' => $newToThrowPlayerId,
             ])
         );
 

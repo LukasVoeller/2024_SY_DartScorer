@@ -112,25 +112,18 @@ class ScoreController extends AbstractController
     public function undoScore(Request $request, HubInterface $hub, ScoreRepository $scoreRepository): Response
     {
         $data = json_decode($request->getContent(), true);
+        $gameId = $data['gameId'];
         $playerId = $data['playerId'];
         $switchToThrow = $data['switchToThrow'];
-        //$undoScore = $data['undoScore'] ?? null;
 
-        $game = $this->entityManager->getRepository(Game::class)->find($data['gameId']);
-        $legId = $game->getCurrentLegId();
+        $game = $this->entityManager->getRepository(Game::class)->find($gameId );
+        $tally = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $playerId);
+        $legId = $tally->getLegId();
         $latestScore = $scoreRepository->findLatestScoreByPlayerIdAndLegId($playerId, $legId);
 
-        if ($game->getPlayer1Id() == $data['playerId']) {
-            $newTotalScore = $game->getCurrentScorePlayer1() + $latestScore->getValue();
-
-            $game->setCurrentScorePlayer1($newTotalScore);
-            $game->setToThrowPlayerId($game->getPlayer2Id());
-        } elseif ($game->getPlayer2Id() == $data['playerId']) {
-            $newTotalScore = $game->getCurrentScorePlayer2() + $latestScore->getValue();
-
-            $game->setCurrentScorePlayer2($newTotalScore);
-            $game->setToThrowPlayerId($game->getPlayer1Id());
-        }
+        $newTotalScore = $tally->getScore() + $latestScore->getValue();
+        $tally->setScore($newTotalScore);
+        $game->setToThrowPlayerId($game->getPlayer2Id());
 
         if (!$latestScore) {
             return new JsonResponse(['error' => 'No score found to delete.'], Response::HTTP_NOT_FOUND);

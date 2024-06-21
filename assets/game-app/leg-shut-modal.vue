@@ -46,6 +46,8 @@ export default {
   data() {
     return {
       dartsForCheckout: 3,
+      winnerPlayerId: 0,
+      looserPlayerId: 0,
       scores: [],
       checkout: 0,
       average: 0,
@@ -54,11 +56,12 @@ export default {
   },
 
   created() {
-    EventBus.on('show-leg-shut-modal', (payload) => {
-      // Reset dartsForCheckout to default
+    EventBus.on('show-leg-shut-modal', (thrownScores, winnerPlayerId, looserPlayerId) => {
       this.dartsForCheckout = 3;
+      this.winnerPlayerId = winnerPlayerId;
+      this.looserPlayerId = looserPlayerId;
       const modal = new bootstrap.Modal(document.getElementById('legShutModal'));
-      this.scores = payload; // Set the data passed to the modal
+      this.scores = thrownScores;
       this.checkout = this.scores[0];
       this.calculateAverage();
       modal.show();
@@ -96,7 +99,7 @@ export default {
 
     confirmModal() {
       //const modal = new bootstrap.Modal(document.getElementById('legShutModal'));
-      EventBus.emit('leg-shut-modal-confirmed', this.dartsForCheckout, this.average);
+      EventBus.emit('leg-shut-modal-confirmed', this.dartsForCheckout, this.average, this.winnerPlayerId, this.looserPlayerId);
     },
 
     resumeModal() {

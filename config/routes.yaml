@@ -168,3 +168,8 @@ api_get_tally:
   requirements:
     gameId: '\d+'
     playerId: '\d+'
+
+api_tally_update:
+  path: '/api/tally/update'
+  controller: 'App\Controller\TallyController::updateTally'
+  methods: ['POST']
