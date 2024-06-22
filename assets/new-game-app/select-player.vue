@@ -75,9 +75,9 @@ export default defineComponent({
   data() {
     return {
       players: [] as Player[],
-      selectedPlayer1Id: 0 as Number,
-      selectedPlayer2Id: 0 as Number,
-      selectedPlayerStartingId: 0 as Number,
+      selectedPlayer1Id: 1 as Number,
+      selectedPlayer2Id: 2 as Number,
+      selectedPlayerStartingId: 1 as Number,
       newPlayerName: '' as String,
       alertShow: false as Boolean,
       alertMessage: '' as String,
@@ -117,9 +117,11 @@ export default defineComponent({
     emitPlayer1Id() {
       this.$emit('update:selectedPlayer1Id', Number(this.selectedPlayer1Id));
     },
+
     emitPlayer2Id() {
       this.$emit('update:selectedPlayer2Id', Number(this.selectedPlayer2Id));
     },
+
     emitPlayerStartingId() {
       console.log("emitPlayerStartingId")
       this.$emit('update:selectedPlayerStartingId', Number(this.selectedPlayerStartingId));
@@ -162,7 +164,7 @@ export default defineComponent({
                 this.selectedPlayer2Id = response.data.id;
               }
 
-              this.emitPlayer1Id()
+              //this.emitPlayer1Id()
               this.fetchPlayers();
               this.newPlayerName = '';
 
@@ -216,13 +218,17 @@ export default defineComponent({
 
     selectedPlayer1Id(newVal) {
       if (newVal) {
+        this.emitPlayer1Id();
         this.selectedPlayerStartingId = newVal;
-        this.emitPlayerStartingId()
+        this.emitPlayerStartingId();
       }
       this.refreshSelectPickers();
     },
 
-    selectedPlayer2Id() {
+    selectedPlayer2Id(newVal) {
+      if (newVal) {
+        this.emitPlayer2Id();
+      }
       this.refreshSelectPickers();
     },
 

@@ -54,15 +54,19 @@ class TallyController extends AbstractController
         $gameId = $data['gameId'];
         $playerId = $data['playerId'];
         $score = $data['score'];
+        $legId = $data['legId'];
+        $setId = $data['setId'];
         $legsWon = $data['legsWon'];
         $setsWon = $data['setsWon'];
 
         $tally = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $playerId);
         $tally->setScore($score);
+        $tally->setLegId($legId);
+        $tally->setSetId($setId);
         $tally->setLegsWon($legsWon);
         $tally->setSetsWon($setsWon);
 
-        $this->entityManager->persist($tally);
+        //$this->entityManager->persist($tally);
         $this->entityManager->flush();
 
         return $this->json($data);

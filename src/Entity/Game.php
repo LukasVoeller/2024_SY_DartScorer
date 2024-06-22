@@ -99,7 +99,7 @@ abstract class Game
     /**
      * @var Collection<int, GameTally>
      */
-    #[ORM\OneToMany(targetEntity: GameTally::class, mappedBy: 'gameId', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: GameTally::class, mappedBy: 'game', orphanRemoval: true)]
     private Collection $tally;
 
     public function __construct()

@@ -103,16 +103,15 @@ class GameController extends AbstractController
         $game = $this->entityManager->getRepository(Game::class)->find($gameId);
 
         $toThrowPlayerId = $game->getToThrowPlayerId();
-        $newToThrowPlayerId = null;
         $player1Id = $game->getPlayer1Id();
         $player2Id = $game->getPlayer2Id();
 
         if ($toThrowPlayerId == $player1Id) {
-            $game->setToThrowPlayerId($player2Id);
             $newToThrowPlayerId = $player2Id;
+            $game->setToThrowPlayerId($newToThrowPlayerId);
         } elseif ($toThrowPlayerId == $player2Id) {
-            $game->setToThrowPlayerId($player1Id);
             $newToThrowPlayerId = $player1Id;
+            $game->setToThrowPlayerId($newToThrowPlayerId);
         }
 
         $this->entityManager->flush();

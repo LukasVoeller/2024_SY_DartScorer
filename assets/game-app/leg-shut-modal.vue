@@ -6,8 +6,8 @@
 
         <div class="modal-header">
           <div class="modal-title-wrapper">
-            <h1 style="color: black" class="modal-title fs-5">{{ checkout }} Checkout!</h1>
-            <p style="color: black; margin: 0px">Average: {{ average }}</p>
+            <h1 style="color: black" class="modal-title fs-5">{{ checkoutScore }} Checkout!</h1>
+            <p style="color: black; margin: 0px">Average: {{ checkoutAverage }}</p>
             <p style="color: black; margin: 0px">Darts: {{ darts }}</p>
           </div>
         </div>
@@ -16,13 +16,13 @@
           <p style="color: black">How many darts were needed?</p>
 
           <div class="btn-group" role="group" aria-label="Basic radio toggle button group" style="width: 100%">
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" v-model="dartsForCheckout" :disabled="oneDartCheckoutDisabled" value="1">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" v-model="checkoutDartCount" :disabled="oneDartCheckoutDisabled" value="1">
             <label class="btn btn-outline-dark" for="btnradio1">1</label>
 
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" v-model="dartsForCheckout" :disabled="threeDartsNeeded" value="2">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" v-model="checkoutDartCount" :disabled="threeDartsNeeded" value="2">
             <label class="btn btn-outline-dark" for="btnradio2">2</label>
 
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" v-model="dartsForCheckout" value="3" checked>
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" v-model="checkoutDartCount" value="3" checked>
             <label class="btn btn-outline-dark" for="btnradio3">3</label>
           </div>
         </div>
@@ -45,24 +45,24 @@ export default {
 
   data() {
     return {
-      dartsForCheckout: 3,
+      checkoutDartCount: 3,
       winnerPlayerId: 0,
       looserPlayerId: 0,
       scores: [],
-      checkout: 0,
-      average: 0,
+      checkoutScore: 0,
+      checkoutAverage: 0,
       darts: 0
     };
   },
 
   created() {
     EventBus.on('show-leg-shut-modal', (thrownScores, winnerPlayerId, looserPlayerId) => {
-      this.dartsForCheckout = 3;
+      this.checkoutDartCount = 3;
       this.winnerPlayerId = winnerPlayerId;
       this.looserPlayerId = looserPlayerId;
       const modal = new bootstrap.Modal(document.getElementById('legShutModal'));
       this.scores = thrownScores;
-      this.checkout = this.scores[0];
+      this.checkoutScore = this.scores[0];
       this.calculateAverage();
       modal.show();
     });
@@ -71,12 +71,12 @@ export default {
 
   computed: {
     threeDartsNeeded() {
-      return this.checkout > 110
+      return this.checkoutScore > 110
     },
 
     oneDartCheckoutDisabled() {
-      if (this.checkout % 2 === 0) {
-        return !(this.checkout === 50 || this.checkout <= 40);
+      if (this.checkoutScore % 2 === 0) {
+        return !(this.checkoutScore === 50 || this.checkoutScore <= 40);
       } else {
         return true;
       }
@@ -88,28 +88,26 @@ export default {
       if (this.scores.length > 0) {
         const sum = this.scores.reduce((acc, score) => acc + score, 0); // Sum all elements
         const darts = this.scores.length * 3
-        this.darts = darts - 3 + parseInt(this.dartsForCheckout);
+        this.darts = darts - 3 + parseInt(this.checkoutDartCount);
         const throws = this.scores.length;
-        //console.log("---> Sum: ", sum, " Darts: ", darts, " darts: ", this.darts, " throws: ", throws)
-        this.average = (sum / this.darts * 3).toFixed(1); // Calculate the average
+        this.checkoutAverage = (sum / this.darts * 3).toFixed(1); // Calculate the average
       } else {
-        this.average = 0; // Handle the case when there's no data
+        this.checkoutAverage = 0; // Handle the case when there's no data
       }
     },
 
     confirmModal() {
-      //const modal = new bootstrap.Modal(document.getElementById('legShutModal'));
-      EventBus.emit('leg-shut-modal-confirmed', this.dartsForCheckout, this.average, this.winnerPlayerId, this.looserPlayerId);
+      this.checkoutDartCount = parseInt(this.checkoutDartCount);
+      EventBus.emit('leg-shut-modal-confirmed', this.checkoutScore, this.checkoutDartCount, this.checkoutAverage, this.winnerPlayerId, this.looserPlayerId);
     },
 
     resumeModal() {
-      //const modal = new bootstrap.Modal(document.getElementById('legShutModal'));
-      EventBus.emit('leg-shut-modal-resumed');
+      EventBus.emit('leg-shut-modal-resumed', this.checkoutScore);
     }
   },
 
   watch: {
-    dartsForCheckout(newValue, oldValue) {
+    checkoutDartCount(newValue, oldValue) {
       this.calculateAverage(); // Recalculate when darts needed changes
     },
   },

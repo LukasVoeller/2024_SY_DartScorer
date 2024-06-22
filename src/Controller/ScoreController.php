@@ -48,6 +48,7 @@ class ScoreController extends AbstractController
         $playerId = $data['playerId'];
         $thrownScore = $data['thrownScore'];
         $thrownDarts = $data['thrownDarts'];
+        $isCheckout = $data['isCheckout'];
 
         $game = $this->entityManager->getRepository(Game::class)->find($gameId);
         $tally = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $playerId);
@@ -59,18 +60,17 @@ class ScoreController extends AbstractController
         $score->setPlayerId($playerId);
         $score->setValue($thrownScore);
         $score->setDartsThrown($thrownDarts);
+        $score->setCheckout($isCheckout);
 
         $currentScore = $tally->getScore();
         if ($currentScore - $thrownScore >= 2){                                              // Scoring
             $newTotalScore = $currentScore - $thrownScore;
             $tally->setScore($newTotalScore);
-            $game->setToThrowPlayerId($game->getPlayer2Id());
             $this->sendUpdate($gameId, $playerId, $thrownScore, $newTotalScore, 'confirm', $hub);
         } elseif ($currentScore - $thrownScore == 0){                                        // Checkout
             $newTotalScore = $currentScore - $thrownScore;
-            $tally->setScore($newTotalScore);
-            $game->setToThrowPlayerId($game->getPlayer2Id());
-            $this->sendUpdate($gameId, $playerId, $thrownScore, $newTotalScore, 'checkout', $hub);
+            //$tally->setScore($newTotalScore);
+            $this->sendUpdate($gameId, $playerId, $thrownScore, $newTotalScore, 'checkoutScore', $hub);
         }
 
         $this->entityManager->persist($score);
@@ -121,9 +121,8 @@ class ScoreController extends AbstractController
         $legId = $tally->getLegId();
         $latestScore = $scoreRepository->findLatestScoreByPlayerIdAndLegId($playerId, $legId);
 
-        $newTotalScore = $tally->getScore() + $latestScore->getValue();
+        $newTotalScore = $tally->getScore();
         $tally->setScore($newTotalScore);
-        $game->setToThrowPlayerId($game->getPlayer2Id());
 
         if (!$latestScore) {
             return new JsonResponse(['error' => 'No score found to delete.'], Response::HTTP_NOT_FOUND);
@@ -147,8 +146,6 @@ class ScoreController extends AbstractController
 
         return $this->json($data);
     }
-
-
 
     /*
     #[Route('/api/score/delete-latest', name: 'api_delete_latest_score')]

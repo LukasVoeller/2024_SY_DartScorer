@@ -31,7 +31,7 @@ export default {
     # Output: [ [ 0, 50, 50 ],   [ 0, 60, 40 ],   [ 60, 2, 38 ] ]
     #
     # Focus on as few darts as possible to check out
-    # Focus on highest checkout doubles 50, 40, 38, ...
+    # Focus on highest checkoutScore doubles 50, 40, 38, ...
     # Show only one Bull-Checkout
     */
     calculate_checkouts(score) {
@@ -129,7 +129,7 @@ export default {
     # Input: 0, 50, 40
     # Output: BULL, D20
     #
-    # Returns the checkout as a string
+    # Returns the checkoutScore as a string
     */
     stringify_checkout(f, s, c) {
       let f_s, s_s, c_s;

@@ -47,13 +47,13 @@ class GameTally
     #[Groups(['tally'])]
     private ?int $setId = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(nullable: false)]
     #[Groups(['tally'])]
-    private ?int $legsWon = null;
+    private ?int $legsWon = 0;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(nullable: false)]
     #[Groups(['tally'])]
-    private ?int $setsWon = null;
+    private ?int $setsWon = 0;
 
     public function getId(): ?int
     {

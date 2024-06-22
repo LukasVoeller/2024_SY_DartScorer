@@ -64,6 +64,8 @@ class NewGameController extends AbstractController
         $game->setState("Live");
         $game->setType("Match");
 
+        //dump($game);
+
         $tallyPlayer1->setScore($data['startScore']);
         $tallyPlayer2->setScore($data['startScore']);
         $tallyPlayer1->setPlayerId($data['player1Id']);

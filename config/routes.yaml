@@ -173,3 +173,13 @@ api_tally_update:
   path: '/api/tally/update'
   controller: 'App\Controller\TallyController::updateTally'
   methods: ['POST']
+
+api_leg_create:
+  path: '/api/leg/create'
+  controller: 'App\Controller\LegController::createLeg'
+  methods: ['POST']
+
+api_leg_update:
+  path: '/api/leg/update'
+  controller: 'App\Controller\LegController::updateLeg'
+  methods: ['POST']

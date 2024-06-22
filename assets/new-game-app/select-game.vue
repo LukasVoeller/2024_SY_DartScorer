@@ -174,7 +174,7 @@ export default defineComponent({
   data() {
     return {
       selectedGameMode: "X01" as String,
-      selectedStartScoreX01: 501 as Number,
+      selectedStartScoreX01: 101 as Number,
       selectedFinishType: "Double" as String,
       selectedStartScoreCricket: 0 as Number,
       selectedStartScoreShanghai: 0 as Number,

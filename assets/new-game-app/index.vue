@@ -70,9 +70,9 @@ export default defineComponent({
 
       // PlayerSelection
       //players: [] as Player[],
-      selectedPlayer1Id: 0 as Number,
-      selectedPlayer2Id: 0 as Number,
-      selectedPlayerStartingId: 0 as Number,
+      selectedPlayer1Id: 1 as Number,
+      selectedPlayer2Id: 2 as Number,
+      selectedPlayerStartingId: 1 as Number,
       //newPlayerName: '' as String,
       //showAlert: false as Boolean,
       //alertMessage: '' as String,
@@ -80,7 +80,7 @@ export default defineComponent({
 
       // Game Selection
       selectedGameMode: "X01" as String,
-      selectedStartScoreX01: 501 as Number,
+      selectedStartScoreX01: 101 as Number,
       selectedStartScoreCricket: 0 as Number,
       selectedStartScoreShanghai: 0 as Number,
       selectedFinishType: "Double" as String,

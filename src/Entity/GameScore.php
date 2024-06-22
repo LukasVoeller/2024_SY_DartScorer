@@ -41,6 +41,10 @@ class GameScore
     #[Groups(['score'])]
     private ?int $dartsThrown;
 
+    #[ORM\Column(nullable: false)]
+    #[Groups(['score'])]
+    private ?bool $checkout = false;
+
     #[ORM\Column(nullable: true)]
     private ?int $dart1 = null;
 
@@ -99,6 +103,18 @@ class GameScore
     public function setDartsThrown(int $darts): static
     {
         $this->dartsThrown = $darts;
+
+        return $this;
+    }
+
+    public function getCheckout(): ?bool
+    {
+        return $this->checkout;
+    }
+
+    public function setCheckout(bool $checkout): static
+    {
+        $this->checkout = $checkout;
 
         return $this;
     }
