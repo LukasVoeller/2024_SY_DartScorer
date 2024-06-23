@@ -20,6 +20,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: GameTallyRepository::class)]
 class GameTally
 {
+    // TODO: Add to_throw
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

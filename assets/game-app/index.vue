@@ -45,6 +45,7 @@
  # - If I start and check, Player2 is to throw first
  # - Don't allow input of impossible numbers blow 180
  # - Reset score after resume on "How many darts needed?"
+ # - ToThrow after break played?
  */
 
 // TODO: unify this.game.id and this.gameId

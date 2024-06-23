@@ -163,13 +163,14 @@ axios.interceptors.request.use(config => {
 
 import axios from 'axios';
 import { VueSpinnerDots } from "vue3-spinners";
+import {defineComponent} from "vue";
 
 interface Player {
   id: number;
   name: string;
 }
 
-export default {
+export default defineComponent({
   name: 'HomeComponent',
 
   components: {
@@ -197,7 +198,7 @@ export default {
       window.location.href = '/new-game'; // This will cause the browser to navigate to the new game page
     },
 
-    formatDate(dateString) {
+    formatDate(dateString: string) {
       const date = new Date(dateString);
       const day = String(date.getDate()).padStart(2, '0');
       const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -205,7 +206,7 @@ export default {
       return `${day}.${month}.${year}`;
     },
 
-    viewGame(id) {
+    viewGame(id: Number) {
       window.location.href = `/game/${id}`;
     },
 
@@ -261,7 +262,7 @@ export default {
       return player ? player.name : 'Unknown';
     }
   }
-}
+})
 </script>
 <script setup lang="ts">
 </script>
