@@ -104,7 +104,8 @@
           <div style="padding: 10px 0;">
             <i class="bi bi-trophy-fill" style="color: goldenrod"></i>
           </div>
-          Average
+          Average<br>
+          Score
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item" style="background-color: #343E4C; color: white">
@@ -119,7 +120,8 @@
           <div style="text-align: center; padding: 10px 0;">
             <i class="bi bi-trophy-fill" style="color: goldenrod"></i>
           </div>
-          Avg. CO
+          Average<br>
+          Checkout
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item" style="background-color: #343E4C; color: white">
@@ -134,7 +136,8 @@
           <div style="text-align: center; padding: 10px 0;">
             <i class="bi bi-trophy-fill" style="color: goldenrod"></i>
           </div>
-          Darts 501
+          Darts<br>
+          501
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item" style="background-color: #343E4C; color: white">

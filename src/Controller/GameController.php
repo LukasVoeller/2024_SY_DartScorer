@@ -116,16 +116,16 @@ class GameController extends AbstractController
 
         $this->entityManager->flush();
 
-        $updateUrl = 'https://vllr.lu/game/' . $gameId;
-        $update = new Update(
-            $updateUrl,
-            json_encode([
-                'eventType' => 'throw',
-                'toThrowPlayerId' => $newToThrowPlayerId,
-            ])
-        );
-
-        $hub->publish($update);
+//        $updateUrl = 'https://vllr.lu/game/' . $gameId;
+//        $update = new Update(
+//            $updateUrl,
+//            json_encode([
+//                'eventType' => 'throw',
+//                'toThrowPlayerId' => $newToThrowPlayerId,
+//            ])
+//        );
+//
+//        $hub->publish($update);
 
         return $this->json(['success' => true]);
     }

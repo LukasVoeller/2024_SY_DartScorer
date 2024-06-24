@@ -7,10 +7,13 @@
     }">
       <div class="row">
         <div class="col-7 p-0">
-          <h5 :style="{
-            color: toThrow ? 'white' : 'black'
+          <nobr  :style="{
+            color: toThrow ? 'white' : 'black',
           }">
-            {{ playerName }}</h5>
+            {{ playerName }}</nobr>&nbsp;
+          <i class="bi bi-circle-fill"
+             v-if="startingPlayer"
+             style="font-size: 7pt; vertical-align: 2px;"></i>
         </div>
         <div class="col-5 text-end p-0">
           <p>
@@ -96,6 +99,7 @@ export default {
     legAverage: String,
     gameAverage: String,
     toThrow: Boolean,
+    startingPlayer: Boolean,
     dartsThrown: Number,
     sets: Number,
     legs: Number

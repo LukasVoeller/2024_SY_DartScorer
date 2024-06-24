@@ -181,7 +181,7 @@ export default defineComponent({
       selectedMatchMode: "FirstToLegs" as String,
       selectedMatchModeSets: 2 as Number,
       selectedMatchModeSetsLegs: 2 as Number,
-      selectedMatchModeLegs: 1 as Number,
+      selectedMatchModeLegs: 3 as Number,
     }
   },
 
