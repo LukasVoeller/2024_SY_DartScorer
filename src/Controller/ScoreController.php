@@ -99,7 +99,7 @@ class ScoreController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-//        $game = $this->entityManager->getRepository(Game::class)->find($data['gameId']);
+        //$game = $this->entityManager->getRepository(Game::class)->find($data['gameId']);
 
         $tally = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($data['gameId'], $data['playerId']);
         $currentLegId = $tally->getLegId();
@@ -118,18 +118,18 @@ class ScoreController extends AbstractController
         $playerId = $data['playerId'];
         $switchToThrow = $data['switchToThrow'];
 
-        $game = $this->entityManager->getRepository(Game::class)->find($gameId );
+        //$game = $this->entityManager->getRepository(Game::class)->find($gameId );
         $tally = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $playerId);
         $legId = $tally->getLegId();
-        $latestScore = $scoreRepository->findLatestScoreByPlayerIdAndLegId($playerId, $legId);
+        $lastScore = $scoreRepository->findLatestScoreByPlayerIdAndLegId($playerId, $legId);
 
-        $newTotalScore = $tally->getScore();
+        $newTotalScore = $tally->getScore() + $lastScore->getValue();
         $tally->setScore($newTotalScore);
 
-        if (!$latestScore) {
+        if (!$lastScore) {
             return new JsonResponse(['error' => 'No score found to delete.'], Response::HTTP_NOT_FOUND);
         }
-        $this->entityManager->remove($latestScore);
+        $this->entityManager->remove($lastScore);
 
         $this->entityManager->flush();
 

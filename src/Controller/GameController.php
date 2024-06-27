@@ -17,6 +17,7 @@ use App\Entity\Game;
 use App\Entity\GameLeg;
 use App\Entity\GameScore;
 use App\Entity\GameSet;
+use App\Entity\GameTally;
 use App\Entity\GameTypeX01;
 use App\Entity\Player;
 use Doctrine\ORM\EntityManagerInterface;
@@ -95,6 +96,7 @@ class GameController extends AbstractController
     }
 
     // TODO: Rename api_to_throw_game to api_game_to-throw
+    // TODO: Move to GameTallyController
     #[Route('/api/game/to-throw', name: 'api_to_throw_game', methods: ['POST'])]
     public function setToThrow(Request $request, HubInterface $hub): Response
     {
@@ -102,30 +104,47 @@ class GameController extends AbstractController
         $gameId = $data['gameId'];
         $game = $this->entityManager->getRepository(Game::class)->find($gameId);
 
-        $toThrowPlayerId = $game->getToThrowPlayerId();
         $player1Id = $game->getPlayer1Id();
         $player2Id = $game->getPlayer2Id();
 
-        if ($toThrowPlayerId == $player1Id) {
-            $newToThrowPlayerId = $player2Id;
-            $game->setToThrowPlayerId($newToThrowPlayerId);
-        } elseif ($toThrowPlayerId == $player2Id) {
-            $newToThrowPlayerId = $player1Id;
-            $game->setToThrowPlayerId($newToThrowPlayerId);
+        $tallyPlayer1 = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $player1Id);
+        $tallyPlayer2 = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $player2Id);
+
+        if ($tallyPlayer1->getToThrow()) {
+            $tallyPlayer1->setToThrow(false);
+            $tallyPlayer2->setToThrow(true);
+        } elseif ($tallyPlayer2->getToThrow()) {
+            $tallyPlayer2->setToThrow(false);
+            $tallyPlayer1->setToThrow(true);
         }
 
         $this->entityManager->flush();
 
-//        $updateUrl = 'https://vllr.lu/game/' . $gameId;
-//        $update = new Update(
-//            $updateUrl,
-//            json_encode([
-//                'eventType' => 'throw',
-//                'toThrowPlayerId' => $newToThrowPlayerId,
-//            ])
-//        );
-//
-//        $hub->publish($update);
+        return $this->json(['success' => true]);
+    }
+
+    #[Route('/api/game/to-start-leg', name: 'api_to_start_leg', methods: ['POST'])]
+    public function setToStartLeg(Request $request, HubInterface $hub): Response
+    {
+        $data = json_decode($request->getContent(), true);
+        $gameId = $data['gameId'];
+        $game = $this->entityManager->getRepository(Game::class)->find($gameId);
+
+        $player1Id = $game->getPlayer1Id();
+        $player2Id = $game->getPlayer2Id();
+
+        $tallyPlayer1 = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $player1Id);
+        $tallyPlayer2 = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $player2Id);
+
+        if ($tallyPlayer1->getStartedLeg()) {
+            $tallyPlayer1->setStartedLeg(false);
+            $tallyPlayer2->setStartedLeg(true);
+        } elseif ($tallyPlayer2->getStartedLeg()) {
+            $tallyPlayer2->setStartedLeg(false);
+            $tallyPlayer1->setStartedLeg(true);
+        }
+
+        $this->entityManager->flush();
 
         return $this->json(['success' => true]);
     }

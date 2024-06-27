@@ -1,7 +1,7 @@
 <template>
   <div class="row px-1">
     <div class="col p-1">
-      <button id="btn-undo" type="button" class="btn btn-light custom-btn-score-row">
+      <button id="btn-undo" type="button" class="btn btn-light custom-btn-score-row" :disabled="disableThrowButton">
         <i class="bi bi-arrow-counterclockwise"></i>
         {{ undoButtonText }}
       </button>
@@ -78,6 +78,7 @@ export default {
     player2ToThrow: Boolean,
     player1LastScores: Array,
     player2LastScores: Array,
+    disableThrowButton: Boolean,
   },
 
   data() {

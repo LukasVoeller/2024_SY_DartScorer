@@ -161,6 +161,11 @@ api_to_throw_game:
   controller: 'App\Controller\GameController::setToThrow'
   methods: ['POST']
 
+api_to_start_leg:
+  path: '/api/game/to-start-leg'
+  controller: 'App\Controller\GameController::setToStartLeg'
+  methods: [ 'POST' ]
+
 api_get_tally:
   path: '/api/game/id/{gameId}/player/id/{playerId}'
   controller: 'App\Controller\TallyController::getTally'

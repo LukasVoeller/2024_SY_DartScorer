@@ -57,6 +57,14 @@ class GameTally
     #[Groups(['tally'])]
     private ?int $setsWon = 0;
 
+    #[ORM\Column(nullable: false)]
+    #[Groups(['tally'])]
+    private ?bool $startedLeg = false;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['tally'])]
+    private ?bool $toThrow = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -149,6 +157,30 @@ class GameTally
     public function setSetsWon(?int $setsWon): static
     {
         $this->setsWon = $setsWon;
+
+        return $this;
+    }
+
+    public function getStartedLeg(): ?bool
+    {
+        return $this->startedLeg;
+    }
+
+    public function setStartedLeg(bool $startedLeg): static
+    {
+        $this->startedLeg = $startedLeg;
+
+        return $this;
+    }
+
+    public function getToThrow(): ?bool
+    {
+        return $this->toThrow;
+    }
+
+    public function setToThrow(?bool $toThrow): static
+    {
+        $this->toThrow = $toThrow;
 
         return $this;
     }

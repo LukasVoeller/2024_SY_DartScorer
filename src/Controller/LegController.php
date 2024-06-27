@@ -43,7 +43,7 @@ class LegController extends AbstractController
         $this->entityManager->persist($leg);
         $this->entityManager->flush();
 
-        return $this->json($data);
+        return $this->json(['legId' => $leg->getId()]);
     }
 
     #[Route('/api/leg/update', name: 'api_leg_update')]

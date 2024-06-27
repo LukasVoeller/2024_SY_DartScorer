@@ -29,7 +29,8 @@
                       :player1ToThrow="toThrowPlayerId === player1.id"
                       :player2ToThrow="toThrowPlayerId === player2.id"
                       :player1LastScores="this.player1.lastScores"
-                      :player2LastScores="this.player2.lastScores"/>
+                      :player2LastScores="this.player2.lastScores"
+                      :disableThrowButton="disableThrowButton"/>
 
   <LegShutModalComponent/>
 
@@ -142,6 +143,14 @@ export default {
   },
 
   computed: {
+    disableThrowButton() {
+      const hasLegsOrSets = (this.player1.legs > 0 || this.player2.legs > 0 || this.player1.sets > 0 || this.player2.sets > 0);
+      const bothLastScoresZero = (this.player1.lastScores.length === 0 && this.player2.lastScores.length === 0);
+
+      // Disable button if either player has legs or sets, and both players don't have scores
+      return hasLegsOrSets && bothLastScoresZero;
+    },
+
     player1LegAverage() {
       const totalScores = this.player1.lastScores.reduce((acc, score) => acc + score, 0);  // Sum the scores
       const scoreCount = this.player1.lastScores.length;  // Get the count of scores
@@ -176,11 +185,11 @@ export default {
 
       // Don't switch to throw if break of throw
       if (this.toThrowPlayerId !== this.startingPlayerId) {
-        console.log("--- BREAK OF THROW ---")
+        //console.log("--- BREAK OF THROW ---")
         this.startingPlayerId = this.toThrowPlayerId;
         this.apiConfirmScore(this.gameId, this.toThrowPlayerId, checkoutScore, checkoutDartCount, false, true);
       } else {
-        console.log("--- SWITCH TO THROW ---")
+        //console.log("--- SWITCH TO THROW ---")
         this.apiConfirmScore(this.gameId, this.toThrowPlayerId, checkoutScore, checkoutDartCount, true, true);
       }
 
@@ -263,19 +272,13 @@ export default {
 
         switch (data.eventType) {
           case 'checkout':
-             console.log("PUBLISH RECEIVED - CHECKOUT: ", data);
-          //   this.setPlayerScore(data.playerId, data.newTotalScore);
-          //   break;
-          //   if (data.switchToTrow) {
-          //     this.apiSwitchToThrow(this.gameId)
-          //   }
-
-
             // Create new legs / set
             if (this.gameState !== "Finished") {
               if (this.game.matchMode === "FirstToLegs") {
 
                 this.apiCreateLeg(this.gameId, null);
+                // TODO: Split apiUpdateTally to apiUpdateTallyScores and apiUpdateTallyLeg
+                // TODO: Call apiUpdateTallyLeg in apiCreateLeg
                 this.apiUpdateTally(this.gameId, this.player1.id, this.player1.startScore, this.player1.currentLegId, this.player1.currentSetId, this.player1.legs, this.player1.sets);
                 this.apiUpdateTally(this.gameId, this.player2.id, this.player2.startScore, this.player2.currentLegId, this.player2.currentSetId, this.player2.legs, this.player2.sets);
                 this.resetScores();
@@ -287,22 +290,17 @@ export default {
               // Game finished
             }
 
+            this.apiSwitchToStartLeg(this.gameId);
+
             if (data.switchToTrow) {
-              this.apiSwitchToThrow(this.gameId, () => {
+              this.apiSwitchToThrow(this.gameId,() => {
                 this.startingPlayerId = this.toThrowPlayerId;
               });
             }
 
-            // if (data.switchToTrow){
-            //   this.apiSwitchToThrow(this.gameId)
-            // }
-            // this.startingPlayerId = this.toThrowPlayerId;
-
-            //console.log("PLAYER 1 DISPLAY SCORE: ", this.player1.displayScore)
-            //console.log("PLAYER 2 DISPLAY SCORE: ", this.player2.displayScore)
-                break;
+            break;
           case 'confirm':
-            console.log("PUBLISH RECEIVED - CONFIRM: ", data);
+            //console.log("PUBLISH RECEIVED - CONFIRM: ", data);
             this.setPlayerScore(data.playerId, data.newTotalScore);
             this.addPlayerLastScore(data.playerId, data.thrownScore);
             this.addPlayerLastThrownDarts(data.playerId, 3);
@@ -312,14 +310,13 @@ export default {
             }
             break;
           case 'undo':
-            //console.log("PUBLISH RECEIVED - UNDO: ", data);
+            console.log("PUBLISH RECEIVED - UNDO: ", data);
             this.setPlayerScore(data.playerId, data.newTotalScore);
             this.removePlayerLastScore(data.playerId);
-            this.apiSwitchToThrow(this.gameId)
+            if (data.switchToThrow) {
+              this.apiSwitchToThrow(this.gameId)
+            }
             break;
-          // case 'throw':
-          //   //console.log("PUBLISH RECEIVED - THROW: ", data);
-          //
         }
       };
     },
@@ -396,18 +393,24 @@ export default {
     },
 
     undoScore(score) {
-      if (this.player1.lastScores.length === 0 && this.player2.lastScores.length === 0) {
+      console.log("Player 1 last scores: ", this.player1.lastScores)
+      console.log("Player 2 last scores: ", this.player2.lastScores)
+      // Switch to throw
+      if (this.player1.lastScores.length === 0 && this.player2.lastScores.length === 0 &&
+          this.player1.legs === 0 && this.player2.legs === 0) {
         if (this.eventSourceState === 1) {
-          //console.log("-----> ", this.gameId)
+          console.log("--- UNDO SWITCH TO THROW ---")
+          this.apiSwitchToStartLeg(this.gameId);
           this.apiSwitchToThrow(this.gameId, () => {
             this.startingPlayerId = this.toThrowPlayerId;
           });
-          //this.apiSetPlayerToThrow(this.game.id, this.getNotToThrowPlayerId())
         }
-      } else {
+      // Undo score
+      } else if (this.player1.lastScores.length > 0 || this.player2.lastScores.length > 0) {
+        console.log("--- UNDO UNDO SCORE ---")
         this.clearScore(score);
         const playerId = this.getNotToThrowPlayerId();
-          this.apiUndoScore(this.game.id, playerId, true);
+        this.apiUndoScore(this.game.id, playerId, true);
       }
     },
 
@@ -692,8 +695,6 @@ export default {
         gameId: gameId,
       };
 
-      //console.log("apiSwitchToThrow: ", postData)
-
       axios.post('/api/game/to-throw', postData)
           .then(response => {
             //console.log("Switch to throw successfully.");
@@ -707,6 +708,23 @@ export default {
           });
     },
 
+    apiSwitchToStartLeg(gameId, callback) {
+      const postData = {
+        gameId: gameId,
+      };
+
+      axios.post('/api/game/to-start-leg', postData)
+          .then(response => {
+
+            if (callback && typeof callback === 'function') {
+              callback();  // Execute the callback if provided
+            }
+          })
+          .catch(error => {
+            console.error('Error set to start leg:', error);
+          });
+    },
+
     apiCreateLeg(gameId, setId) {
       const postData = {
         gameId: gameId,
@@ -715,7 +733,11 @@ export default {
 
       axios.post('/api/leg/create', postData)
           .then(response => {
-            //console.log("Leg created successfully.");
+            this.player1.currentLegId = response.data.legId
+            this.player2.currentLegId = response.data.legId
+
+            console.log("Leg created successfully.");
+            console.log(response.data);
           })
           .catch(error => {
             console.error('Error creating leg:', error);
@@ -796,6 +818,12 @@ export default {
             this.setPlayerScore(playerId, response.data.score);
             this.setPlayerLegSetWon(playerId, response.data.legsWon, response.data.setsWon);
             this.setPlayerLegSetId(playerId, response.data.legId, response.data.setId);
+            if (response.data.toThrow) {
+              this.toThrowPlayerId = response.data.playerId;
+            }
+            if (response.data.startedLeg) {
+              this.startingPlayerId = response.data.playerId;
+            }
             //console.log("------ TALLY: ", response.data)
           })
           .catch(error => {

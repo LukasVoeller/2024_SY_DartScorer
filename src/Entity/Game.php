@@ -46,10 +46,6 @@ abstract class Game
     #[Groups(['game'])]
     private ?int $player2Id;
 
-    #[ORM\Column(nullable: false)]
-    #[Groups(['game'])]
-    private ?int $startingPlayerId;
-
     #[ORM\Column(nullable: true)]
     #[Groups(['game'])]
     private ?int $winnerPlayerId = null;
@@ -73,10 +69,6 @@ abstract class Game
     #[ORM\Column(nullable: true)]
     #[Groups(['game'])]
     private ?int $matchModeLegsNeeded = null;
-
-    #[ORM\Column(nullable: true)]
-    #[Groups(['game'])]
-    private ?int $toThrowPlayerId = null;
 
     /**
      * @var Collection<int, GameSet>
@@ -151,18 +143,6 @@ abstract class Game
         return $this;
     }
 
-    public function getStartingPlayerId(): ?int
-    {
-        return $this->startingPlayerId;
-    }
-
-    public function setStartingPlayerId(int $startingPlayerId): static
-    {
-        $this->startingPlayerId = $startingPlayerId;
-
-        return $this;
-    }
-
     public function getWinnerPlayerId(): ?int
     {
         return $this->winnerPlayerId;
@@ -231,18 +211,6 @@ abstract class Game
     public function setMatchModeLegsNeeded(?int $matchModeLegsNeeded): static
     {
         $this->matchModeLegsNeeded = $matchModeLegsNeeded;
-
-        return $this;
-    }
-
-    public function getToThrowPlayerId(): ?int
-    {
-        return $this->toThrowPlayerId;
-    }
-
-    public function setToThrowPlayerId(?int $toThrowPlayerId): static
-    {
-        $this->toThrowPlayerId = $toThrowPlayerId;
 
         return $this;
     }

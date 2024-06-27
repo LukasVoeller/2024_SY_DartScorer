@@ -59,8 +59,8 @@ class NewGameController extends AbstractController
         $game->setMatchModeLegsNeeded($data['matchModeLegsNeeded']);
         $game->setPlayer1Id($data['player1Id']);
         $game->setPlayer2Id($data['player2Id']);
-        $game->setStartingPlayerId($data['playerStartingId']);
-        $game->setToThrowPlayerId($data['playerStartingId']);
+        //$game->setStartingPlayerId($data['playerStartingId']);
+        //$game->setToThrowPlayerId($data['playerStartingId']);
         $game->setState("Live");
         $game->setType("Match");
 
@@ -70,6 +70,14 @@ class NewGameController extends AbstractController
         $tallyPlayer2->setScore($data['startScore']);
         $tallyPlayer1->setPlayerId($data['player1Id']);
         $tallyPlayer2->setPlayerId($data['player2Id']);
+
+        if ($data['playerStartingId'] == $data['player1Id']) {
+            $tallyPlayer1->setStartedLeg(true);
+            $tallyPlayer1->setToThrow(true);
+        } elseif ($data['playerStartingId'] == $data['player2Id']) {
+            $tallyPlayer2->setStartedLeg(true);
+            $tallyPlayer2->setToThrow(true);
+        }
 
         if ($game->getMatchMode() == "FirstToLegs") {
             $leg = new GameLeg();

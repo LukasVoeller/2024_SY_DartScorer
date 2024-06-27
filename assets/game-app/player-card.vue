@@ -7,10 +7,11 @@
     }">
       <div class="row">
         <div class="col-7 p-0">
-          <nobr  :style="{
+          <span  :style="{
             color: toThrow ? 'white' : 'black',
+            'white-space': 'nowrap'
           }">
-            {{ playerName }}</nobr>&nbsp;
+            {{ playerName }}</span>&nbsp;
           <i class="bi bi-circle-fill"
              v-if="startingPlayer"
              style="font-size: 7pt; vertical-align: 2px;"></i>
