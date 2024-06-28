@@ -49,8 +49,6 @@
  # - ToThrow after break played?
  */
 
-// TODO: unify this.game.id and this.gameId
-
 axios.interceptors.request.use(config => {
   const token = localStorage.getItem('jwt_token');  // Retrieve JWT token from localStorage
   if (token) {
@@ -69,6 +67,39 @@ import Caller from './caller.vue';
 import axios from 'axios';
 import {EventBus} from '../event-bus';
 
+import {
+  apiSwitchToThrow,
+  apiSwitchToStartLeg,
+  apiUpdateTallyScore,
+} from './services/apiTallyService';
+
+import {
+  apiCreateLeg,
+} from './services/apiLegService';
+
+import {
+  apiConfirmScore,
+  apiUndoScore,
+} from './services/apiScoreService';
+
+import {
+  apiFetchGameData,
+  apiUpdateGameShot,
+} from './services/apiGameService';
+
+import {
+  handleGameShutModalConfirmed, handleGameShutModalHome, handleGameShutModalResumed,
+  handleLegShutModalConfirmed,
+  handleLegShutModalResumed
+} from './utils/eventHandler';
+
+import {
+  confirmScore as confirmScoreAction,
+  clearScore as clearScoreAction,
+  leftScore as leftScoreAction,
+  undoScore as undoScoreAction
+} from './game/gameAction';
+
 export default {
   name: 'GameComponent',
 
@@ -82,17 +113,26 @@ export default {
 
   data() {
     return {
-      game: null,
+      game: {
+        id: null,
+        player1Id: null,
+        player2Id: null,
+        state: null,
+        matchMode: null,
+        matchModeLegsNeeded: null,
+        matchModeSetsNeeded: null,
+        winnerPlayerId: null,
+      },
 
       loading: true,
       error: false,
       gameWinnerPlayerId: null,
-      legWinnerPlayerIds: [],
-      setWinnerPlayerIds: [],
+      //legWinnerPlayerIds: [],
+      //setWinnerPlayerIds: [],
       score: 0,
       gameState: "",
-      legsPlayed: 0,
-      legsPerSetPlayed: [],
+      //legsPlayed: 0,
+      //legsPerSetPlayed: [],
       toThrowPlayerId: null,
       startingPlayerId: null,
       eventSourceState: 0,
@@ -177,47 +217,16 @@ export default {
 
   created() {
     this.onLegShutModalConfirmed = (checkoutScore, checkoutDartCount, checkoutAverage, winnerPlayerId, looserPlayerId) => {
-      const winnerPlayer = this.getPlayerById(winnerPlayerId);
-      const looserPlayer = this.getPlayerById(looserPlayerId);
-
-      this.processCheckout(winnerPlayer);
-      this.processPlayerAverages(winnerPlayer, looserPlayer, checkoutDartCount, checkoutAverage)
-
-      // Don't switch to throw if break of throw
-      if (this.toThrowPlayerId !== this.startingPlayerId) {
-        //console.log("--- BREAK OF THROW ---")
-        this.startingPlayerId = this.toThrowPlayerId;
-        this.apiConfirmScore(this.gameId, this.toThrowPlayerId, checkoutScore, checkoutDartCount, false, true);
-      } else {
-        //console.log("--- SWITCH TO THROW ---")
-        this.apiConfirmScore(this.gameId, this.toThrowPlayerId, checkoutScore, checkoutDartCount, true, true);
-      }
-
-      //console.log("PLAYER 1 DISPLAY SCORE: ", this.player1.displayScore)
-      //console.log("PLAYER 2 DISPLAY SCORE: ", this.player2.displayScore)
-
-      //this.logTotalInfo()
-
-      this.apiUpdateLeg(winnerPlayer.currentLegId, winnerPlayerId);
-
-      //this.logTotalInfo()
+      handleLegShutModalConfirmed(this, checkoutScore, checkoutDartCount, checkoutAverage, winnerPlayerId, looserPlayerId);
     };
 
     this.onLegShutModalResumed = (checkoutScore) => {
-      this.apiUndoScore(this.gameId, this.toThrowPlayerId, false);
+      handleLegShutModalResumed(this, checkoutScore);
     };
 
-    this.onGameShutModalConfirmed = () => {
-      window.location.reload();
-    };
-
-    this.onGameShutModalResumed = () => {
-      window.location.href = `/new-game`;
-    };
-
-    this.onGameShutModalHome = () => {
-      window.location.href = `/darts`;
-    };
+    this.onGameShutModalConfirmed = handleGameShutModalConfirmed;
+    this.onGameShutModalResumed = handleGameShutModalResumed;
+    this.onGameShutModalHome = handleGameShutModalHome;
 
     EventBus.on('leg-shut-modal-confirmed', this.onLegShutModalConfirmed);
     EventBus.on('leg-shut-modal-resumed', this.onLegShutModalResumed);
@@ -237,27 +246,58 @@ export default {
   },
 
   mounted() {
-    this.gameId = this.getGameIdFromUrl();
+    this.game.id = this.getGameIdFromUrl();
 
-    if (this.gameId) {
-      this.apiFetchGameData();
+    if (this.game.id) {
+      this.fetchGameData(this.game.id);
 
       // CHECK TODO: Only use one EventSource
       // CHECK TODO: Only call api when EventSource=1
       // TODO: Display blocking modal if EventSource!=1
       // TODO: If page is reloaded currentDartsThrown gets lost
 
-      this.subscribeToGameEvents(this.gameId);
+      this.subscribeToGameEvents(this.game.id);
 
-      console.log(this.eventSources);
+      //console.log(this.eventSources);
     } else {
       console.error('Game ID not found in the URL');
       this.error = true;
       this.loading = false;
     }
+
+    //console.log("GAME")
+    //console.log(this.game)
   },
 
   methods: {
+    confirmScore(score) {
+      confirmScoreAction(this, score);
+    },
+
+    clearScore(score) {
+      clearScoreAction(this, score);
+    },
+
+    leftScore(score) {
+      leftScoreAction(this, score);
+    },
+
+    undoScore(score) {
+      undoScoreAction(this, score);
+    },
+
+    fetchGameData(gameId) {
+      apiFetchGameData(this, gameId)
+          .then(() => {
+            this.loading = false;
+          })
+          .catch(error => {
+            console.error('Error fetching game or player data:', error);
+            this.error = true;
+            this.loading = false;
+          });
+    },
+
     subscribeToGameEvents(gameId) {
       const mercureUrl = process.env.MERCURE_PUBLIC_URL;
       const eventSource = new EventSource(`${mercureUrl}?topic=https://vllr.lu/game/${gameId}`);
@@ -272,13 +312,12 @@ export default {
 
         switch (data.eventType) {
           case 'checkout':
-            // Create new legs / set
-            if (this.gameState !== "Finished") {
+            console.log("PUBLISH RECEIVED - CHECKOUT: ", data);
+            if (this.game.state !== "Finished") {
               if (this.game.matchMode === "FirstToLegs") {
 
-                this.apiCreateLeg(this.gameId, null);
-                this.apiUpdateTallyScore(this.gameId, this.player1.id, this.player1.startScore, this.player1.legs, this.player1.sets);
-                this.apiUpdateTallyScore(this.gameId, this.player2.id, this.player2.startScore, this.player2.legs, this.player2.sets);
+                apiCreateLeg(this, this.game.id, null)
+
                 this.resetScores();
 
               } else if (this.game.matchMode === "FirstToSets") {
@@ -288,61 +327,40 @@ export default {
               // Game finished
             }
 
-            this.apiSwitchToStartLeg(this.gameId);
+            apiSwitchToStartLeg(this.game.id);
 
             if (data.switchToTrow) {
-              this.apiSwitchToThrow(this.gameId,() => {
-                this.startingPlayerId = this.toThrowPlayerId;
-              });
+              apiSwitchToThrow(this.game.id);
+              this.switchToThrow();
+              this.startingPlayerId = this.toThrowPlayerId;
             }
 
             break;
           case 'confirm':
-            //console.log("PUBLISH RECEIVED - CONFIRM: ", data);
+            console.log("PUBLISH RECEIVED - CONFIRM: ", data);
             this.setPlayerScore(data.playerId, data.newTotalScore);
             this.addPlayerLastScore(data.playerId, data.thrownScore);
             this.addPlayerLastThrownDarts(data.playerId, 3);
-            //console.log("SWITCH TO THROW ---> ", data.switchToTrow)
             if (data.switchToTrow){
-              this.apiSwitchToThrow(this.gameId)
+              apiSwitchToThrow(this.game.id)
+              this.switchToThrow();
             }
             break;
           case 'undo':
-            console.log("PUBLISH RECEIVED - UNDO: ", data);
+            //console.log("PUBLISH RECEIVED - UNDO: ", data);
             this.setPlayerScore(data.playerId, data.newTotalScore);
             this.removePlayerLastScore(data.playerId);
             if (data.switchToThrow) {
-              this.apiSwitchToThrow(this.gameId)
+              apiSwitchToThrow(this.game.id)
+              this.switchToThrow();
             }
             break;
         }
       };
     },
 
-    formatScores(scores) {
-      return scores.reverse().map(score => score.value);
-    },
-
-    // Game Logic ######################################################################################################
     calculateDartsThrownSum(player) {
       return player.currentDartsThrown.reduce((acc, curr) => acc + curr, 0);
-    },
-
-    clearScore(score) {
-      //this.addPlayerLastScore(this.player1.id, -1)
-
-      score = parseInt(score.replace(/^0+/, ''), 10);
-      if (isNaN(score)) {
-        score = 0;
-      }
-
-      if (this.toThrowPlayerId === this.player1.id) {
-        this.player1.displayScore = this.player1.totalScore;
-        this.player1.scoreBusted = false;
-      } else if (this.toThrowPlayerId === this.player2.id) {
-        this.player2.displayScore = this.player2.totalScore;
-        this.player2.scoreBusted = false;
-      }
     },
 
     processScore(score) {
@@ -370,135 +388,47 @@ export default {
       }
     },
 
-    confirmScore(score) {
-      //this.logTotalInfo()
-      const player = this.getPlayerById(this.toThrowPlayerId)
-      const opponentPlayer = this.getOpponentPlayerById(this.toThrowPlayerId);
-
-      score = parseInt(score.replace(/^0+/, ''), 10);
-      if (isNaN(score)) {
-        score = 0;
-      }
-
-      if (player.totalScore - score === 0) {
-        player.lastScores.unshift(score);
-        EventBus.emit('show-leg-shut-modal', player.lastScores, player.id, opponentPlayer.id);
-        //console.log("PLAYER 1 DISPLAY SCORE: ", this.player1.displayScore)
-        //console.log("PLAYER 2 DISPLAY SCORE: ", this.player2.displayScore)
-      } else {
-        this.apiConfirmScore(this.game.id, this.toThrowPlayerId, score, 3, true, false);
-      }
-    },
-
-    undoScore(score) {
-      console.log("Player 1 last scores: ", this.player1.lastScores)
-      console.log("Player 2 last scores: ", this.player2.lastScores)
-      // Switch to throw
-      if (this.player1.lastScores.length === 0 && this.player2.lastScores.length === 0 &&
-          this.player1.legs === 0 && this.player2.legs === 0) {
-        if (this.eventSourceState === 1) {
-          console.log("--- UNDO SWITCH TO THROW ---")
-          this.apiSwitchToStartLeg(this.gameId);
-          this.apiSwitchToThrow(this.gameId, () => {
-            this.startingPlayerId = this.toThrowPlayerId;
-          });
-        }
-      // Undo score
-      } else if (this.player1.lastScores.length > 0 || this.player2.lastScores.length > 0) {
-        console.log("--- UNDO UNDO SCORE ---")
-        this.clearScore(score);
-        const playerId = this.getNotToThrowPlayerId();
-        this.apiUndoScore(this.game.id, playerId, true);
-      }
-    },
-
-    // TODO: Handle via api
-    leftScore(inputScore) {
-      inputScore = parseInt(inputScore.replace(/^0+/, ''), 10);
-      if (isNaN(inputScore)) {
-        inputScore = 0;
-      }
-
-      if (this.toThrowPlayerId === this.player1.id) {
-        this.processLeftScore(this.player1, inputScore);
-
-      } else if (this.toThrowPlayerId === this.player2.id) {
-        this.processLeftScore(this.player2, inputScore);
-      }
-    },
-
-    processLeftScore(player, score) {
-      const thrownScore = player.totalScore - score;
-      const leftScore = player.totalScore - thrownScore
-      console.log("leftScore: ", leftScore)
-
-      // Reset if left score is not possible
-      if (this.scoreIsImpossible(thrownScore) || leftScore < 2 && leftScore !== 0) {
-        console.log("TRIGGERD")
-        player.displayScore = player.totalScore;
-        player.scoreBusted = false;
-      }
-      // Checkout
-      else if (leftScore === 0) {
-        const opponentPlayer = this.getOpponentPlayerById(player.id)
-        EventBus.emit('play-score-sound', thrownScore);
-        //player.lastScores.unshift(thrownScore);
-        player.currentDartsThrown.unshift(3);
-        if (this.eventSourceState === 1) {
-          this.apiConfirmScore(this.game.id, player.id, thrownScore, 3, true, true)
-        }
-        this.setPlayerScore(player.id, score);
-        EventBus.emit('show-leg-shut-modal', player.lastScores, player.id, opponentPlayer.id);
-      }
-      // Left
-      else if (leftScore >= 2) {
-        console.log("player.totalScore: ", player.totalScore, " thrownScore: ", thrownScore)
-        player.scoreBusted = false;
-        EventBus.emit('play-score-sound', thrownScore);
-        //player.lastScores.unshift(thrownScore);
-        player.currentDartsThrown.unshift(3);
-        if (this.eventSourceState === 1) {
-          this.apiConfirmScore(this.game.id, player.id, thrownScore, 3, true, false)
-        }
-        this.setPlayerScore(player.id, score);
-      }
-    },
-
     processCheckout(player) {
       if (this.game.matchMode === "FirstToSets") {
-        //console.log("Leg shut");
-        this.legsPlayed += 1;
+        console.log("Leg shut");
+        //this.legsPlayed += 1;
         player.legs += 1;
         player.displayLegs += 1;
-        this.legWinnerPlayerIds.push(player.id);
+        //this.legWinnerPlayerIds.push(player.id);
 
         if (this.game.matchModeLegsNeeded === player.legs) {
           console.log("Set shut");
-          this.legsPerSetPlayed.push(this.legsPlayed);
-          this.legsPlayed = 0;
+          //this.legsPerSetPlayed.push(this.legsPlayed);
+          //this.legsPlayed = 0;
           this.resetDisplayLegs();
           player.sets += 1;
-          this.setWinnerPlayerIds.push(player.id);
+          //this.setWinnerPlayerIds.push(player.id);
 
           if (this.game.matchModeSetsNeeded === player.sets) {
             console.log("Game shut");
-            this.gameWinnerPlayerId = player.id;
+            this.game.winnerPlayerId = player.id;
             EventBus.emit('play-gameShutAndTheMatch-sound');
-            this.gameState = "Finished";
+            this.game.state = "Finished";
           }
         }
       } else if (this.game.matchMode === "FirstToLegs") {
-        //console.log("Leg shut");
-        this.legsPlayed += 1;
+        console.log("Leg shut");
+
         player.legs += 1;
         player.displayLegs += 1;
-        this.legWinnerPlayerIds.push(player.id);
+        // this.legsPlayed += 1;
+        // this.legWinnerPlayerIds.push(player.id);
+
+        apiUpdateTallyScore(this.game.id, this.player1.id, this.player1.startScore, this.player1.legs, this.player1.sets);
+        apiUpdateTallyScore(this.game.id, this.player2.id, this.player2.startScore, this.player2.legs, this.player2.sets);
 
         if (this.game.matchModeLegsNeeded === player.legs) {
           console.log("Game shut");
-          this.gameWinnerPlayerId = player.id;
           EventBus.emit('play-gameShutAndTheMatch-sound');
-          this.gameState = "Finished";
+          this.game.winnerPlayerId = player.id;
+          this.game.state = "Finished";
+          apiUpdateGameShot(this.game.id, this.game.winnerPlayerId, this.game.state);
+          EventBus.emit('show-game-shut-modal', this.gameWinnerPlayerId);
         }
       }
     },
@@ -524,17 +454,6 @@ export default {
       //console.log("---- looserPlayer.currentDartsThrown: ", looserPlayer.currentDartsThrown);
       looserPlayer.totalScores.push(looserPlayer.lastScores);
       looserPlayer.totalDartsThrown.push(looserPlayer.currentDartsThrown);
-    },
-
-    scoreIsImpossible(score) {
-      const impossibleScores = [179, 178, 176, 175, 173, 172, 169, 166, 163, 162];
-      score = parseInt(score, 10);
-
-      if (score < 1) {
-        return true;
-      } else if (score > 180) {
-        return true;
-      } else return impossibleScores.includes(score);
     },
 
     resetScores() {
@@ -646,12 +565,12 @@ export default {
 
     logTotalInfo() {
       console.log(" ");
-      console.log("Game state: ", this.gameState);
-      console.log("Game Legs played: ", this.legsPlayed);
-      console.log("Game winner id: ", this.gameWinnerPlayerId);
-      console.log("Leg winner Ids: ", JSON.stringify(this.legWinnerPlayerIds));
-      console.log("Set winner Ids: ", JSON.stringify(this.setWinnerPlayerIds));
-      console.log("Legs per set played: ", JSON.stringify(this.legsPerSetPlayed));
+      console.log("Game state: ", this.game.state);
+      //console.log("Game Legs played: ", this.legsPlayed);
+      console.log("Game winner id: ", this.game.winnerPlayerId);
+      //console.log("Leg winner Ids: ", JSON.stringify(this.legWinnerPlayerIds));
+      //console.log("Set winner Ids: ", JSON.stringify(this.setWinnerPlayerIds));
+      //console.log("Legs per set played: ", JSON.stringify(this.legsPerSetPlayed));
       console.log("");
       console.log("#################### LOG TOTAL ####################");
 
@@ -680,253 +599,10 @@ export default {
       console.log("Legs: ", this.player2.legs);
     },
 
-
-    // Persistence #####################################################################################################
     getGameIdFromUrl() {
       const pathSegments = window.location.pathname.split('/');
       const lastSegment = pathSegments[pathSegments.length - 1];
       return /^\d+$/.test(lastSegment) ? parseInt(lastSegment) : null;
-    },
-
-    apiSwitchToThrow(gameId, callback) {
-      const postData = {
-        gameId: gameId,
-      };
-
-      axios.post('/api/game/to-throw', postData)
-          .then(response => {
-            //console.log("Switch to throw successfully.");
-            this.switchToThrow();
-            if (callback && typeof callback === 'function') {
-              callback();  // Execute the callback if provided
-            }
-          })
-          .catch(error => {
-            console.error('Error set to throw:', error);
-          });
-    },
-
-    apiSwitchToStartLeg(gameId, callback) {
-      const postData = {
-        gameId: gameId,
-      };
-
-      axios.post('/api/game/to-start-leg', postData)
-          .then(response => {
-
-            if (callback && typeof callback === 'function') {
-              callback();  // Execute the callback if provided
-            }
-          })
-          .catch(error => {
-            console.error('Error set to start leg:', error);
-          });
-    },
-
-    apiCreateLeg(gameId, setId) {
-      const postData = {
-        gameId: gameId,
-        setId: setId,
-      };
-
-      axios.post('/api/leg/create', postData)
-          .then(response => {
-            const legId = response.data.legId
-            this.player1.currentLegId = legId
-            this.player2.currentLegId = legId
-
-            this.apiUpdateTallyLegSet(this.gameId, this.player1.id, legId, null)
-            this.apiUpdateTallyLegSet(this.gameId, this.player2.id, legId, null)
-
-            console.log("Leg created successfully.");
-            console.log(response.data);
-          })
-          .catch(error => {
-            console.error('Error creating leg:', error);
-          });
-    },
-
-    apiUpdateLeg(legId, winnerPlayerId) {
-      const postData = {
-        legId: legId,
-        winnerPlayerId: winnerPlayerId,
-      };
-
-      axios.post('/api/leg/update', postData)
-          .then(response => {
-            //console.log("Leg updated successfully.");
-          })
-          .catch(error => {
-            console.error('Error updating leg:', error);
-          });
-    },
-
-    apiGetLastScores(gameId, playerId) {
-      const postData = {
-        gameId: gameId,
-        playerId: playerId,
-      };
-
-      axios.post('/api/score/last', postData)
-          .then(response => {
-            //console.log("Last scores successfully.");
-
-            if (playerId === this.player1.id) {
-              this.player1.lastScores = this.formatScores(response.data)
-            } else if (playerId === this.player2.id) {
-              this.player2.lastScores = this.formatScores(response.data)
-            }
-          })
-          .catch(error => {
-            console.error('Error last scores:', error);
-          });
-    },
-
-    apiFetchGameData() {
-      axios.get('/api/game/id/' + this.gameId)
-          .then(response => {
-            this.game = response.data;
-            this.player1.startScore = this.game.startScore;
-            this.player2.startScore = this.game.startScore;
-            this.player1.id = this.game.player1Id;
-            this.player2.id = this.game.player2Id;
-            this.gameState = this.game.state;
-            this.toThrowPlayerId = this.game.toThrowPlayerId;
-            this.startingPlayerId = this.game.startingPlayerId;
-
-            this.apiGetPlayerData();
-            this.apiGetLastScores(this.gameId, this.player1.id)
-            this.apiGetLastScores(this.gameId, this.player2.id)
-            this.apiFetchTallyGamePlayer(this.gameId, this.player1.id)
-            this.apiFetchTallyGamePlayer(this.gameId, this.player2.id)
-            this.loading = false;
-          })
-          .catch(error => {
-            console.error('Error fetching game data:', error);
-            this.error = true;
-            this.loading = false;
-          });
-    },
-
-    // TODO:
-    // apiFetchGameTally(gameId, playerId) {
-    //   const postData = {
-    //     gameId: gameId,
-    //     playerId: playerId,
-    //   };
-    apiFetchTallyGamePlayer(gameId, playerId) {
-      axios.get('/api/game/id/' + gameId + '/player/id/' + playerId)
-          .then(response => {
-            this.setPlayerScore(playerId, response.data.score);
-            this.setPlayerLegSetWon(playerId, response.data.legsWon, response.data.setsWon);
-            this.setPlayerLegSetId(playerId, response.data.legId, response.data.setId);
-            if (response.data.toThrow) {
-              this.toThrowPlayerId = response.data.playerId;
-            }
-            if (response.data.startedLeg) {
-              this.startingPlayerId = response.data.playerId;
-            }
-            //console.log("------ TALLY: ", response.data)
-          })
-          .catch(error => {
-            console.error('Error fetching tally data:', error);
-            this.error = true;
-            this.loading = false;
-          });
-    },
-
-    apiGetPlayerData() {
-      axios.get('/api/player/id/' + this.player1.id)
-          .then(response => {
-            this.player1.name = response.data.name;
-          })
-          .catch(error => {
-            console.error('Error fetching player data:', error);
-            this.error = true;
-          });
-
-      axios.get('/api/player/id/' + this.player2.id)
-          .then(response => {
-            this.player2.name = response.data.name;
-          })
-          .catch(error => {
-            console.error('Error fetching player data:', error);
-            this.error = true;
-          });
-    },
-
-    apiUpdateTallyScore(gameId, playerId, score, legsWon, setsWon) {
-      const postData = {
-        gameId: gameId,
-        playerId: playerId,
-        score: score,
-        legsWon: legsWon,
-        setsWon: setsWon,
-      };
-
-      axios.post('/api/tally/update-score', postData)
-          .then(response => {
-            //console.log("Tally updated successfully.");
-          })
-          .catch(error => {
-            console.error('Error updating tally score:', error);
-          });
-    },
-
-    apiUpdateTallyLegSet(gameId, playerId, legId, setId) {
-      const postData = {
-        gameId: gameId,
-        playerId: playerId,
-        legId: legId,
-        setId: setId,
-      };
-
-      axios.post('/api/tally/update-leg-set', postData)
-          .then(response => {
-            //console.log("Tally updated successfully.");
-          })
-          .catch(error => {
-            console.error('Error updating tally leg set:', error);
-          });
-    },
-
-    apiConfirmScore(gameId, playerId, thrownScore, thrownDarts, switchToTrow, isCheckout) {
-      //console.log("--- CALLED apiConfirmScore ---")
-
-      const postData = {
-        gameId: gameId,
-        playerId: playerId,
-        thrownScore: thrownScore,
-        thrownDarts: thrownDarts,
-        switchToTrow: switchToTrow,
-        isCheckout: isCheckout
-      };
-
-      axios.post('/api/score/confirm', postData)
-          .then(response => {
-            //console.log("CONFIRM RESPONSE: ", response.data);
-          })
-          .catch(error => {
-            console.error('Error confirm score:', error);
-          });
-    },
-
-    apiUndoScore(gameId, playerId, switchToThrow) {
-      const postData = {
-        gameId: gameId,
-        playerId: playerId,
-        switchToThrow: switchToThrow,
-      };
-
-      console.log("apiUndoScore Posting: ", postData);
-
-      axios.post('/api/score/undo', postData)
-          .then(response => {
-
-          })
-          .catch(error => {
-            console.error('Error undo score:', error);
-          });
     },
   },
 }
