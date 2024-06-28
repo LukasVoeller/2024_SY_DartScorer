@@ -174,9 +174,14 @@ api_get_tally:
     gameId: '\d+'
     playerId: '\d+'
 
-api_tally_update:
-  path: '/api/tally/update'
-  controller: 'App\Controller\TallyController::updateTally'
+api_tally_update_score:
+  path: '/api/tally/update-score'
+  controller: 'App\Controller\TallyController::updateTallyScore'
+  methods: ['POST']
+
+api_tally_update_leg_set:
+  path: '/api/tally/update-leg-set'
+  controller: 'App\Controller\TallyController::updateTallyLegSet'
   methods: ['POST']
 
 api_leg_create:

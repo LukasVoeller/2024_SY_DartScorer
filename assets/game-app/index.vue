@@ -277,10 +277,8 @@ export default {
               if (this.game.matchMode === "FirstToLegs") {
 
                 this.apiCreateLeg(this.gameId, null);
-                // TODO: Split apiUpdateTally to apiUpdateTallyScores and apiUpdateTallyLeg
-                // TODO: Call apiUpdateTallyLeg in apiCreateLeg
-                this.apiUpdateTally(this.gameId, this.player1.id, this.player1.startScore, this.player1.currentLegId, this.player1.currentSetId, this.player1.legs, this.player1.sets);
-                this.apiUpdateTally(this.gameId, this.player2.id, this.player2.startScore, this.player2.currentLegId, this.player2.currentSetId, this.player2.legs, this.player2.sets);
+                this.apiUpdateTallyScore(this.gameId, this.player1.id, this.player1.startScore, this.player1.legs, this.player1.sets);
+                this.apiUpdateTallyScore(this.gameId, this.player2.id, this.player2.startScore, this.player2.legs, this.player2.sets);
                 this.resetScores();
 
               } else if (this.game.matchMode === "FirstToSets") {
@@ -733,8 +731,12 @@ export default {
 
       axios.post('/api/leg/create', postData)
           .then(response => {
-            this.player1.currentLegId = response.data.legId
-            this.player2.currentLegId = response.data.legId
+            const legId = response.data.legId
+            this.player1.currentLegId = legId
+            this.player2.currentLegId = legId
+
+            this.apiUpdateTallyLegSet(this.gameId, this.player1.id, legId, null)
+            this.apiUpdateTallyLegSet(this.gameId, this.player2.id, legId, null)
 
             console.log("Leg created successfully.");
             console.log(response.data);
@@ -853,23 +855,38 @@ export default {
           });
     },
 
-    apiUpdateTally(gameId, playerId, score, legId, setId, legsWon, setsWon) {
+    apiUpdateTallyScore(gameId, playerId, score, legsWon, setsWon) {
       const postData = {
         gameId: gameId,
         playerId: playerId,
         score: score,
-        legId: legId,
-        setId: setId,
         legsWon: legsWon,
         setsWon: setsWon,
       };
 
-      axios.post('/api/tally/update', postData)
+      axios.post('/api/tally/update-score', postData)
           .then(response => {
             //console.log("Tally updated successfully.");
           })
           .catch(error => {
-            console.error('Error updating tally:', error);
+            console.error('Error updating tally score:', error);
+          });
+    },
+
+    apiUpdateTallyLegSet(gameId, playerId, legId, setId) {
+      const postData = {
+        gameId: gameId,
+        playerId: playerId,
+        legId: legId,
+        setId: setId,
+      };
+
+      axios.post('/api/tally/update-leg-set', postData)
+          .then(response => {
+            //console.log("Tally updated successfully.");
+          })
+          .catch(error => {
+            console.error('Error updating tally leg set:', error);
           });
     },
 

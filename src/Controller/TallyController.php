@@ -46,27 +46,47 @@ class TallyController extends AbstractController
         return new JsonResponse($serializedTally, Response::HTTP_OK, [], true);
     }
 
-    #[Route('/api/tally/update', name: 'api_tally_update')]
-    public function updateTally(Request $request): Response
+    #[Route('/api/tally/update-score', name: 'api_tally_update_score')]
+    public function updateTallyScore(Request $request): Response
     {
         $data = json_decode($request->getContent(), true);
 
         $gameId = $data['gameId'];
         $playerId = $data['playerId'];
         $score = $data['score'];
-        $legId = $data['legId'];
-        $setId = $data['setId'];
         $legsWon = $data['legsWon'];
         $setsWon = $data['setsWon'];
 
         $tally = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $playerId);
         $tally->setScore($score);
-        $tally->setLegId($legId);
-        $tally->setSetId($setId);
         $tally->setLegsWon($legsWon);
         $tally->setSetsWon($setsWon);
 
-        //$this->entityManager->persist($tally);
+        $this->entityManager->flush();
+
+        return $this->json($data);
+    }
+
+    #[Route('/api/tally/update-leg-set', name: 'api_tally_update_leg_set')]
+    public function updateTallyLegSet(Request $request): Response
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $gameId = $data['gameId'];
+        $playerId = $data['playerId'];
+        $legId = $data['legId'];
+        $setID = $data['setId'];
+
+        $tally = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $playerId);
+
+        if ($legId !== null) {
+            $tally->setLegId($legId);
+        }
+
+        if ($setID !== null) {
+            $tally->setSetId($setID);
+        }
+
         $this->entityManager->flush();
 
         return $this->json($data);
