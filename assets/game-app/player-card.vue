@@ -1,7 +1,7 @@
 <template>
   <div id="player" class="card">
     <div class="card-header" :style="{
-      backgroundColor: toThrow ? '#50BE96' : '',
+      backgroundColor: toThrow ? '#2CAB73' : '',
       color: toThrow ? 'white' : 'black',
       height: '40px'
     }">

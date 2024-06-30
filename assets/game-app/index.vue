@@ -2,7 +2,7 @@
   <span v-if="eventSourceState === 0" class="dot"
         style="position: absolute; top: 35px; left: 25px; height: 10px; width: 10px; background-color: yellow; border-radius: 50%; z-index: 1100; display: inline-block;"></span>
   <span v-else-if="eventSourceState === 1" class="dot"
-        style="position: absolute; top: 35px; left: 25px; height: 10px; width: 10px; background-color: #50BE96; border-radius: 50%; z-index: 1100; display: inline-block;"></span>
+        style="position: absolute; top: 35px; left: 25px; height: 10px; width: 10px; background-color: #2CAB73; border-radius: 50%; z-index: 1100; display: inline-block;"></span>
   <span v-else-if="eventSourceState === 2" class="dot"
         style="position: absolute; top: 35px; left: 25px; height: 10px; width: 10px; background-color: red; border-radius: 50%; z-index: 1100; display: inline-block;"></span>
 
@@ -80,11 +80,6 @@ import {
 import {
   apiCreateSet, apiUpdateSet
 } from "./services/apiSetService";
-
-import {
-  apiConfirmScore,
-  apiUndoScore,
-} from './services/apiScoreService';
 
 import {
   apiFetchGameData,

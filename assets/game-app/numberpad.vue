@@ -54,7 +54,7 @@
     </div>
     <div class="row" style="padding-bottom: 5px;">
       <div class="col p-1">
-        <button id="btn-clr" type="button" class="btn btn-danger custom-btn-clear">CLR</button>
+        <button id="btn-clr" type="button" class="btn btn-danger custom-btn-clear">Clear</button>
       </div>
       <div class="col p-1">
         <button id="btn-0" type="button" class="btn btn-dark custom-btn-number">0</button>
