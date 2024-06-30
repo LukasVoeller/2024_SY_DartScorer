@@ -89,6 +89,7 @@ class NewGameController extends AbstractController
             $set->setMatchModeLegsNeeded($game->getMatchModeLegsNeeded());
             $leg = new GameLeg();
             $leg->setRelatedSet($set);
+            $leg->setRelatedGame($game);
             $this->entityManager->persist($set);
             $this->entityManager->persist($leg);
         }

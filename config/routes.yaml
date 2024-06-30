@@ -134,6 +134,13 @@ api_get_game:
   controller: 'App\Controller\GameController::getGames'
   methods: ['GET']
 
+api_game_update_state:
+  path: '/api/game/id/{id}'
+  controller: 'App\Controller\GameController::updateGameShot'
+  methods: ['PUT']
+  requirements:
+    id: '\d+'
+
 api_get_game_latest_five:
   path: '/api/game/latest-five'
   controller: 'App\Controller\GameController::getGamesLatestFive'
@@ -156,23 +163,20 @@ api_save_game:
   controller: 'App\Controller\GameController::saveGame'
   methods: ['POST']
 
-api_to_throw_game:
-  path: '/api/game/to-throw'
-  controller: 'App\Controller\GameController::setToThrow'
+api_tally_switch_to_throw:
+  path: '/api/tally/switch-to-throw'
+  controller: 'App\Controller\TallyController::switchToThrow'
   methods: ['POST']
 
-api_to_start_leg:
-  path: '/api/game/to-start-leg'
-  controller: 'App\Controller\GameController::setToStartLeg'
-  methods: [ 'POST' ]
+api_tally_switch_to_start_leg:
+  path: '/api/tally/switch-to-start-leg'
+  controller: 'App\Controller\TallyController::switchToStartLeg'
+  methods: ['POST']
 
-api_get_tally:
-  path: '/api/game/id/{gameId}/player/id/{playerId}'
+api_tally:
+  path: '/api/tally'
   controller: 'App\Controller\TallyController::getTally'
-  methods: ['GET']
-  requirements:
-    gameId: '\d+'
-    playerId: '\d+'
+  methods: ['POST']
 
 api_tally_update_score:
   path: '/api/tally/update-score'
@@ -192,4 +196,14 @@ api_leg_create:
 api_leg_update:
   path: '/api/leg/update'
   controller: 'App\Controller\LegController::updateLeg'
+  methods: ['POST']
+
+api_set_create:
+  path: '/api/set/create'
+  controller: 'App\Controller\SetController::createSet'
+  methods: ['POST']
+
+api_set_update:
+  path: '/api/set/update'
+  controller: 'App\Controller\SetController::updateSet'
   methods: ['POST']

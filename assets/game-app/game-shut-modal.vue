@@ -50,7 +50,7 @@ export default {
   created() {
     EventBus.on('show-game-shut-modal', (payload) => {
       // Reset dartsForCheckout to default
-      console.log("--->", payload);
+      //console.log("--->", payload);
       this.winner = payload;
       const modal = new bootstrap.Modal(document.getElementById('gameShutModal'));
       modal.show();
