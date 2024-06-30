@@ -14,7 +14,7 @@
             {{ playerName }}</span>&nbsp;
           <i class="bi bi-circle-fill"
              v-if="startingPlayer"
-             style="font-size: 7pt; vertical-align: 2px;"></i>
+             style="font-size: 7pt; vertical-align: 2px; color: #FF5E5E"></i>
         </div>
         <div class="col-5 text-end p-0">
           <p>

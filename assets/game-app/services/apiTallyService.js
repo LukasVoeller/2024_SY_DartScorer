@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// TODO: Call setLegSetId() once per game and not for every player?
 export const apiFetchTally = (context, gameId, playerId) => {
     const postData = {
         gameId: gameId,
@@ -8,13 +9,13 @@ export const apiFetchTally = (context, gameId, playerId) => {
 
     return axios.post('/api/tally', postData)
         .then(response => {
-            console.log("tally.response.data")
-            console.log(response.data)
+            //console.log("tally.response.data")
+            //console.log(response.data)
 
             const responseData = response.data;
             context.setPlayerScore(playerId, responseData.score);
             context.setPlayerLegSetWon(playerId, responseData.legsWon, responseData.setsWon);
-            context.setPlayerLegSetId(playerId, responseData.legId, responseData.setId);
+            context.setLegSetId(responseData.legId, responseData.setId);
             if (responseData.toThrow) {
                 context.toThrowPlayerId = responseData.playerId;
             }
@@ -67,7 +68,7 @@ export const apiUpdateTallyScore = (gameId, playerId, score, legsWon, setsWon) =
         setsWon: setsWon,
     };
 
-    //console.log("apiUpdateTallyScore POSTING: ", postData)
+    console.log("apiUpdateTallyScore POSTING: ", postData)
 
     axios.post('/api/tally/update-score', postData)
         .then(response => {

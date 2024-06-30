@@ -197,3 +197,13 @@ api_leg_update:
   path: '/api/leg/update'
   controller: 'App\Controller\LegController::updateLeg'
   methods: ['POST']
+
+api_set_create:
+  path: '/api/set/create'
+  controller: 'App\Controller\SetController::createSet'
+  methods: ['POST']
+
+api_set_update:
+  path: '/api/set/update'
+  controller: 'App\Controller\SetController::updateSet'
+  methods: ['POST']

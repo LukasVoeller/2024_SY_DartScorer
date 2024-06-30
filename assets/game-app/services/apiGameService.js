@@ -6,8 +6,8 @@ import { apiFetchLastScores } from './apiScoreService';
 export const apiFetchGameData = (context, gameId) => {
     return axios.get(`/api/game/id/${gameId}`)
         .then(response => {
-            console.log("game.response.data")
-            console.log(response.data)
+            //console.log("game.response.data")
+            //console.log(response.data)
 
             context.game = response.data;
             context.player1.startScore = response.data.startScore;

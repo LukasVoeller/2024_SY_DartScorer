@@ -178,7 +178,7 @@ export default defineComponent({
       selectedFinishType: "Double" as String,
       selectedStartScoreCricket: 0 as Number,
       selectedStartScoreShanghai: 0 as Number,
-      selectedMatchMode: "FirstToLegs" as String,
+      selectedMatchMode: "FirstToSets" as String,
       selectedMatchModeSets: 2 as Number,
       selectedMatchModeSetsLegs: 2 as Number,
       selectedMatchModeLegs: 3 as Number,

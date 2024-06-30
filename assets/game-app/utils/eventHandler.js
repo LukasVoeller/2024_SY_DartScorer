@@ -20,8 +20,6 @@ export const handleLegShutModalConfirmed = (context, checkoutScore, checkoutDart
     } else {
         apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, true, true);
     }
-
-    apiUpdateLeg(winnerPlayer.currentLegId, winnerPlayerId);
 };
 
 export const handleLegShutModalResumed = (context, checkoutScore) => {

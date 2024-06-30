@@ -10,11 +10,10 @@ export const apiCreateLeg = (context, gameId, setId) => {
     return axios.post('/api/leg/create', postData)
         .then(response => {
             const legId = response.data.legId;
-            context.player1.currentLegId = legId;
-            context.player2.currentLegId = legId;
+            context.game.currentLegId = legId;
 
-            apiUpdateTallyLegSet(context, gameId, context.player1.id, legId, null);
-            apiUpdateTallyLegSet(context, gameId, context.player2.id, legId, null);
+            apiUpdateTallyLegSet(context, gameId, context.player1.id, legId, setId);
+            apiUpdateTallyLegSet(context, gameId, context.player2.id, legId, setId);
 
             return response.data;
         })

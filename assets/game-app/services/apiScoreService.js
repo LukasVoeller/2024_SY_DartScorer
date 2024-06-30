@@ -11,7 +11,7 @@ export const apiConfirmScore = (gameId, playerId, thrownScore, thrownDarts, swit
         isCheckout: isCheckout
     };
 
-    console.log("confirmScore POSTING: ", postData)
+    //console.log("confirmScore POSTING: ", postData)
 
     axios.post('/api/score/confirm', postData)
         .then(response => {
@@ -29,7 +29,7 @@ export const apiUndoScore = (gameId, playerId, switchToThrow) => {
         switchToThrow: switchToThrow,
     };
 
-    console.log("apiUndoScore Posting: ", postData);
+    //console.log("apiUndoScore Posting: ", postData);
 
     axios.post('/api/score/undo', postData)
         .then(response => {
