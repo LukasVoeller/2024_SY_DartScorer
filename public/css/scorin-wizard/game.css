@@ -35,7 +35,7 @@
 }
 
 .custom-btn-clear {
-    background: #24BCD9;
+    background: #FF5E5E;
     border: 0;
     width: 100%;
     height: 55px;
@@ -43,17 +43,12 @@
 }
 
 .custom-btn-clear:hover {
-    background: #8CF0FF;
-    color: white;
-}
-
-.custom-btn-clear:active {
-    background: green;
+    background: #FF9999;
     color: white;
 }
 
 .custom-btn-ok {
-    background: #50BE96;
+    background: #2CAB73;
     border: 0;
     width: 100%;
     height: 55px;
@@ -61,7 +56,7 @@
 }
 
 .custom-btn-ok:hover {
-    background: #75E7A2;
+    background: #4DD198;
     color: white;
 }
 

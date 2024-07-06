@@ -14,8 +14,6 @@
 namespace App\Controller;
 
 use App\Entity\Game;
-use App\Entity\GameLeg;
-use App\Entity\GameScore;
 use App\Entity\GameTally;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,9 +36,14 @@ class TallyController extends AbstractController
     }
 
     // TODO: Rename to /api/tally
-    #[Route('/api/game/id/{gameId}/player/id/{playerId}', name: 'api_get_tally', methods: ['GET'])]
-    public function getTally(int $gameId, int $playerId): JsonResponse
+    #[Route('/api/tally', name: 'api_tally')]
+    public function getTally(Request $request): Response
     {
+        $data = json_decode($request->getContent(), true);
+
+        $gameId = $data['gameId'];
+        $playerId = $data['playerId'];
+
         $tally = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $playerId);
         $serializedTally = $this->serializer->serialize($tally, 'json', ['groups' => ['tally']]);
         return new JsonResponse($serializedTally, Response::HTTP_OK, [], true);
@@ -90,5 +93,57 @@ class TallyController extends AbstractController
         $this->entityManager->flush();
 
         return $this->json($data);
+    }
+
+    #[Route('/api/tally/switch-to-throw', name: 'api_tally_switch_to_throw', methods: ['POST'])]
+    public function switchToThrow(Request $request, HubInterface $hub): Response
+    {
+        $data = json_decode($request->getContent(), true);
+        $gameId = $data['gameId'];
+        $game = $this->entityManager->getRepository(Game::class)->find($gameId);
+
+        $player1Id = $game->getPlayer1Id();
+        $player2Id = $game->getPlayer2Id();
+
+        $tallyPlayer1 = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $player1Id);
+        $tallyPlayer2 = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $player2Id);
+
+        if ($tallyPlayer1->getToThrow()) {
+            $tallyPlayer1->setToThrow(false);
+            $tallyPlayer2->setToThrow(true);
+        } elseif ($tallyPlayer2->getToThrow()) {
+            $tallyPlayer2->setToThrow(false);
+            $tallyPlayer1->setToThrow(true);
+        }
+
+        $this->entityManager->flush();
+
+        return $this->json(['success' => true]);
+    }
+
+    #[Route('/api/tally/switch-to-start-leg', name: 'api_tally_switch_to_start_leg', methods: ['POST'])]
+    public function switchToStartLeg(Request $request, HubInterface $hub): Response
+    {
+        $data = json_decode($request->getContent(), true);
+        $gameId = $data['gameId'];
+        $game = $this->entityManager->getRepository(Game::class)->find($gameId);
+
+        $player1Id = $game->getPlayer1Id();
+        $player2Id = $game->getPlayer2Id();
+
+        $tallyPlayer1 = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $player1Id);
+        $tallyPlayer2 = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $player2Id);
+
+        if ($tallyPlayer1->getStartedLeg()) {
+            $tallyPlayer1->setStartedLeg(false);
+            $tallyPlayer2->setStartedLeg(true);
+        } elseif ($tallyPlayer2->getStartedLeg()) {
+            $tallyPlayer2->setStartedLeg(false);
+            $tallyPlayer1->setStartedLeg(true);
+        }
+
+        $this->entityManager->flush();
+
+        return $this->json(['success' => true]);
     }
 }

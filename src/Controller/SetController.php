@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class LegController extends AbstractController
+class SetController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
 
@@ -20,41 +20,35 @@ class LegController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/api/leg/create', name: 'api_leg_create')]
-    public function createLeg(Request $request): Response
+    #[Route('/api/set/create', name: 'api_set_create')]
+    public function createSet(Request $request): Response
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $gameId = $data['gameId'];
+        $game = $this->entityManager->getRepository(Game::class)->find($gameId);
+        $matchModeLegsNeeded = $game->getMatchModeLegsNeeded();
+
+        $set = new GameSet();
+        $set->setRelatedGame($game);
+        $set->setMatchModeLegsNeeded($matchModeLegsNeeded);
+
+        $this->entityManager->persist($set);
+        $this->entityManager->flush();
+
+        return $this->json(['setId' => $set->getId()]);
+    }
+
+    #[Route('/api/set/update', name: 'api_set_update')]
+    public function updateSet(Request $request): Response
     {
         $data = json_decode($request->getContent(), true);
 
         $setId = $data['setId'];
-        $gameId = $data['gameId'];
-        $game = $this->entityManager->getRepository(Game::class)->find($gameId);
-
-        if ($setId) {
-            $leg = new GameLeg();
-            $set = $this->entityManager->getRepository(GameSet::class)->find($setId);
-            $leg->setRelatedSet($set);
-            $leg->setRelatedGame($game);
-        } else {
-            $leg = new GameLeg();
-            $leg->setRelatedGame($game);
-        }
-
-        $this->entityManager->persist($leg);
-        $this->entityManager->flush();
-
-        return $this->json(['legId' => $leg->getId()]);
-    }
-
-    #[Route('/api/leg/update', name: 'api_leg_update')]
-    public function updateLeg(Request $request): Response
-    {
-        $data = json_decode($request->getContent(), true);
-
-        $legId = $data['legId'];
         $winnerPlayerId = $data['winnerPlayerId'];
-        $leg = $this->entityManager->getRepository(GameLeg::class)->find($legId);
+        $set = $this->entityManager->getRepository(GameSet::class)->find($setId);
 
-        $leg->setWinnerPlayerId($winnerPlayerId);
+        $set->setWinnerPlayerId($winnerPlayerId);
 
         $this->entityManager->flush();
 

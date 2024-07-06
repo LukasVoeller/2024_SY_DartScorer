@@ -8,13 +8,13 @@
   <div class="row">
     <div class="col-6">
       <select class="selectpicker" data-live-search="true" data-width="100%" data-style="btn-success" data-size="5" title="Player 1" v-model="selectedPlayer1Id" @change="emitPlayer1Id" required>
-        <option :style="isSelectedPlayer1(player.id) ? 'background: #4FBE96; color: #fff;' : ''" v-for="player in players" :key="player.id" :value="player.id">{{ player.name }}</option>
+        <option :style="isSelectedPlayer1(player.id) ? 'background: #2CAB73; color: #fff;' : ''" v-for="player in players" :key="player.id" :value="player.id">{{ player.name }}</option>
       </select>
     </div>
 
     <div class="col-6">
       <select class="selectpicker" data-live-search="true" data-width="100%" data-style="btn-success" data-size="5" title="Player 2" v-model="selectedPlayer2Id" @change="emitPlayer2Id" required>
-        <option :style="isSelectedPlayer2(player.id) ? 'background: #4FBE96; color: #fff;' : ''" v-for="player in filteredPlayers" :key="player.id" :value="player.id">{{ player.name }}</option>
+        <option :style="isSelectedPlayer2(player.id) ? 'background: #2CAB73; color: #fff;' : ''" v-for="player in filteredPlayers" :key="player.id" :value="player.id">{{ player.name }}</option>
       </select>
     </div>
   </div>
@@ -75,9 +75,9 @@ export default defineComponent({
   data() {
     return {
       players: [] as Player[],
-      selectedPlayer1Id: 1 as Number,
-      selectedPlayer2Id: 2 as Number,
-      selectedPlayerStartingId: 1 as Number,
+      selectedPlayer1Id: 0 as Number,
+      selectedPlayer2Id: 0 as Number,
+      selectedPlayerStartingId: 0 as Number,
       newPlayerName: '' as String,
       alertShow: false as Boolean,
       alertMessage: '' as String,

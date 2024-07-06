@@ -95,60 +95,27 @@ class GameController extends AbstractController
         return $this->json(['success' => $success]);
     }
 
-    // TODO: Rename api_to_throw_game to api_game_to-throw
-    // TODO: Move to GameTallyController
-    #[Route('/api/game/to-throw', name: 'api_to_throw_game', methods: ['POST'])]
-    public function setToThrow(Request $request, HubInterface $hub): Response
+    #[Route('/api/game/id/{id}', name: 'api_game_update_state', methods: ['PUT'])]
+    public function updateGameShot(int $id, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $gameId = $data['gameId'];
-        $game = $this->entityManager->getRepository(Game::class)->find($gameId);
+        $game = $this->entityManager->getRepository(Game::class)->find($id);
 
-        $player1Id = $game->getPlayer1Id();
-        $player2Id = $game->getPlayer2Id();
+        $gameState = $data['gameState'];
+        $winnerPlayerId = $data['winnerPlayerId'];
 
-        $tallyPlayer1 = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $player1Id);
-        $tallyPlayer2 = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $player2Id);
+        $game->setState($gameState);
+        $game->setWinnerPlayerId($winnerPlayerId);
 
-        if ($tallyPlayer1->getToThrow()) {
-            $tallyPlayer1->setToThrow(false);
-            $tallyPlayer2->setToThrow(true);
-        } elseif ($tallyPlayer2->getToThrow()) {
-            $tallyPlayer2->setToThrow(false);
-            $tallyPlayer1->setToThrow(true);
-        }
-
+        // Persist and flush the changes
+        $this->entityManager->persist($game);
         $this->entityManager->flush();
 
-        return $this->json(['success' => true]);
+        // Return a JSON response indicating success
+        return new JsonResponse(['success' => true, 'message' => 'Game state updated successfully.'], Response::HTTP_OK);
     }
 
-    #[Route('/api/game/to-start-leg', name: 'api_to_start_leg', methods: ['POST'])]
-    public function setToStartLeg(Request $request, HubInterface $hub): Response
-    {
-        $data = json_decode($request->getContent(), true);
-        $gameId = $data['gameId'];
-        $game = $this->entityManager->getRepository(Game::class)->find($gameId);
-
-        $player1Id = $game->getPlayer1Id();
-        $player2Id = $game->getPlayer2Id();
-
-        $tallyPlayer1 = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $player1Id);
-        $tallyPlayer2 = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $player2Id);
-
-        if ($tallyPlayer1->getStartedLeg()) {
-            $tallyPlayer1->setStartedLeg(false);
-            $tallyPlayer2->setStartedLeg(true);
-        } elseif ($tallyPlayer2->getStartedLeg()) {
-            $tallyPlayer2->setStartedLeg(false);
-            $tallyPlayer1->setStartedLeg(true);
-        }
-
-        $this->entityManager->flush();
-
-        return $this->json(['success' => true]);
-    }
-
+/*
     private function saveGameX01($data): bool
     {
         $game = $this->entityManager->getRepository(Game::class)->find($data['gameId']);
@@ -227,7 +194,8 @@ class GameController extends AbstractController
         $this->entityManager->flush();
         return true;
     }
-
+*/
+/*
     private function createPlayerScores(GameLeg $leg, int $playerId, array $scores, array $dartsThrown): void
     {
         foreach ($scores as $scoreIndex => $score) {
@@ -235,7 +203,8 @@ class GameController extends AbstractController
             $this->createScore($leg, $playerId, $score, $darts);
         }
     }
-
+*/
+/*
     private function createScore(GameLeg $leg, int $playerId, int $score, int $dartsThrown): void
     {
         $gameScore = new GameScore();
@@ -246,4 +215,5 @@ class GameController extends AbstractController
 
         $this->entityManager->persist($gameScore);
     }
+*/
 }
