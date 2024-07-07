@@ -1,34 +1,136 @@
 <template>
   <div id="player" class="card">
-    <div class="card-header" :style="{
+    <div class="card-header p-0" :style="{
       backgroundColor: toThrow ? '#2CAB73' : '',
       color: toThrow ? 'white' : 'black',
       height: '40px'
-    }">
-      <div class="row">
-        <div class="col-7 p-0">
+    }"> <!-- 40px --->
+      <div class="row h-100" style="padding-left: 12px; padding-right: 12px">
+
+        <!-- TODO: Make Leg/Set-Start-Component -->
+
+        <template v-if="startingPlayerLeg && startingPlayerSet">
+          <div class="col-7 p-0 d-flex align-items-center">
           <span  :style="{
             color: toThrow ? 'white' : 'black',
-            'white-space': 'nowrap'
+            'white-space': 'nowrap',
+            'padding-left': '8px'
           }">
-            {{ playerName }}</span>&nbsp;
-          <i class="bi bi-circle-fill"
-             v-if="startingPlayer"
-             style="font-size: 7pt; vertical-align: 2px; color: #FF5E5E"></i>
-        </div>
-        <div class="col-5 text-end p-0">
-          <p>
-            {{ dartsThrown }}
-            <img
-                src="/homepage/assets/img/dart-arrow-32px.png"
-                alt="dart arrow"
-                style="max-width: 20px"
-                :style="{
-              filter: toThrow ? 'invert(100%)' : 'none'  // Conditional filter
-            }"
-            >
-          </p>
-        </div>
+            {{ playerName }}
+          </span>&nbsp;
+          </div>
+
+          <div class="col-3 p-0 d-flex align-items-center text-end">
+            <span class="text-end" style="width: 100%;">
+              {{ dartsThrown }}
+              <img
+                  src="/homepage/assets/img/dart-arrow-32px.png"
+                  alt="dart arrow"
+                  style="max-width: 28px;"
+                  :style="{
+                filter: toThrow ? 'invert(100%)' : 'none',
+                'padding-right': '8px'
+              }"
+              >
+            </span>
+          </div>
+
+          <div class="col-2">
+            <div class="row" style="background-color: white; border-top-right-radius: 0.25rem;">
+              <div class="col-12 text-center p-0" style="height: 20px; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc; border-top-right-radius: 0.3rem; background-color: #536379">
+                <span v-if="startingPlayerLeg" style="font-size: 7pt; vertical-align: 2px; color: white">
+                 LEG
+                </span>
+              </div>
+              <div class="col-12 text-center p-0" style="height: 20px; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc; background-color: #343E4C">
+                <span v-if="startingPlayerSet" style="font-size: 7pt; vertical-align: 2px; color: white;">
+                  SET
+                </span>
+              </div>
+            </div>
+          </div>
+        </template>
+
+
+
+        <template v-else-if="startingPlayerLeg || startingPlayerSet">
+          <div class="col-7 p-0 d-flex align-items-center">
+          <span  :style="{
+            color: toThrow ? 'white' : 'black',
+            'white-space': 'nowrap',
+            'padding-left': '8px'
+          }">
+            {{ playerName }}
+          </span>&nbsp;
+          </div>
+
+          <div class="col-3 p-0 d-flex align-items-center text-end">
+            <span class="text-end" style="width: 100%;">
+              {{ dartsThrown }}
+              <img
+                  src="/homepage/assets/img/dart-arrow-32px.png"
+                  alt="dart arrow"
+                  style="max-width: 28px;"
+                  :style="{
+                filter: toThrow ? 'invert(100%)' : 'none',
+                'padding-right': '8px'
+              }"
+              >
+            </span>
+          </div>
+
+          <div class="col-2">
+            <div class="row h-100" style="background-color: white; border-top-right-radius: 0.25rem;">
+              <template v-if="startingPlayerLeg">
+              <div class="col-12 text-center p-0" style="border-left: 1px solid #ccc; border-top-right-radius: 0.3rem; background-color: #536379">
+                <span v-if="startingPlayerLeg" style="font-size: 7pt; vertical-align: -6px; color: white">
+                 LEG
+                </span>
+              </div>
+              </template>
+              <template v-else-if="startingPlayerSet">
+              <div class="col-12 text-center p-0" style="border-left: 1px solid #ccc; border-top-right-radius: 0.3rem; background-color: #343E4C">
+                <span v-if="startingPlayerSet" style="font-size: 7pt; vertical-align: -6px; color: white;">
+                  SET
+                </span>
+              </div>
+              </template>
+            </div>
+          </div>
+        </template>
+
+
+
+        <template v-else-if="!startingPlayerLeg && !startingPlayerSet">
+          <div class="col-9 p-0 d-flex align-items-center">
+          <span  :style="{
+            color: toThrow ? 'white' : 'black',
+            'white-space': 'nowrap',
+            'padding-left': '8px',
+          }">
+            {{ playerName }}
+          </span>&nbsp;
+          </div>
+
+          <div class="col-3 p-0 d-flex align-items-center text-end">
+            <span class="text-end" style="width: 100%;">
+              {{ dartsThrown }}
+              <img
+                  src="/homepage/assets/img/dart-arrow-32px.png"
+                  alt="dart arrow"
+                  style="max-width: 28px;"
+                  :style="{
+                filter: toThrow ? 'invert(100%)' : 'none',
+                'padding-right': '8px'
+              }"
+              >
+            </span>
+          </div>
+        </template>
+
+
+
+
       </div>
     </div>
 
@@ -100,7 +202,8 @@ export default {
     legAverage: String,
     gameAverage: String,
     toThrow: Boolean,
-    startingPlayer: Boolean,
+    startingPlayerLeg: Boolean,
+    startingPlayerSet: Boolean,
     dartsThrown: Number,
     sets: Number,
     legs: Number

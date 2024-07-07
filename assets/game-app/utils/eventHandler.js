@@ -13,12 +13,22 @@ export const handleLegShutModalConfirmed = (context, checkoutScore, checkoutDart
     context.processCheckout(winnerPlayer);
     context.processPlayerAverages(winnerPlayer, looserPlayer, checkoutDartCount, checkoutAverage);
 
-    // Don't switch to throw if break of throw
-    if (context.toThrowPlayerId !== context.startingPlayerId) {
-        context.startingPlayerId = context.toThrowPlayerId;
+    // Don't switch to throw if break of throw in legs
+    if (context.toThrowPlayerId !== context.startingLegPlayerId) {
+        console.log("apiConfirmScore - BREAK LEG")
+        context.startingLegPlayerId = context.toThrowPlayerId;
         apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, false, true);
     } else {
-        apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, true, true);
+
+        // Don't switch to throw if break of throw sets
+        if (context.game.matchMode === "FirstToSets" && winnerPlayer.legs === context.game.matchModeLegsNeeded && context.toThrowPlayerId !== context.startingSetPlayerId) {
+            console.log("apiConfirmScore - BREAK SET")
+            context.startingLegPlayerId = context.toThrowPlayerId;
+            apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, false, true);
+        } else {
+            console.log("apiConfirmScore - NO BREAK")
+            apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, true, true);
+        }
     }
 };
 

@@ -146,4 +146,30 @@ class TallyController extends AbstractController
 
         return $this->json(['success' => true]);
     }
+
+    #[Route('/api/tally/switch-to-start-set', name: 'api_tally_switch_to_start_set', methods: ['POST'])]
+    public function switchToStartSet(Request $request, HubInterface $hub): Response
+    {
+        $data = json_decode($request->getContent(), true);
+        $gameId = $data['gameId'];
+        $game = $this->entityManager->getRepository(Game::class)->find($gameId);
+
+        $player1Id = $game->getPlayer1Id();
+        $player2Id = $game->getPlayer2Id();
+
+        $tallyPlayer1 = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $player1Id);
+        $tallyPlayer2 = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $player2Id);
+
+        if ($tallyPlayer1->getStartedSet()) {
+            $tallyPlayer1->setStartedSet(false);
+            $tallyPlayer2->setStartedSet(true);
+        } elseif ($tallyPlayer2->getStartedSet()) {
+            $tallyPlayer2->setStartedSet(false);
+            $tallyPlayer1->setStartedSet(true);
+        }
+
+        $this->entityManager->flush();
+
+        return $this->json(['success' => true]);
+    }
 }

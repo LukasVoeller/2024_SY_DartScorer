@@ -1,6 +1,6 @@
 import { EventBus } from '../../event-bus';
 import {apiConfirmScore, apiUndoScore} from '../services/apiScoreService';
-import {apiSwitchToStartLeg, apiSwitchToThrow} from "../services/apiTallyService";
+import {apiSwitchToThrow, apiSwitchToStartLeg, apiSwitchToStartSet} from "../services/apiTallyService";
 import {scoreIsImpossible} from "./gameHelper";
 
 export const confirmScore = (context, score) => {
@@ -90,13 +90,16 @@ export const undoScore = (context, score) => {
     //console.log("Player 2 last scores: ", context.player2.lastScores);
 
     if (context.player1.lastScores.length === 0 && context.player2.lastScores.length === 0 &&
-        context.player1.legs === 0 && context.player2.legs === 0) {
+        context.player1.legs === 0 && context.player2.legs === 0 &&
+        context.player1.sets === 0 && context.player2.sets === 0) {
         if (context.eventSourceState === 1) {
             //console.log("--- UNDO SWITCH TO THROW ---");
             apiSwitchToStartLeg(context.game.id);
+            apiSwitchToStartSet(context.game.id);
             apiSwitchToThrow(context.game.id, () => {
                 context.switchToThrow();
-                context.startingPlayerId = context.toThrowPlayerId;
+                context.startingLegPlayerId = context.toThrowPlayerId;
+                context.startingSetPlayerId = context.toThrowPlayerId;
             });
         }
     } else if (context.player1.lastScores.length > 0 || context.player2.lastScores.length > 0) {

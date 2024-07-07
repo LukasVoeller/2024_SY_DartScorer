@@ -61,6 +61,10 @@ class GameTally
     #[Groups(['tally'])]
     private ?bool $startedLeg = false;
 
+    #[ORM\Column(nullable: false)]
+    #[Groups(['tally'])]
+    private ?bool $startedSet = false;
+
     #[ORM\Column(nullable: true)]
     #[Groups(['tally'])]
     private ?bool $toThrow = false;
@@ -169,6 +173,18 @@ class GameTally
     public function setStartedLeg(bool $startedLeg): static
     {
         $this->startedLeg = $startedLeg;
+
+        return $this;
+    }
+
+    public function getStartedSet(): ?bool
+    {
+        return $this->startedSet;
+    }
+
+    public function setStartedSet(bool $startedSet): static
+    {
+        $this->startedSet = $startedSet;
 
         return $this;
     }

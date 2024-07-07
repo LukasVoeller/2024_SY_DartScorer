@@ -20,7 +20,10 @@ export const apiFetchTally = (context, gameId, playerId) => {
                 context.toThrowPlayerId = responseData.playerId;
             }
             if (responseData.startedLeg) {
-                context.startingPlayerId = responseData.playerId;
+                context.startingLegPlayerId = responseData.playerId;
+            }
+            if (responseData.startedSet) {
+                context.startingSetPlayerId = responseData.playerId;
             }
         })
         .catch(error => {
@@ -59,6 +62,22 @@ export const apiSwitchToStartLeg = (gameId) => {
         });
 };
 
+export const apiSwitchToStartSet = (gameId) => {
+    const postData = {
+        gameId: gameId,
+    };
+
+    //console.log("apiSwitchToStartSet", postData)
+
+    axios.post('/api/tally/switch-to-start-set', postData)
+        .then(response => {
+
+        })
+        .catch(error => {
+            console.error('Error switch to start set:', error);
+        });
+};
+
 export const apiUpdateTallyScore = (gameId, playerId, score, legsWon, setsWon) => {
     const postData = {
         gameId: gameId,
@@ -68,7 +87,7 @@ export const apiUpdateTallyScore = (gameId, playerId, score, legsWon, setsWon) =
         setsWon: setsWon,
     };
 
-    console.log("apiUpdateTallyScore POSTING: ", postData)
+    //console.log("apiUpdateTallyScore POSTING: ", postData)
 
     axios.post('/api/tally/update-score', postData)
         .then(response => {

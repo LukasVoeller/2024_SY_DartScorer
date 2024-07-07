@@ -74,9 +74,15 @@ class NewGameController extends AbstractController
         if ($data['playerStartingId'] == $data['player1Id']) {
             $tallyPlayer1->setStartedLeg(true);
             $tallyPlayer1->setToThrow(true);
+            if ($game->getMatchMode() == "FirstToSets") {
+                $tallyPlayer1->setStartedSet(true);
+            }
         } elseif ($data['playerStartingId'] == $data['player2Id']) {
             $tallyPlayer2->setStartedLeg(true);
             $tallyPlayer2->setToThrow(true);
+            if ($game->getMatchMode() == "FirstToSets") {
+                $tallyPlayer2->setStartedSet(true);
+            }
         }
 
         if ($game->getMatchMode() == "FirstToLegs") {

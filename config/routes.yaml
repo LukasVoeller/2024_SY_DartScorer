@@ -173,6 +173,11 @@ api_tally_switch_to_start_leg:
   controller: 'App\Controller\TallyController::switchToStartLeg'
   methods: ['POST']
 
+api_tally_switch_to_start_set:
+  path: '/api/tally/switch-to-start-set'
+  controller: 'App\Controller\TallyController::switchToStartSet'
+  methods: [ 'POST' ]
+
 api_tally:
   path: '/api/tally'
   controller: 'App\Controller\TallyController::getTally'

@@ -16,7 +16,7 @@ export const apiFetchGameData = (context, gameId) => {
             context.player2.id = response.data.player2Id;
             //context.game.state = response.data.state;
             //context.toThrowPlayerId = response.data.toThrowPlayerId;
-            //context.startingPlayerId = response.data.startingPlayerId;
+            //context.startingLegPlayerId = response.data.startingLegPlayerId;
 
             return Promise.all([
                 apiFetchTally(context, gameId, context.player1.id),

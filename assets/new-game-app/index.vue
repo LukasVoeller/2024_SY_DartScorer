@@ -67,9 +67,9 @@ export default defineComponent({
   data() {
     return {
       // PlayerSelection
-      selectedPlayer1Id: 0 as Number,
-      selectedPlayer2Id: 0 as Number,
-      selectedPlayerStartingId: 0 as Number,
+      selectedPlayer1Id: 1 as Number,
+      selectedPlayer2Id: 2 as Number,
+      selectedPlayerStartingId: 1 as Number,
 
       // Game Selection
       selectedGameMode: "X01" as String,
@@ -78,8 +78,8 @@ export default defineComponent({
       selectedStartScoreShanghai: 0 as Number,
       selectedFinishType: "Double" as String,
       selectedMatchMode: "FirstToLegs" as String,
-      selectedMatchModeSets: 0 as Number,
-      selectedMatchModeSetsLegs: 0 as Number,
+      selectedMatchModeSets: 2 as Number,
+      selectedMatchModeSetsLegs: 2 as Number,
       selectedMatchModeLegs: 1 as Number,
     };
   },

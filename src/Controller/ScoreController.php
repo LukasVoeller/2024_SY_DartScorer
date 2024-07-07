@@ -70,7 +70,8 @@ class ScoreController extends AbstractController
             $this->sendUpdate($gameId, $playerId, $thrownScore, $newTotalScore, $switchToTrow, 'confirm', $hub);
         } elseif ($currentScore - $thrownScore == 0){
             $newTotalScore = $currentScore - $thrownScore;
-            //$tally->setScore($newTotalScore);
+            //$startScore = $game->getStartScore();
+            //$tally->setScore($startScore);
             $this->sendUpdate($gameId, $playerId, $thrownScore, $newTotalScore, $switchToTrow, 'checkout', $hub);
         }
 

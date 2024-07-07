@@ -75,9 +75,9 @@ export default defineComponent({
   data() {
     return {
       players: [] as Player[],
-      selectedPlayer1Id: 0 as Number,
-      selectedPlayer2Id: 0 as Number,
-      selectedPlayerStartingId: 0 as Number,
+      selectedPlayer1Id: 1 as Number,
+      selectedPlayer2Id: 2 as Number,
+      selectedPlayerStartingId: 1 as Number,
       newPlayerName: '' as String,
       alertShow: false as Boolean,
       alertMessage: '' as String,
