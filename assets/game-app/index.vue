@@ -1,4 +1,9 @@
 <template>
+  <!-- Loading spinner -->
+  <div v-if="loading" style="display: flex; justify-content: center; align-items: center; height: 90vh;">
+    <VueSpinnerGears size="100" color="white" />
+  </div>
+
   <span v-if="eventSourceState === 0" class="dot"
         style="position: absolute; top: 35px; left: 25px; height: 10px; width: 10px; background-color: yellow; border-radius: 50%; z-index: 1100; display: inline-block;"></span>
   <span v-else-if="eventSourceState === 1" class="dot"
@@ -6,7 +11,7 @@
   <span v-else-if="eventSourceState === 2" class="dot"
         style="position: absolute; top: 35px; left: 25px; height: 10px; width: 10px; background-color: red; border-radius: 50%; z-index: 1100; display: inline-block;"></span>
 
-  <div class="row px-1">
+  <div v-if="!loading" class="row px-1">
     <div class="col p-1" style="max-width: 50%;">
       <PlayerCardComponent v-if="game" :playerName="player1.name" :playerScore="player1.displayScore"
                            :startingPlayerLeg="player1.id === startingLegPlayerId" :startingPlayerSet="player1.id === startingSetPlayerId"
@@ -68,6 +73,7 @@ import GameShutModalComponent from './game-shut-modal.vue';
 import Caller from './caller.vue';
 import axios from 'axios';
 import {EventBus} from '../event-bus';
+import {VueSpinnerGears} from "vue3-spinners";
 
 import {
   apiSwitchToThrow,
@@ -109,24 +115,12 @@ export default {
     NumberpadComponent,
     LegShutModalComponent,
     GameShutModalComponent,
-    Caller
+    Caller,
+    VueSpinnerGears
   },
 
   data() {
     return {
-      game: {
-        id: null,
-        player1Id: null,
-        player2Id: null,
-        state: null,
-        matchMode: null,
-        matchModeLegsNeeded: null,
-        matchModeSetsNeeded: null,
-        currentLegId: null,
-        currentSetId: null,
-        winnerPlayerId: null,
-      },
-
       loading: true,
       error: false,
       gameWinnerPlayerId: null,
@@ -141,6 +135,19 @@ export default {
       startingSetPlayerId: null,
       eventSourceState: 0,
       eventSource: null,
+
+      game: {
+        id: null,
+        player1Id: null,
+        player2Id: null,
+        state: null,
+        matchMode: null,
+        matchModeLegsNeeded: null,
+        matchModeSetsNeeded: null,
+        currentLegId: null,
+        currentSetId: null,
+        winnerPlayerId: null,
+      },
 
       player1: {
         id: 0,
