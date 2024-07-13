@@ -10,7 +10,7 @@
         <!-- TODO: Make Leg/Set-Start-Component -->
 
         <template v-if="startingPlayerLeg && startingPlayerSet">
-          <div class="col-7 p-0 d-flex align-items-center">
+          <div class="col-6 p-0 d-flex align-items-center">
           <span  :style="{
             color: toThrow ? 'white' : 'black',
             'white-space': 'nowrap',
@@ -20,7 +20,7 @@
           </span>&nbsp;
           </div>
 
-          <div class="col-3 p-0 d-flex align-items-center text-end">
+          <div class="col-4 p-0 d-flex align-items-center text-end">
             <span class="text-end" style="width: 100%;">
               {{ dartsThrown }}
               <img
@@ -54,7 +54,7 @@
 
 
         <template v-else-if="startingPlayerLeg || startingPlayerSet">
-          <div class="col-7 p-0 d-flex align-items-center">
+          <div class="col-6 p-0 d-flex align-items-center">
           <span  :style="{
             color: toThrow ? 'white' : 'black',
             'white-space': 'nowrap',
@@ -64,7 +64,7 @@
           </span>&nbsp;
           </div>
 
-          <div class="col-3 p-0 d-flex align-items-center text-end">
+          <div class="col-4 p-0 d-flex align-items-center text-end">
             <span class="text-end" style="width: 100%;">
               {{ dartsThrown }}
               <img
@@ -102,7 +102,7 @@
 
 
         <template v-else-if="!startingPlayerLeg && !startingPlayerSet">
-          <div class="col-9 p-0 d-flex align-items-center">
+          <div class="col-8 p-0 d-flex align-items-center">
           <span  :style="{
             color: toThrow ? 'white' : 'black',
             'white-space': 'nowrap',
@@ -112,7 +112,7 @@
           </span>&nbsp;
           </div>
 
-          <div class="col-3 p-0 d-flex align-items-center text-end">
+          <div class="col-4 p-0 d-flex align-items-center text-end">
             <span class="text-end" style="width: 100%;">
               {{ dartsThrown }}
               <img

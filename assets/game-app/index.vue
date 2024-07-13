@@ -1,6 +1,6 @@
 <template>
   <!-- Loading spinner -->
-  <div v-if="loading" style="display: flex; justify-content: center; align-items: center; height: 90vh;">
+  <div v-if="loading" style="display: flex; justify-content: center; align-items: center; height: 80vh;">
     <VueSpinnerGears size="100" color="white" />
   </div>
 
@@ -399,7 +399,8 @@ export default {
     },
 
     calculateDartsThrownSum(player) {
-      return player.currentDartsThrown.reduce((acc, curr) => acc + curr, 0);
+      return player.lastScores.length * 3;
+      //return player.currentDartsThrown.reduce((acc, curr) => acc + curr, 0);
     },
 
     calculateRemainingLegs(player) {
