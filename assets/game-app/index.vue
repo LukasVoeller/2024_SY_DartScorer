@@ -11,33 +11,68 @@
   <span v-else-if="eventSourceState === 2" class="dot"
         style="position: absolute; top: 35px; left: 25px; height: 10px; width: 10px; background-color: red; border-radius: 50%; z-index: 1100; display: inline-block;"></span>
 
-  <div class="row px-1">
-    <div class="col p-1" style="max-width: 50%;">
-      <PlayerCardComponent v-if="game && !loading" :playerName="player1.name" :playerScore="player1.displayScore"
+  <!-- Tablet view -->
+  <div class="row d-none d-md-flex">
+    <div class="col-3">
+      <PlayerCardTabletComponent v-if="game && !loading && isTablet" :playerName="player1.name" :playerScore="player1.displayScore"
                            :startingPlayerLeg="player1.id === startingLegPlayerId" :startingPlayerSet="player1.id === startingSetPlayerId"
-                           :toThrow="toThrowPlayerId === player1.id" :lastThrows="player1.lastScores.join(', ')"
+                           :toThrow="toThrowPlayerId === player1.id" :lastThrows="player1.lastScores"
                            :dartsThrown="calculateDartsThrownSum(player1)" :sets="player1.sets" :legs="player1.legs/*calculateRemainingLegs(player1)*/"
                            :legAverage="player1LegAverage" :gameAverage="player1.gameAverage"
                            :scoreBusted="player1.scoreBusted"/>
     </div>
-    <div class="col p-1" style="max-width: 50%;">
-      <PlayerCardComponent v-if="game && !loading" :playerName="player2.name" :playerScore="player2.displayScore"
+
+    <div class="col-3">
+      <PlayerCardTabletComponent v-if="game && !loading && isTablet" :playerName="player2.name" :playerScore="player2.displayScore"
                            :startingPlayerLeg="player2.id === startingLegPlayerId" :startingPlayerSet="player2.id === startingSetPlayerId"
-                           :toThrow="toThrowPlayerId === player2.id" :lastThrows="player2.lastScores.join(', ')"
+                           :toThrow="toThrowPlayerId === player2.id" :lastThrows="player2.lastScores"
                            :dartsThrown="calculateDartsThrownSum(player2)" :sets="player2.sets" :legs="player2.legs/*calculateRemainingLegs(player2)*/"
                            :legAverage="player2LegAverage" :gameAverage="player2.gameAverage"
                            :scoreBusted="player2.scoreBusted"/>
     </div>
+
+    <div class="col-6">
+      <NumberpadTabletComponent v-if="game && !loading && isTablet" @score-entered="processScore" @score-cleared="clearScore"
+                          @score-confirmed="confirmScore" @score-undo="undoScore" @score-left="leftScore"
+                          :player1Score="this.player1.totalScore" :player2Score="this.player2.totalScore"
+                          :player1ToThrow="toThrowPlayerId === player1.id"
+                          :player2ToThrow="toThrowPlayerId === player2.id"
+                          :player1LastScores="this.player1.lastScores"
+                          :player2LastScores="this.player2.lastScores"
+                          :disableThrowButton="disableThrowButton"/>
+    </div>
   </div>
 
-  <NumberpadComponent v-if="game && !loading" @score-entered="processScore" @score-cleared="clearScore"
-                      @score-confirmed="confirmScore" @score-undo="undoScore" @score-left="leftScore"
-                      :player1Score="this.player1.totalScore" :player2Score="this.player2.totalScore"
-                      :player1ToThrow="toThrowPlayerId === player1.id"
-                      :player2ToThrow="toThrowPlayerId === player2.id"
-                      :player1LastScores="this.player1.lastScores"
-                      :player2LastScores="this.player2.lastScores"
-                      :disableThrowButton="disableThrowButton"/>
+  <!-- Smartphone view -->
+  <div class="d-md-none">
+    <div class="row px-1">
+      <div class="col p-1" style="max-width: 50%;">
+        <PlayerCardComponent v-if="game && !loading && !isTablet" :playerName="player1.name" :playerScore="player1.displayScore"
+                             :startingPlayerLeg="player1.id === startingLegPlayerId" :startingPlayerSet="player1.id === startingSetPlayerId"
+                             :toThrow="toThrowPlayerId === player1.id" :lastThrows="player1.lastScores.join(', ')"
+                             :dartsThrown="calculateDartsThrownSum(player1)" :sets="player1.sets" :legs="player1.legs/*calculateRemainingLegs(player1)*/"
+                             :legAverage="player1LegAverage" :gameAverage="player1.gameAverage"
+                             :scoreBusted="player1.scoreBusted"/>
+      </div>
+      <div class="col p-1" style="max-width: 50%;">
+        <PlayerCardComponent v-if="game && !loading && !isTablet" :playerName="player2.name" :playerScore="player2.displayScore"
+                             :startingPlayerLeg="player2.id === startingLegPlayerId" :startingPlayerSet="player2.id === startingSetPlayerId"
+                             :toThrow="toThrowPlayerId === player2.id" :lastThrows="player2.lastScores.join(', ')"
+                             :dartsThrown="calculateDartsThrownSum(player2)" :sets="player2.sets" :legs="player2.legs/*calculateRemainingLegs(player2)*/"
+                             :legAverage="player2LegAverage" :gameAverage="player2.gameAverage"
+                             :scoreBusted="player2.scoreBusted"/>
+      </div>
+    </div>
+
+    <NumberpadComponent v-if="game && !loading && !isTablet" @score-entered="processScore" @score-cleared="clearScore"
+                        @score-confirmed="confirmScore" @score-undo="undoScore" @score-left="leftScore"
+                        :player1Score="this.player1.totalScore" :player2Score="this.player2.totalScore"
+                        :player1ToThrow="toThrowPlayerId === player1.id"
+                        :player2ToThrow="toThrowPlayerId === player2.id"
+                        :player1LastScores="this.player1.lastScores"
+                        :player2LastScores="this.player2.lastScores"
+                        :disableThrowButton="disableThrowButton"/>
+  </div>
 
   <LegShutModalComponent/>
 
@@ -67,7 +102,9 @@ axios.interceptors.request.use(config => {
 });
 
 import PlayerCardComponent from './player-card.vue';
+import PlayerCardTabletComponent from './player-card-tablet.vue';
 import NumberpadComponent from './numberpad.vue';
+import NumberpadTabletComponent from './numberpad-tablet.vue';
 import LegShutModalComponent from './leg-shut-modal.vue';
 import GameShutModalComponent from './game-shut-modal.vue';
 import Caller from './caller.vue';
@@ -112,7 +149,9 @@ export default {
 
   components: {
     PlayerCardComponent,
+    PlayerCardTabletComponent,
     NumberpadComponent,
+    NumberpadTabletComponent,
     LegShutModalComponent,
     GameShutModalComponent,
     Caller,
@@ -135,6 +174,7 @@ export default {
       startingSetPlayerId: null,
       eventSourceState: 0,
       eventSource: null,
+      isTablet: false,
 
       game: {
         id: null,
@@ -254,9 +294,14 @@ export default {
     EventBus.off('game-shut-modal-home', this.onGameShutModalHome);
 
     this.eventSource.close();
+
+    window.removeEventListener('resize', this.checkScreenSize); // Clean up resize listener
   },
 
   mounted() {
+    this.checkScreenSize(); // Call method to check screen size on component mount
+    window.addEventListener('resize', this.checkScreenSize); // Listen for resize events
+
     this.game.id = this.getGameIdFromUrl();
 
     if (this.game.id) {
@@ -281,6 +326,12 @@ export default {
   },
 
   methods: {
+    checkScreenSize() {
+      // Update isTablet based on current screen size
+      this.isTablet = window.innerWidth >= 768; // Adjust breakpoint as needed
+      console.log("Is Tablet: ", this.isTablet);
+    },
+
     confirmScore(score) {
       confirmScoreAction(this, score);
     },
