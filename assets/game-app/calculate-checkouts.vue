@@ -2,20 +2,33 @@
   <div>
     <div class="row justify-content-center">
       <div class="col-12 text-center">
-        <p v-if="calculate_checkouts(score).length > 0" style="margin: 0px; white-space: nowrap;">
+        <p v-if="calculate_checkouts(score).length > 0"
+           :style="{ fontSize: isTablet ? '20px' : '18px' }"
+           style="margin: 0px; white-space: nowrap;">
           {{
             stringify_checkout(calculate_checkouts(score)[0][0], calculate_checkouts(score)[0][1], calculate_checkouts(score)[0][2])
           }}
         </p>
       </div>
       <div class="col-12 text-center">
-        <p v-if="calculate_checkouts(score).length > 1" style="margin: 0px; white-space: nowrap;">
+        <p v-if="calculate_checkouts(score).length > 1"
+           :style="{ fontSize: isTablet ? '20px' : '18px' }"
+           style="margin: 0px; white-space: nowrap;">
           {{
             stringify_checkout(calculate_checkouts(score)[1][0], calculate_checkouts(score)[1][1], calculate_checkouts(score)[1][2])
           }}
         </p>
       </div>
     </div>
+    <!--
+    <div class="col-12 text-center">
+      <p v-if="isTablet && calculate_checkouts(score).length > 1" style="margin: 0px; white-space: nowrap;">
+        {{
+          stringify_checkout(calculate_checkouts(score)[2][0], calculate_checkouts(score)[2][1], calculate_checkouts(score)[2][2])
+        }}
+      </p>
+    </div>
+    -->
   </div>
 </template>
 
@@ -24,6 +37,7 @@ export default {
   name: 'CalculateCheckouts',
   props: {
     score: null,
+    isTablet: null
   },
   methods: {
     /*

@@ -19,7 +19,7 @@
                            :toThrow="toThrowPlayerId === player1.id" :lastThrows="player1.lastScores"
                            :dartsThrown="calculateDartsThrownSum(player1)" :sets="player1.sets" :legs="player1.legs/*calculateRemainingLegs(player1)*/"
                            :legAverage="player1LegAverage" :gameAverage="player1.gameAverage"
-                           :scoreBusted="player1.scoreBusted"/>
+                           :scoreBusted="player1.scoreBusted" :matchMode="game.matchMode"/>
     </div>
 
     <div class="col-3">
@@ -28,10 +28,10 @@
                            :toThrow="toThrowPlayerId === player2.id" :lastThrows="player2.lastScores"
                            :dartsThrown="calculateDartsThrownSum(player2)" :sets="player2.sets" :legs="player2.legs/*calculateRemainingLegs(player2)*/"
                            :legAverage="player2LegAverage" :gameAverage="player2.gameAverage"
-                           :scoreBusted="player2.scoreBusted"/>
+                           :scoreBusted="player2.scoreBusted" :matchMode="game.matchMode"/>
     </div>
 
-    <div class="col-6">
+    <div class="col-6 d-flex flex-column">
       <NumberpadTabletComponent v-if="game && !loading && isTablet" @score-entered="processScore" @score-cleared="clearScore"
                           @score-confirmed="confirmScore" @score-undo="undoScore" @score-left="leftScore"
                           :player1Score="this.player1.totalScore" :player2Score="this.player2.totalScore"

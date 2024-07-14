@@ -1,17 +1,17 @@
 <template>
   <!-- Numberpad row -->
   <div class="px-1">
-    <div class="row" style="height: 100%">
-      <div class="col p-1 pt-0">
+    <div class="row d-flex flex-column">
+      <div class="col p-1 pt-0 d-flex flex-column">
         <button id="btn-undo" type="button" class="btn btn-light custom-btn-score-row-tablet" :disabled="disableThrowButton">
           <i class="bi bi-arrow-counterclockwise"></i>
           {{ undoButtonText }}
         </button>
       </div>
-      <div class="col p-1 pt-0">
-        <input id="scoreInput" style="height: 100px;" class="form-control text-center" :class="{'exceeds-limit': exceedsLimit}" type="text" readonly>
+      <div class="col p-1 pt-0 d-flex flex-column">
+        <input id="scoreInput" style="height: 100px; font-size: 50pt" class="form-control text-center" :class="{'exceeds-limit': exceedsLimit}" type="text" readonly>
       </div>
-      <div class="col p-1 pt-0">
+      <div class="col p-1 pt-0 d-flex flex-column">
         <button id="btn-left" type="button" class="btn btn-light custom-btn-score-row-tablet">
           <i class="bi bi-chevron-bar-down"></i>
           {{ leftButtonText }}
@@ -179,9 +179,17 @@ export default {
 
     // Attach click event listeners to number buttons
     const numberButtons = document.querySelectorAll('.custom-btn-number-tablet');
+    const numberButtonsScores = document.querySelectorAll('.custom-btn-number-tablet-scores');
     numberButtons.forEach(button => {
       button.addEventListener('click', () => {
         this.handleButtonClick(button.textContent); // Using arrow function to retain 'this' context
+      });
+    });
+    numberButtonsScores.forEach(button => {
+      button.addEventListener('click', () => {
+        this.handleButtonClick(button.textContent); // Using arrow function to retain 'this' context
+        // TODO: Handle cases if direct score button is checkout or bust
+        document.getElementById("btn-ok").click();
       });
     });
 

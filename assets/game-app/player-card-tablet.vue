@@ -1,9 +1,9 @@
 <template>
-  <div id="player" class="card" style="height: 100%">
+  <div id="player" class="card" style="height: 650px">
     <div class="card-header p-0" :style="{
       backgroundColor: toThrow ? '#2CAB73' : '',
       color: toThrow ? 'white' : 'black',
-      height: '40px'
+      height: '50px'
     }"> <!-- 40px --->
       <div class="row h-100" style="padding-left: 12px; padding-right: 12px">
 
@@ -14,14 +14,15 @@
           <span  :style="{
             color: toThrow ? 'white' : 'black',
             'white-space': 'nowrap',
-            'padding-left': '8px'
+            'padding-left': '8px',
+            'font-size': '15pt'
           }">
             {{ playerName }}
           </span>&nbsp;
           </div>
 
           <div class="col-4 p-0 d-flex align-items-center text-end">
-            <span class="text-end" style="width: 100%;">
+            <span class="text-end" style="width: 100%; font-size: 15pt">
               {{ dartsThrown }}
               <img
                   src="/homepage/assets/img/dart-arrow-32px.png"
@@ -37,13 +38,13 @@
 
           <div class="col-2">
             <div class="row" style="background-color: white; border-top-right-radius: 0.25rem;">
-              <div class="col-12 text-center p-0" style="height: 20px; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc; border-top-right-radius: 0.3rem; background-color: #536379">
-                <span v-if="startingPlayerLeg" style="font-size: 7pt; vertical-align: 2px; color: white">
+              <div class="col-12 text-center p-0" style="height: 25px; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc; border-top-right-radius: 0.3rem; background-color: #536379">
+                <span v-if="startingPlayerLeg" style="font-size: 7pt; vertical-align: 0px; color: white">
                  LEG
                 </span>
               </div>
-              <div class="col-12 text-center p-0" style="height: 20px; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc; background-color: #343E4C">
-                <span v-if="startingPlayerSet" style="font-size: 7pt; vertical-align: 2px; color: white;">
+              <div class="col-12 text-center p-0" style="height: 25px; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc; background-color: #343E4C">
+                <span v-if="startingPlayerSet" style="font-size: 7pt; vertical-align: 0px; color: white;">
                   SET
                 </span>
               </div>
@@ -58,14 +59,15 @@
           <span  :style="{
             color: toThrow ? 'white' : 'black',
             'white-space': 'nowrap',
-            'padding-left': '8px'
+            'padding-left': '8px',
+            'font-size': '15pt'
           }">
             {{ playerName }}
           </span>&nbsp;
           </div>
 
           <div class="col-4 p-0 d-flex align-items-center text-end">
-            <span class="text-end" style="width: 100%;">
+            <span class="text-end" style="width: 100%; font-size: 15pt">
               {{ dartsThrown }}
               <img
                   src="/homepage/assets/img/dart-arrow-32px.png"
@@ -83,14 +85,14 @@
             <div class="row h-100" style="background-color: white; border-top-right-radius: 0.25rem;">
               <template v-if="startingPlayerLeg">
               <div class="col-12 text-center p-0" style="border-left: 1px solid #ccc; border-top-right-radius: 0.3rem; background-color: #536379">
-                <span v-if="startingPlayerLeg" style="font-size: 7pt; vertical-align: -6px; color: white">
+                <span v-if="startingPlayerLeg" style="font-size: 7pt; vertical-align: -12px; color: white">
                  LEG
                 </span>
               </div>
               </template>
               <template v-else-if="startingPlayerSet">
               <div class="col-12 text-center p-0" style="border-left: 1px solid #ccc; border-top-right-radius: 0.3rem; background-color: #343E4C">
-                <span v-if="startingPlayerSet" style="font-size: 7pt; vertical-align: -6px; color: white;">
+                <span v-if="startingPlayerSet" style="font-size: 7pt; vertical-align: -12px; color: white;">
                   SET
                 </span>
               </div>
@@ -107,13 +109,14 @@
             color: toThrow ? 'white' : 'black',
             'white-space': 'nowrap',
             'padding-left': '8px',
+            'font-size': '15pt'
           }">
             {{ playerName }}
           </span>&nbsp;
           </div>
 
           <div class="col-4 p-0 d-flex align-items-center text-end">
-            <span class="text-end" style="width: 100%;">
+            <span class="text-end" style="width: 100%; font-size: 15pt">
               {{ dartsThrown }}
               <img
                   src="/homepage/assets/img/dart-arrow-32px.png"
@@ -150,24 +153,24 @@
         </div>
 
         <!-- <CalculateCheckouts :score="playerScore" @checkouts-calculated="calculatedCheckouts"/> -->
-        <CalculateCheckouts v-if="!scoreBusted" :score="playerScore" @checkouts-calculated="calculatedCheckouts" />
+        <CalculateCheckouts v-if="!scoreBusted" :score="playerScore" :isTablet="true" @checkouts-calculated="calculatedCheckouts" />
 
       </li>
     </ul>
 
     <!-- Scrollable table for last throws -->
-    <div class="list-group-item" style="max-height: 250px; overflow-y: auto; white-space: nowrap;" ref="scoreTableContainer">
-      <table class="table table-bordered">
+    <div class="list-group-item" style="height: 250px; overflow-y: auto; white-space: nowrap; scrollbar-width: none;" ref="scoreTableContainer">
+      <table class="table table-bordered table-striped" style="margin: 0px">
         <thead>
-        <tr style="font-size: 18pt">
-          <th style="position: sticky; top: 0;">Score</th>
-          <th style="position: sticky; top: 0;">Points</th>
+        <tr style="font-size: 16pt;">
+          <th style="position: sticky; top: 0; text-align: left">Score</th>
+          <th style="position: sticky; top: 0; text-align: left">Points</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="score in reversedLastThrowsArray" :key="score" style="font-size: 16pt">
+        <tr v-for="(score, index) in reversedLastThrowsArray" :key="score" style="font-size: 16pt">
           <td>{{ score }}</td>
-          <td>501</td>
+          <td>{{ calculateScore(index) }}</td>
         </tr>
         </tbody>
       </table>
@@ -215,10 +218,10 @@
       </li>
       <li class="list-group-item">
         <div class="row">
-          <div class="col" style="font-size: 20pt">
+          <div v-if="matchMode === 'FirstToSets'" class="col" style="font-size: 18pt">
             Sets: {{ sets }}
           </div>
-          <div class="col" style="font-size: 20pt">
+          <div class="col text-center" style="font-size: 18pt">
             Legs: {{ legs }}
           </div>
         </div>
@@ -236,7 +239,9 @@ export default {
   components: {
     CalculateCheckouts,
   },
+
   props: {
+    matchMode: String,
     playerName: String,
     playerScore: Number,
     scoreBusted: Boolean,
@@ -256,6 +261,15 @@ export default {
     };
   },
   methods: {
+    calculateScore(index) {
+      let cumulativeScore = 501;
+      for (let i = 0; i <= index; i++) {
+        cumulativeScore -= this.reversedLastThrowsArray[i];
+      }
+      console.log("---> ", cumulativeScore)
+      return cumulativeScore;
+    },
+
     scrollToBottom() {
       this.$nextTick(() => {
         const container = this.$refs.scoreTableContainer;
@@ -291,15 +305,15 @@ export default {
 
     dynamicPadding() {
       if (this.displayScore === "bust"){
-        return '30px';
+        return '55px';
       }
 
       if (this.possibleCheckouts === 0) {
-        return '25px'; // Font size when there are checkouts
+        return '45px'; // Font size when there are checkouts
       } else if (this.possibleCheckouts === 1) {
-        return '18px'; // Font size when there are no checkouts
+        return '35px'; // Font size when there are no checkouts
       } else if (this.possibleCheckouts === 2 || this.possibleCheckouts === 3) {
-        return '17px'; // Font size when there are no checkouts
+        return '20px'; // Font size when there are no checkouts
       }
     },
 
@@ -311,7 +325,7 @@ export default {
       if (this.possibleCheckouts === 0) {
         return '100px'; // Font size when there are checkouts
       } else if (this.possibleCheckouts === 1) {
-        return '65px'; // Font size when there are no checkouts
+        return '85px'; // Font size when there are no checkouts
       } else if (this.possibleCheckouts === 2 || this.possibleCheckouts === 3) {
         return '85px'; // Font size when there are no checkouts
       }
