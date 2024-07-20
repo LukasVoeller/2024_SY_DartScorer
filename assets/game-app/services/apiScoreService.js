@@ -1,5 +1,6 @@
 import axios from "axios";
 import {formatScores} from "../game/gameHelper";
+import {EventBus} from "../../event-bus";
 
 export const apiConfirmScore = (gameId, playerId, thrownScore, thrownDarts, switchToTrow, isCheckout) => {
     const postData = {
@@ -12,6 +13,7 @@ export const apiConfirmScore = (gameId, playerId, thrownScore, thrownDarts, swit
     };
 
     //console.log("confirmScore POSTING: ", postData)
+    EventBus.emit('play-score-sound', thrownScore);
 
     axios.post('/api/score/confirm', postData)
         .then(response => {
