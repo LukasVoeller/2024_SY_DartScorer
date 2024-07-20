@@ -2,7 +2,7 @@
   <!-- ======= Login ======= -->
   <div class="container" style="padding-top: 0px">
     <div class="row justify-content-center">
-      <img id="sw-login-logo" src="/homepage/assets/img/Logo-Scorin-Wizard_edit.png" alt="Logo.png">
+      <img id="sw-login-logo" src="/homepage/assets/img/Logo-Scorin-Wizard_edit.png" alt="Logo.png" style="max-width: 370px">
     </div>
 
     <div class="row justify-content-center">
@@ -72,19 +72,17 @@
                       Tech Stack
                     </div>
                     <div class="card-body">
-                      <ul style="padding-left: 15px">
-                        <li>Backend:</li>
-                        <ul>
+                        <p>Backend:</p>
+                        <ul style="padding-left: 15px">
                           <li>Symfony 6.4</li>
                           <li>PHP 8.2</li>
                           <li>MySQL 8.0</li>
                         </ul>
-                        <li>Frontend:</li>
-                        <ul>
+                        <p>Frontend:</p>
+                        <ul style="padding-left: 15px">
                           <li>Vue.js 3.2</li>
                           <li>Bootstrap 5.3</li>
                         </ul>
-                      </ul>
                     </div>
                   </div>
                 </div>
@@ -95,16 +93,24 @@
                       Features
                     </div>
                     <div class="card-body">
-                      <ul style="padding-left: 15px">
-                        <li>Deployer PHP</li>
-                        <li>APIs secured with JWT</li>
-                      </ul>
+
+                        <p>Technical:</p>
+                       <ul style="padding-left: 15px">
+                          <li>Deployer PHP</li>
+                          <li>APIs secured with JWT</li>
+                        </ul>
+                        <p>Product:</p>
+                        <ul style="padding-left: 15px">
+                          <li>Online Multiplayer</li>
+                          <li>User Management</li>
+                        </ul>
+
                     </div>
                   </div>
                 </div>
 
               </div>
-              <p style="float: right; padding-top: 10px">v0.9.3</p>
+              <p style="float: right; padding-top: 10px">Alpha v0.9.8</p>
             </div>
           </div>
         </div>

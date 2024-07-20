@@ -88,16 +88,17 @@
         <nav id="navbar-top" class="navbar navbar-dark fixed-top">
             <div class="container-fluid">
 
-                <div class="col-2 p-0">
-                    <div id="game-id" style="padding-right: 5px">
+                <div class="col-3 p-0">
+                    <div id="game-id" style="padding-right: 5px; padding-top: 15px; padding-left: 20px">
                         {% if game %}
+{#                            <p style="color: white; text-align: left; margin: 0; margin-top: -10px; font-size: 11pt">ID: {{ game.id }}</p>#}
                             <p style="color: white; text-align: left; margin: 0; margin-top: -10px; font-size: 11pt">ID: {{ game.id }}</p>
                         {% endif %}
                     </div>
                 </div>
-                <div id="scroll-column" class="col-8 p-0">
+                <div id="scroll-column" class="col-7 p-0">
                     {% if game %}
-                        <div id="scroll-container" style="padding-right: 20px; padding-top: 10px">
+                        <div id="scroll-container" style="padding-right: 10px; padding-top: 10px; padding-left: 5px">
 
                             <div class="marquee">
                                 <div class="marquee__inner paused">

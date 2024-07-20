@@ -1,5 +1,5 @@
 <template>
-  <div id="player" class="card" style="height: 650px">
+  <div id="player" class="card" style="height: 550px">
     <div class="card-header p-0" :style="{
       backgroundColor: toThrow ? '#2CAB73' : '',
       color: toThrow ? 'white' : 'black',
@@ -85,14 +85,14 @@
             <div class="row h-100" style="background-color: white; border-top-right-radius: 0.25rem;">
               <template v-if="startingPlayerLeg">
               <div class="col-12 text-center p-0" style="border-left: 1px solid #ccc; border-top-right-radius: 0.3rem; background-color: #536379">
-                <span v-if="startingPlayerLeg" style="font-size: 7pt; vertical-align: -12px; color: white">
+                <span v-if="startingPlayerLeg" style="font-size: 10pt; vertical-align: -10px; color: white">
                  LEG
                 </span>
               </div>
               </template>
               <template v-else-if="startingPlayerSet">
               <div class="col-12 text-center p-0" style="border-left: 1px solid #ccc; border-top-right-radius: 0.3rem; background-color: #343E4C">
-                <span v-if="startingPlayerSet" style="font-size: 7pt; vertical-align: -12px; color: white;">
+                <span v-if="startingPlayerSet" style="font-size: 10pt; vertical-align: -10px; color: white;">
                   SET
                 </span>
               </div>

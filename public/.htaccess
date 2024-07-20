@@ -6,14 +6,14 @@
     RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
 
     # Redirect external requests not using 'www' or local development URLs to 'vllr.lu'
-    RewriteCond %{HTTP_HOST} !^www\. [NC]
-    RewriteCond %{HTTP_HOST} !^localhost [NC]
-    RewriteCond %{HTTP_HOST} !^symfonyproject\.lndo\.site$ [NC]
-    RewriteCond %{HTTPS} off
-    RewriteRule ^ https://www.vllr.lu%{REQUEST_URI} [L,R=301]
+#    RewriteCond %{HTTP_HOST} !^www\. [NC]
+#    RewriteCond %{HTTP_HOST} !^localhost [NC]
+#    RewriteCond %{HTTP_HOST} !^symfonyproject\.lndo\.site$ [NC]
+#    RewriteCond %{HTTPS} off
+#    RewriteRule ^ https://www.vllr.lu%{REQUEST_URI} [L,R=301]
 
     # Exclude ACME challenge directory from redirection
-    RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
+#    RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
 
     # Symfony - redirect to front controller if no physical file found
     RewriteCond %{REQUEST_URI} !^/node_modules/

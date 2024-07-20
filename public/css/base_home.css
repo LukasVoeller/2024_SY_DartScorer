@@ -1,6 +1,12 @@
-body {
-    padding-top: 56px;
+@media (max-width: 1200px) {
+    body {
+        padding-top: 56px;
+    }
 }
+
+/*body {*/
+/*    padding-top: 56px;*/
+/*}*/
 
 #navbar-top {
     background-color: #010314;

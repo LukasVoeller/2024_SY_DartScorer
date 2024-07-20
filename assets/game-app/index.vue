@@ -5,11 +5,11 @@
   </div>
 
   <span v-if="eventSourceState === 0" class="dot"
-        style="position: absolute; top: 35px; left: 25px; height: 10px; width: 10px; background-color: yellow; border-radius: 50%; z-index: 1100; display: inline-block;"></span>
+        style="position: absolute; top: 23px; left: 15px; height: 10px; width: 10px; background-color: yellow; border-radius: 50%; z-index: 1100; display: inline-block;"></span>
   <span v-else-if="eventSourceState === 1" class="dot"
-        style="position: absolute; top: 35px; left: 25px; height: 10px; width: 10px; background-color: #2CAB73; border-radius: 50%; z-index: 1100; display: inline-block;"></span>
+        style="position: absolute; top: 23px; left: 15px; height: 10px; width: 10px; background-color: #2CAB73; border-radius: 50%; z-index: 1100; display: inline-block;"></span>
   <span v-else-if="eventSourceState === 2" class="dot"
-        style="position: absolute; top: 35px; left: 25px; height: 10px; width: 10px; background-color: red; border-radius: 50%; z-index: 1100; display: inline-block;"></span>
+        style="position: absolute; top: 23px; left: 15px; height: 10px; width: 10px; background-color: red; border-radius: 50%; z-index: 1100; display: inline-block;"></span>
 
   <!-- Tablet view -->
   <div class="row d-none d-md-flex">
@@ -31,8 +31,8 @@
                            :scoreBusted="player2.scoreBusted" :matchMode="game.matchMode"/>
     </div>
 
-    <div class="col-6 d-flex flex-column">
-      <NumberpadTabletComponent v-if="game && !loading && isTablet" @score-entered="processScore" @score-cleared="clearScore"
+    <div class="col-6 d-flex flex-column" style="height: 550px">
+    <NumberpadTabletComponent v-if="game && !loading && isTablet" @score-entered="processScore" @score-cleared="clearScore"
                           @score-confirmed="confirmScore" @score-undo="undoScore" @score-left="leftScore"
                           :player1Score="this.player1.totalScore" :player2Score="this.player2.totalScore"
                           :player1ToThrow="toThrowPlayerId === player1.id"
