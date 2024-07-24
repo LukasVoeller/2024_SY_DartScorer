@@ -1,3 +1,4 @@
+const path = require('path');
 const Encore = require('@symfony/webpack-encore');
 const webpack = require('webpack');
 const dotenv = require('dotenv');
@@ -25,13 +26,16 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.ts')
+
     .addEntry('gameApp', './assets/game-app.ts')
     .addEntry('gameFinishedApp', './assets/game-finished-app.ts')
-    .addEntry('newGameApp', './assets/new-game-app.ts')
+    .addEntry('gameNewApp', './assets/game-new-app.ts')
+    .addEntry('gameListApp', './assets/game-list-app.ts')
+
+    .addEntry('homeApp', './assets/home-app.ts')
+    .addEntry('loginApp', './assets/login-app.ts')
     .addEntry('playerApp', './assets/player-app.ts')
     .addEntry('userApp', './assets/user-app.ts')
-    .addEntry('loginApp', './assets/login-app.ts')
-    .addEntry('homeApp', './assets/home-app.ts')
 
     // Enable vue plugins
     .addPlugin(new webpack.DefinePlugin({
@@ -93,6 +97,10 @@ Encore
 
     // uncomment if you use TypeScript
     .enableTypeScriptLoader()
+
+    .addAliases({
+        '@': path.resolve(__dirname, 'src')
+    })
 
     // uncomment if you use React
     //.enableReactPreset()

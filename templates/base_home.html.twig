@@ -61,8 +61,8 @@
 
                 <nav id="navbar" class="nav-menu navbar">
                     <ul>
-                        <li><a href="{{ path('home') }}" class="nav-link {% if app.request.attributes.get('_route') == 'home' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>
-                        <li><a href="{{ path('login') }}" class="nav-link {% if app.request.attributes.get('_route') == 'login' %}active{% endif %}">
+                        <li><a href="{{ path('app_home') }}" class="nav-link {% if app.request.attributes.get('_route') == 'home' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>
+                        <li><a href="{{ path('app_login') }}" class="nav-link {% if app.request.attributes.get('_route') == 'login' %}active{% endif %}">
                                 <img style="width: 15%; padding-right: 5px; margin-left: -3px" src="/homepage/assets/img/Logo-Scorin-Wizard_edit.png">
                                 <span>Scorin Wizard</span></a>
                         </li>
@@ -74,7 +74,7 @@
         <!-- Start Bootstrap Navbar -->
         <nav id="navbar-top" class="navbar navbar-dark fixed-top d-xl-none">
             <div class="container-fluid">
-                <a class="navbar-brand" href="{{ path('home') }}" rel="noopener noreferrer">Lukas Völler</a>
+                <a class="navbar-brand" href="{{ path('app_home') }}" rel="noopener noreferrer">Lukas Völler</a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
                     <span class="navbar-toggler-icon"></span>
@@ -95,8 +95,8 @@
 
                         <nav id="navbar" class="nav-menu navbar">
                             <ul>
-                                <li><a href="{{ path('home') }}" class="nav-link {% if app.request.attributes.get('_route') == 'home' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>
-                                <li><a href="{{ path('login') }}" class="nav-link {% if app.request.attributes.get('_route') == 'login' %}active{% endif %}">
+                                <li><a href="{{ path('app_home') }}" class="nav-link {% if app.request.attributes.get('_route') == 'home' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>
+                                <li><a href="{{ path('app_login') }}" class="nav-link {% if app.request.attributes.get('_route') == 'login' %}active{% endif %}">
                                         <img style="width: 11%; padding-right: 5px; margin-left: -3px" src="/homepage/assets/img/Logo-Scorin-Wizard_edit.png">
                                         <span>Scorin Wizard</span></a>
                                 </li>

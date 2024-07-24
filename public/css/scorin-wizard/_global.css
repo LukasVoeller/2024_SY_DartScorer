@@ -1,0 +1,101 @@
+/*body {*/
+/*    background-color: #1B2130;*/
+/*}*/
+
+body {
+    background-color: #23252A;
+}
+
+/*#navbar-top {*/
+/*    background-color: #010314;*/
+/*}*/
+
+#navbar-top {
+    background-color: #1E2024;
+}
+
+/* ------------------------------ CARD ------------------------------ */
+
+/*.card {*/
+/*    background-color: #3C3D43;*/
+/*}*/
+
+.card {
+    background-color: #3C3D43;
+}
+
+.card-header {
+    background-color: #32343A;
+}
+
+.list-group-item {
+    background-color: #3C3D43;
+}
+
+/* ------------------------------ TABLE ------------------------------ */
+
+/*.table thead th {*/
+/*    background-color: #3C3D43;*/
+/*    color: white;*/
+/*}*/
+
+/*.table tbody td {*/
+/*    background-color: #3C3D43;*/
+/*    color: white;*/
+/*}*/
+
+.table thead th {
+    background-color: #3C3D43;
+    color: white;
+}
+
+.table tbody td {
+    background-color: #3C3D43;
+    color: white;
+}
+
+/* ------------------------------ LINKS ------------------------------ */
+
+a {
+    color: #8CF0FF;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #24BCD9;
+    text-decoration: none;
+}
+
+/* ------------------------------ SELECT RADIO ------------------------------ */
+
+.btn-check:checked + .btn-outline-success {
+    background-color: #2CAB73;
+    color: white;
+}
+
+.btn-outline-success {
+    background-color: white;
+    color: black;
+}
+
+/*.btn-outline-success:hover {*/
+/*    background-color: #2CAB73;*/
+/*    color: white;*/
+/*}*/
+
+/*.btn-outline-success {*/
+/*    color: black;*/
+/*    border-color: #2CAB73;*/
+/*}*/
+
+/* ------------------------------ PRIMARY BUTTON ------------------------------ */
+
+.btn-success {
+    background-color: #2CAB73;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #2CAB73;
+    color: white;
+}

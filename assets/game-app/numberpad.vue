@@ -1,7 +1,7 @@
 <template>
   <div class="row px-1">
     <div class="col p-1">
-      <button id="btn-undo" type="button" class="btn btn-light custom-btn-score-row" :disabled="disableThrowButton">
+      <button id="btn-undo" type="button" class="btn btn-light custom-btn-score-row" :disabled="disableThrowButton" style="font-size: 14pt">
         <i class="bi bi-arrow-counterclockwise"></i>
         {{ undoButtonText }}
       </button>
@@ -10,7 +10,7 @@
       <input id="scoreInput" class="form-control text-center" :class="{'exceeds-limit': exceedsLimit}" type="text" readonly>
     </div>
     <div class="col p-1">
-      <button id="btn-left" type="button" class="btn btn-light custom-btn-score-row">
+      <button id="btn-left" type="button" class="btn btn-light custom-btn-score-row" style="font-size: 14pt">
         <i class="bi bi-chevron-bar-down"></i>
         {{ leftButtonText }}
       </button>

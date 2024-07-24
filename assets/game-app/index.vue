@@ -12,7 +12,7 @@
         style="position: absolute; top: 23px; left: 15px; height: 10px; width: 10px; background-color: red; border-radius: 50%; z-index: 1100; display: inline-block;"></span>
 
   <!-- Tablet view -->
-  <div class="row d-none d-md-flex">
+  <div class="row d-none d-md-flex" style="padding-top: 10px">
     <div class="col-3">
       <PlayerCardTabletComponent v-if="game && !loading && isTablet" :playerName="player1.name" :playerScore="player1.displayScore"
                            :startingPlayerLeg="player1.id === startingLegPlayerId" :startingPlayerSet="player1.id === startingSetPlayerId"

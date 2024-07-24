@@ -45,6 +45,7 @@
         "to-fast-properties": "^4.0.0",
         "tslib": "^2.6.3",
         "vue-router": "^4.3.0",
+        "vue3-datepicker": "^0.4.0",
         "vue3-spinners": "^1.2.2",
         "vuelidate": "^0.7.7"
     }

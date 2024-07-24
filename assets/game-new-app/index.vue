@@ -1,8 +1,9 @@
 <template>
-  <div class="container p-0">
-    <h1 id="headline">New Game</h1>
+  <div class="container p-0" style="margin-top: 10px">
 
-    <div class="card shadow" style="padding: 20px; background-color: #343E4C">
+<!--    <h2 style="padding-top: 15px">New Game</h2>-->
+
+    <div class="card shadow" style="padding: 20px; background-color: #343E4C;">
       <form @submit.prevent="submitForm">
 
         <PlayerSelection

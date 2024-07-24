@@ -28,21 +28,26 @@
   <br>
 
   <!-- Latest 3 -->
-  <div v-if="false">An error occurred while fetching game data.</div>
-  <div v-if="loading" style="display: flex; justify-content: center; padding-top: 10px; padding-bottom: 10px">
-    <VueSpinnerDots size="40" color="black" />
-  </div>
+  <div class="card shadow" style="">
+    <div class="card-header" style="display: flex; justify-content: space-between">
+      <h5 style="padding-top: 5px; color: white; margin: 0;">Latest 3</h5>
+      <button class="btn btn-secondary" @click="navigateToAllGames" style="height: 30px; font-size: 10pt"><i class="bx bx-library"></i></button>
+    </div>
+<!--    <h1 style="color: black; align-self: center; padding-top: 15px; color: white">Latest 3</h1>-->
 
-  <div class="card shadow" style="background-color: #343E4C">
-    <h1 style="color: black; align-self: center; padding-top: 15px; color: white">Latest 3</h1>
+    <div v-if="false">An error occurred while fetching game data.</div>
+    <div v-if="loading" style="display: flex; justify-content: center; padding-top: 10px; padding-bottom: 10px">
+      <VueSpinnerDots size="40" color="white" />
+    </div>
+
     <table v-if="games.length > 0" class="table table-hover">
       <thead class="table">
       <tr>
-        <th style="background-color: #343E4C; color:white;">Date</th>
-        <th style="background-color: #343E4C; color:white;">Mode</th>
-        <th style="background-color: #343E4C; color:white;">Player 1</th>
-        <th style="background-color: #343E4C; color:white;">Player 2</th>
-        <th style="background-color: #343E4C; color:white;"></th>
+        <th>Date</th>
+        <th>Mode</th>
+        <th>Player 1</th>
+        <th>Player 2</th>
+        <th></th>
       </tr>
       </thead>
       <tbody>
@@ -51,22 +56,22 @@
       <!-- <template v-for="game in games"> -->
       <template v-for="game in games.slice(0, 3)">
         <tr data-bs-toggle="collapse" :data-bs-target="'#collapse' + game.id">
-          <td style="background-color: #343E4C; color:white;">{{ formatDate(game.date) }}</td>
-          <td style="background-color: #343E4C; color:white;">{{ game.gameMode }}</td>
-          <td :style="{ color: game.winnerPlayerId === game.player1Id ? '#50BE96' : 'white' }" style="background-color: #343E4C">
+          <td>{{ formatDate(game.date) }}</td>
+          <td>{{ game.gameMode }}</td>
+          <td :style="{ color: game.winnerPlayerId === game.player1Id ? '#50BE96' : 'white' }">
             {{ getPlayerName(game.player1Id) }}
           </td>
-          <td :style="{ color: game.winnerPlayerId === game.player2Id ? '#50BE96' : 'white' }" style="background-color: #343E4C">
+          <td :style="{ color: game.winnerPlayerId === game.player2Id ? '#50BE96' : 'white' }">
             {{ getPlayerName(game.player2Id) }}
           </td>
-          <td style="background-color: #343E4C">
+          <td>
             <i v-if="game.state === 'Live'" style="color: #FF5E5E" class="bi bi-record-circle"></i>
             <i v-else-if="game.state === 'Finished'" style="color: #50BE96" class="bi bi-check-circle"></i>
           </td>
         </tr>
 
         <tr>
-          <td colspan="5" style="padding: 0px; background-color: #343E4C">
+          <td colspan="5" style="padding: 0px; background-color: #3C3D43">
             <div :id="'collapse' + game.id" class="collapse">
 
               <div style="padding: 10px;">
@@ -99,39 +104,39 @@
   <!-- Statistic -->
   <div class="row">
     <div class="col-4">
-      <div class="card h-100" style="display: flex; text-align: center; background-color: #343E4C; color: white">
+      <div class="card h-100" style="display: flex; text-align: center; color: white">
         <div class="card-header">
           <div style="padding: 10px 0;">
             <i class="bi bi-trophy-fill" style="color: goldenrod"></i>
           </div>
-          Average<br>
+          Avg.<br>
           Score
         </div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item" style="background-color: #343E4C; color: white">
+          <li class="list-group-item" style="color: white">
             Lukas<br>
             45,6</li>
         </ul>
       </div>
     </div>
     <div class="col-4">
-      <div class="card h-100" style="display: flex; text-align: center; background-color: #343E4C; color: white">
+      <div class="card h-100" style="display: flex; text-align: center; color: white">
         <div class="card-header">
           <div style="text-align: center; padding: 10px 0;">
             <i class="bi bi-trophy-fill" style="color: goldenrod"></i>
           </div>
-          Average<br>
-          Checkout
+          Avg.<br>
+          CO
         </div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item" style="background-color: #343E4C; color: white">
+          <li class="list-group-item" style="color: white">
             Lukas<br>
             32,1</li>
         </ul>
       </div>
     </div>
     <div class="col-4">
-      <div class="card h-100" style="display: flex; text-align: center; background-color: #343E4C; color: white">
+      <div class="card h-100" style="display: flex; text-align: center; color: white">
         <div class="card-header">
           <div style="text-align: center; padding: 10px 0;">
             <i class="bi bi-trophy-fill" style="color: goldenrod"></i>
@@ -140,7 +145,7 @@
           501
         </div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item" style="background-color: #343E4C; color: white">
+          <li class="list-group-item" style="color: white">
             Lukas<br>
             13 <img src="/homepage/assets/img/dart-arrow-32px.png" alt="dart arrow" style="max-width: 20px; filter: invert(100%)">
           </li>
@@ -198,7 +203,11 @@ export default defineComponent({
 
   methods: {
     navigateToNewGame() {
-      window.location.href = '/new-game'; // This will cause the browser to navigate to the new game page
+      window.location.href = '/game/new';
+    },
+
+    navigateToAllGames() {
+      window.location.href = '/games'
     },
 
     formatDate(dateString: string) {
@@ -240,24 +249,6 @@ export default defineComponent({
             this.loading = false;
             console.error('Error fetching players:', error);
           });
-
-      /*
-      axios.get('/api/player')
-          .then(response => {
-            console.log("PLAYER DATA: ", response.data)
-
-            this.players = response.data.reduce((acc, player) => {
-              acc[player.id] = player.name;
-              return acc;
-            }, {});
-
-
-          })
-          .catch(error => {
-            console.error('Error fetching player data:', error);
-            this.error = true;
-          });
-          */
     },
 
     getPlayerName(playerId: Number) {

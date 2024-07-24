@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class NewGameController extends AbstractController
+class GameNewController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
 
@@ -32,10 +32,10 @@ class NewGameController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/new-game', name: 'new-game')]
+    #[Route('/game/new', name: 'app_game_new')]
     public function index(): Response
     {
-        return $this->render('new_game/index.html.twig');
+        return $this->render('game_new/index.html.twig');
     }
 
     #[Route('/api/game/create', name: 'api_game_create', methods: ['POST'])]

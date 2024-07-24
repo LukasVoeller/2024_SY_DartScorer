@@ -38,7 +38,7 @@
         {# Homepage #}
         <link href="/homepage/assets/css/style.css" rel="stylesheet">
         <link href="/css/base_darts.css" rel="stylesheet"/>
-        <link type="text/css" href="/css/scorin-wizard/global.css" rel="stylesheet"/>
+        <link type="text/css" href="/css/scorin-wizard/_global.css" rel="stylesheet"/>
 
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
@@ -66,7 +66,19 @@
 
                 <div class="d-flex align-items-center" style="flex-grow: 1;">
                     {% if app.user %}
-                        <p style="color: white; text-align: left; margin: 0;">Welcome, {{ app.user.username }}! <a href="{{ path('logout') }}">Logout</a></p>
+                        <p style="color: white; text-align: left; margin: 0;">
+{#                            Welcome, {{ app.user.username }}! <a href="{{ path('logout') }}">Logout</a>#}
+
+                            {% if app.request.pathinfo starts with '/new-game' %}
+                                New Game
+                            {% elseif app.request.pathinfo starts with '/player' %}
+                                Manage Player
+                            {% elseif app.request.pathinfo starts with '/user' %}
+                                Manage User
+                            {% else %}
+                                Welcome, {{ app.user.username }}! <a href="{{ path('logout') }}">Logout</a>
+                            {% endif %}
+                        </p>
                     {% endif %}
                 </div>
 
