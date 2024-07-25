@@ -24,21 +24,3 @@
     background-color: #3C3D43;
     color: white;
 }
-
-
-
-#headline {
-    color: white;
-    padding-top: 15px;
-}
-
-#custom-btn {
-    background: #75E7A2;
-    border: 0;
-    color: black;
-}
-
-#custom-btn:hover {
-    background: #2CAB73;
-    color: white;
-}

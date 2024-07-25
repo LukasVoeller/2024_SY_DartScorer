@@ -1,5 +1,5 @@
 <template>
-  <div class="card shadow" style="background-color: #343E4C; margin-top: 15px; padding: 20px;">
+  <div class="card shadow" style="margin-top: 15px; padding: 20px;">
     <h3 style="color: black; align-self: center; color: white; margin-bottom: 10px">Games ({{ filteredGamesCount }})</h3>
 
     <div class="row" style="margin-bottom: 10px">
@@ -48,18 +48,18 @@
     <table v-if="paginatedGames.length > 0" class="table table-hover">
       <thead class="table">
       <tr>
-        <th style="background-color: #343E4C; color: white;">Date</th>
-        <th style="background-color: #343E4C; color: white;">M</th>
-        <th style="background-color: #343E4C; color: white;">Player 1</th>
-        <th style="background-color: #343E4C; color: white;">Player 2</th>
-        <th style="background-color: #343E4C; color: white;"></th>
+        <th style="color: white;">Date</th>
+        <th style="color: white;">M</th>
+        <th style="color: white;">Player 1</th>
+        <th style="color: white;">Player 2</th>
+        <th style="color: white;"></th>
       </tr>
       </thead>
       <tbody>
       <template v-for="game in paginatedGames" :key="game.id">
         <tr data-bs-toggle="collapse" :data-bs-target="'#collapse' + game.id">
-          <td style="background-color: #343E4C; color: white;">{{ formatDate(game.date) }}</td>
-          <td style="background-color: #343E4C; color: white;">{{ game.gameMode }}</td>
+          <td style="color: white;">{{ formatDate(game.date) }}</td>
+          <td style="color: white;">{{ game.gameMode }}</td>
           <td
               :style="{
             color: game.winnerPlayerId === game.player1Id ? '#50BE96' : 'white',
@@ -68,7 +68,6 @@
             overflow: 'hidden',
             textOverflow: 'ellipsis'
           }"
-              style="background-color: #343E4C;"
           >
             {{ getPlayerName(game.player1Id) }}
           </td>
@@ -80,17 +79,16 @@
             overflow: 'hidden',
             textOverflow: 'ellipsis'
           }"
-              style="background-color: #343E4C;"
           >
             {{ getPlayerName(game.player2Id) }}
           </td>
-          <td style="background-color: #343E4C">
+          <td>
             <i v-if="game.state === 'Live'" style="color: #FF5E5E" class="bi bi-record-circle"></i>
             <i v-else-if="game.state === 'Finished'" style="color: #50BE96" class="bi bi-check-circle"></i>
           </td>
         </tr>
         <tr>
-          <td colspan="5" style="padding: 0px; background-color: #343E4C">
+          <td colspan="5" style="padding: 0px;">
             <div :id="'collapse' + game.id" class="collapse">
               <div style="padding: 10px;">
                 <div class="row">

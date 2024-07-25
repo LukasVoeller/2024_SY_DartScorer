@@ -1,7 +1,7 @@
 <template>
 
   <!-- Table to display user before -->
-  <div class="card shadow h-100" style="background-color: #343E4C; padding: 20px; margin-top: 10px;">
+  <div class="card shadow h-100" style="padding: 20px; margin-top: 10px;">
     <input
         type="text"
         class="form-control"
@@ -14,18 +14,18 @@
     <table class="table">
       <thead>
       <tr>
-        <th scope="col" style="background-color: #343E4C; color: white;">Username</th>
-        <th scope="col" style="background-color: #343E4C; color: white;">Player</th>
-        <th scope="col" style="background-color: #343E4C; color: white;">Role</th>
-        <th scope="col" style="background-color: #343E4C; color: white;" class="text-end">Actions</th>
+        <th scope="col" style="color: white;">Username</th>
+        <th scope="col" style="color: white;">Player</th>
+        <th scope="col" style="color: white;">Role</th>
+        <th scope="col" style="color: white;" class="text-end">Actions</th>
       </tr>
       </thead>
       <tbody>
       <tr v-for="user in paginatedUsers" :key="user.id">
-        <td style="background-color: #343E4C; color: white;">{{ user.username }}</td>
-        <td style="background-color: #343E4C; color: white;">{{ user.player ? user.player.name : "None" }}</td>
-        <td style="background-color: #343E4C; color: white;">{{ determineRole(user) }}</td>
-        <td style="background-color: #343E4C; color: white;" class="text-end">
+        <td style="color: white;">{{ user.username }}</td>
+        <td style="color: white;">{{ user.player ? user.player.name : "None" }}</td>
+        <td style="color: white;">{{ determineRole(user) }}</td>
+        <td style="color: white;" class="text-end">
           <button @click="deleteUser(user.id)" class="btn btn-danger">
             <i class="bi bi-trash"></i>
           </button>
@@ -63,7 +63,7 @@
 
   <div class="row d-flex" style="padding-top: 10px">
     <div class="col-md-6" style="margin-bottom: 10px">
-      <div class="card shadow h-100" style="background-color: #343E4C; padding: 20px;">
+      <div class="card shadow h-100" style="padding: 20px;">
         <form @submit.prevent="submitForm" :class="{ 'was-validated': formNeedsValidation }" novalidate="">
           <div class="row">
             <div class="col-6" style="padding-bottom: 20px;">
@@ -105,30 +105,30 @@
     </div>
 
     <div class="col-md-6 h-100">
-      <div class="card shadow h-100" style="background-color: #343E4C; padding: 20px; margin-bottom: 25px">
+      <div class="card shadow h-100" style="padding: 20px; margin-bottom: 25px">
         <table class="table">
           <thead>
           <tr>
-            <th scope="col" style="background-color: #343E4C; color: white;">Role</th>
-            <th scope="col" style="background-color: #343E4C; color: white;">Manage User</th>
-            <th scope="col" style="background-color: #343E4C; color: white;">Manage Player</th>
+            <th scope="col" style="color: white;">Role</th>
+            <th scope="col" style="color: white;">Manage User</th>
+            <th scope="col" style="color: white;">Manage Player</th>
           </tr>
           </thead>
           <tbody>
           <tr>
-            <td style="background-color: #343E4C; color: white;">Admin</td>
-            <td style="background-color: #343E4C; color: white;">Yes</td>
-            <td style="background-color: #343E4C; color: white;">Yes</td>
+            <td style="color: white;">Admin</td>
+            <td style="color: white;">Yes</td>
+            <td style="color: white;">Yes</td>
           </tr>
           <tr>
-            <td style="background-color: #343E4C; color: white;">Associate</td>
-            <td style="background-color: #343E4C; color: white;">No</td>
-            <td style="background-color: #343E4C; color: white;">Yes</td>
+            <td style="color: white;">Associate</td>
+            <td style="color: white;">No</td>
+            <td style="color: white;">Yes</td>
           </tr>
           <tr>
-            <td style="background-color: #343E4C; color: white;">Player</td>
-            <td style="background-color: #343E4C; color: white;">No</td>
-            <td style="background-color: #343E4C; color: white;">No</td>
+            <td style="color: white;">Player</td>
+            <td style="color: white;">No</td>
+            <td style="color: white;">No</td>
           </tr>
           </tbody>
         </table>

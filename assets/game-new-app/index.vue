@@ -3,7 +3,7 @@
 
 <!--    <h2 style="padding-top: 15px">New Game</h2>-->
 
-    <div class="card shadow" style="padding: 20px; background-color: #343E4C;">
+    <div class="card shadow" style="padding: 20px;">
       <form @submit.prevent="submitForm">
 
         <PlayerSelection

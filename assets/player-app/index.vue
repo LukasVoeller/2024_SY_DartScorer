@@ -3,7 +3,7 @@
   <div class="row" style="margin-top: 10px">
     <!-- Add Player -->
     <div class="col-md-6">
-      <div class="card shadow" style="background-color: #343E4C; padding: 20px">
+      <div class="card shadow" style="padding: 20px">
         <form @submit.prevent="submitForm" :class="{ 'was-validated': fromIsValid }" id="player-form" class="row g-3 needs-validation" novalidate="">
           <div class="col-8">
             <input v-model="newPlayerName" type="text" class="form-control" id="newPlayerName" required="" placeholder="Player name">
@@ -22,7 +22,7 @@
   </div>
 
   <!-- Table to display player before -->
-  <div class="card shadow" style="background-color: #343E4C; padding: 20px; margin-bottom: 25px; margin-top: 10px">
+  <div class="card shadow" style="padding: 20px; margin-bottom: 25px; margin-top: 10px">
     <input
         type="text"
         class="form-control"
@@ -35,16 +35,16 @@
     <table class="table">
       <thead>
       <tr>
-        <th scope="col" style="background-color: #343E4C; color: white;">ID</th>
-        <th scope="col" style="background-color: #343E4C; color: white;">Player Name</th>
-        <th scope="col" style="background-color: #343E4C; color: white;" class="text-end">Actions</th>
+        <th scope="col" style="color: white;">ID</th>
+        <th scope="col" style="color: white;">Player Name</th>
+        <th scope="col" style="color: white;" class="text-end">Actions</th>
       </tr>
       </thead>
       <tbody>
       <tr v-for="player in paginatedPlayers" :key="player.id">
-        <td style="background-color: #343E4C; color: white;">{{ player.id }}</td>
-        <td style="background-color: #343E4C; color: white;">{{ player.name }}</td>
-        <td  style="background-color: #343E4C; color: white;" class="text-end">
+        <td style="color: white;">{{ player.id }}</td>
+        <td style="color: white;">{{ player.name }}</td>
+        <td  style="color: white;" class="text-end">
           <button v-if="!isAdmin(player)" @click="deletePlayer(player.id)" class="btn btn-danger">
             <i class="bi bi-trash"></i>
           </button>

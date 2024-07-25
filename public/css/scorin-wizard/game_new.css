@@ -1,3 +1,20 @@
+/* ------------------------------ CARD ------------------------------ */
+
+.card {
+    background-color: #3C3D43;
+    /*border: 0.5px solid white; !* Add white border *!*/
+}
+
+.card-header {
+    background-color: #32343A;
+}
+
+.list-group-item {
+    background-color: #3C3D43;
+}
+
+
+
 #headline {
     color: white;
     padding-top: 10px;

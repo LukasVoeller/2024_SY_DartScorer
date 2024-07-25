@@ -11,47 +11,18 @@ body {
 /*}*/
 
 #navbar-top {
-    background-color: #1E2024;
+    background-color: #1B1D21;
 }
 
-/* ------------------------------ CARD ------------------------------ */
 
-/*.card {*/
-/*    background-color: #3C3D43;*/
-/*}*/
+/* ------------------------------ NAV BAR SLIDE IN ------------------------------ */
 
-.card {
-    background-color: #3C3D43;
+#offcanvasDarkNavbar {
+    background-color: #1B1D21;
 }
 
-.card-header {
-    background-color: #32343A;
-}
-
-.list-group-item {
-    background-color: #3C3D43;
-}
-
-/* ------------------------------ TABLE ------------------------------ */
-
-/*.table thead th {*/
-/*    background-color: #3C3D43;*/
-/*    color: white;*/
-/*}*/
-
-/*.table tbody td {*/
-/*    background-color: #3C3D43;*/
-/*    color: white;*/
-/*}*/
-
-.table thead th {
-    background-color: #3C3D43;
-    color: white;
-}
-
-.table tbody td {
-    background-color: #3C3D43;
-    color: white;
+#header {
+    background-color: #1B1D21;
 }
 
 /* ------------------------------ LINKS ------------------------------ */

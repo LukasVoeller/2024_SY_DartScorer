@@ -6,19 +6,19 @@
   <!-- Call to action -->
   <div class="row">
     <div class="col-4">
-      <button type="button" @click="navigateToNewGame" style="height: 100px" class="btn btn-success w-100">
+      <button type="button" @click="navigateToNewGame" style="height: 90px" class="btn btn-success w-100">
         <i class="bi bi-play-circle"></i><br>
         Match
       </button>
     </div>
     <div class="col-4">
-      <button type="button" style="height: 100px" class="btn btn-success w-100">
+      <button type="button" style="height: 90px" class="btn btn-success w-100">
         <i class="bi bi-cone"></i><br>
         Training
       </button>
     </div>
     <div class="col-4">
-      <button type="button" style="height: 100px" class="btn btn-success w-100">
+      <button type="button" style="height: 90px" class="btn btn-success w-100">
         <i class="bi bi-graph-up"></i><br>
         Statistics
       </button>
@@ -31,13 +31,16 @@
   <div class="card shadow" style="">
     <div class="card-header" style="display: flex; justify-content: space-between">
       <h5 style="padding-top: 5px; color: white; margin: 0;">Latest 3</h5>
-      <button class="btn btn-secondary" @click="navigateToAllGames" style="height: 30px; font-size: 10pt"><i class="bx bx-library"></i></button>
+      <button class="btn btn-secondary" @click="navigateToAllGames"
+              style="height: 30px; display: flex; align-items: center; justify-content: center;">
+        <i class="bx bx-library" style="font-size: 14pt;"></i>
+      </button>
     </div>
-<!--    <h1 style="color: black; align-self: center; padding-top: 15px; color: white">Latest 3</h1>-->
+    <!--    <h1 style="color: black; align-self: center; padding-top: 15px; color: white">Latest 3</h1>-->
 
     <div v-if="false">An error occurred while fetching game data.</div>
     <div v-if="loading" style="display: flex; justify-content: center; padding-top: 10px; padding-bottom: 10px">
-      <VueSpinnerDots size="40" color="white" />
+      <VueSpinnerDots size="40" color="white"/>
     </div>
 
     <table v-if="games.length > 0" class="table table-hover">
@@ -58,10 +61,26 @@
         <tr data-bs-toggle="collapse" :data-bs-target="'#collapse' + game.id">
           <td>{{ formatDate(game.date) }}</td>
           <td>{{ game.gameMode }}</td>
-          <td :style="{ color: game.winnerPlayerId === game.player1Id ? '#50BE96' : 'white' }">
+          <td
+                  :style="{
+            color: game.winnerPlayerId === game.player1Id ? '#50BE96' : 'white',
+            maxWidth: '70px',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'
+          }"
+          >
             {{ getPlayerName(game.player1Id) }}
           </td>
-          <td :style="{ color: game.winnerPlayerId === game.player2Id ? '#50BE96' : 'white' }">
+          <td
+                  :style="{
+            color: game.winnerPlayerId === game.player2Id ? '#50BE96' : 'white',
+            maxWidth: '70px',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'
+          }"
+          >
             {{ getPlayerName(game.player2Id) }}
           </td>
           <td>
@@ -85,7 +104,9 @@
 
                   </div>
                   <div class="col-4 d-flex flex-column align-items-end align-items-bottom">
-                    <button type="button" style="width: 100px;" class="btn btn-success" @click="viewGame(game.id)">View</button>
+                    <button type="button" style="width: 100px;" class="btn btn-success" @click="viewGame(game.id)">
+                      View
+                    </button>
                   </div>
                 </div>
               </div>
@@ -115,7 +136,8 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item" style="color: white">
             Lukas<br>
-            45,6</li>
+            45,6
+          </li>
         </ul>
       </div>
     </div>
@@ -131,7 +153,8 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item" style="color: white">
             Lukas<br>
-            32,1</li>
+            32,1
+          </li>
         </ul>
       </div>
     </div>
@@ -147,7 +170,8 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item" style="color: white">
             Lukas<br>
-            13 <img src="/homepage/assets/img/dart-arrow-32px.png" alt="dart arrow" style="max-width: 20px; filter: invert(100%)">
+            13 <img src="/homepage/assets/img/dart-arrow-32px.png" alt="dart arrow"
+                    style="max-width: 20px; filter: invert(100%)">
           </li>
         </ul>
       </div>
@@ -170,7 +194,7 @@ axios.interceptors.request.use(config => {
 });
 
 import axios from 'axios';
-import { VueSpinnerDots } from "vue3-spinners";
+import {VueSpinnerDots} from "vue3-spinners";
 import {defineComponent} from "vue";
 
 interface Player {
