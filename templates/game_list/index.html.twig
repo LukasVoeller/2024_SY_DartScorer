@@ -1,0 +1,20 @@
+{% extends 'base_darts.html.twig' %}
+
+{% block stylesheets %}
+    <link type="text/css" href="/css/scorin-wizard/_global.css" rel="stylesheet"/>
+    <link type="text/css" href="/css/scorin-wizard/game_list.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block title %}New Game{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('gameListApp') }}
+{% endblock %}
+
+{% block body %}
+    <div class="container px-3">
+        <div id="game-list-app">
+
+        </div>
+    </div>
+{% endblock %}

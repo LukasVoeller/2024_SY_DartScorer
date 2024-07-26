@@ -35,12 +35,13 @@
 
         <!-- Template Main CSS File -->
         <link href="/homepage/assets/css/style.css" rel="stylesheet">
-        <link type="text/css" href="/css/base_darts.css" rel="stylesheet"/>
+        <!--<link type="text/css" href="/css/base_darts.css" rel="stylesheet"/>-->
 
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
+            <link type="text/css" href="/css/scorin-wizard/_global.css" rel="stylesheet"/>
             <link type="text/css" href="/css/scorin-wizard/game.css" rel="stylesheet"/>
-            <link type="text/css" href="/css/scorin-wizard/global.css" rel="stylesheet"/>
+            <link type="text/css" href="/css/scorin-wizard/numberpad.css" rel="stylesheet"/>
         {% endblock %}
 
         {% block javascripts %}
@@ -72,6 +73,7 @@
 
     <body>
         <!-- ======= Sidebar ======= -->
+        <!--
         <header id="header">
             <div id="nav-profile">
                 <img id="nav-profile-img" src="/homepage/assets/img/Logo-Scorin-Wizard_edit.png" alt="" class="img-fluid rounded-circle img-hor-vert">
@@ -80,22 +82,24 @@
 
             {% include './util/navbar_darts.html.twig' %}
         </header>
+        -->
         <!-- End Sidebar -->
 
         <!-- ======= Header ======= -->
-        <nav id="navbar-top" class="navbar navbar-dark fixed-top d-xl-none">
+        <nav id="navbar-top" class="navbar navbar-dark fixed-top">
             <div class="container-fluid">
 
-                <div class="col-2 p-0">
-                    <div id="game-id" style="padding-right: 5px">
+                <div class="col-3 p-0">
+                    <div id="game-id" style="padding-right: 5px; padding-top: 15px; padding-left: 20px">
                         {% if game %}
+{#                            <p style="color: white; text-align: left; margin: 0; margin-top: -10px; font-size: 11pt">ID: {{ game.id }}</p>#}
                             <p style="color: white; text-align: left; margin: 0; margin-top: -10px; font-size: 11pt">ID: {{ game.id }}</p>
                         {% endif %}
                     </div>
                 </div>
-                <div id="scroll-column" class="col-8 p-0">
+                <div id="scroll-column" class="col-7 p-0">
                     {% if game %}
-                        <div id="scroll-container" style="padding-right: 20px; padding-top: 10px">
+                        <div id="scroll-container" style="padding-right: 10px; padding-top: 10px; padding-left: 5px">
 
                             <div class="marquee">
                                 <div class="marquee__inner paused">
@@ -114,7 +118,7 @@
                     </button>
                 </div>
 
-                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel" style="background-color: #010314;">
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
                     <div class="offcanvas-header">
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
@@ -132,7 +136,7 @@
         </nav>
         <!-- End Header -->
 
-        <div class="container vh-100 disable-dbl-tap-zoom" style="padding-top: 5px">
+        <div class="disable-dbl-tap-zoom" style="margin: 10px; margin-top: 2px">
             <div id="game-app">
 
             </div>

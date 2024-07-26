@@ -41,9 +41,14 @@ class GameController extends AbstractController
         $this->serializer = $serializer;
     }
 
-    #[Route('/game/{id}', name: 'game')]
-    public function index(Request $request, int $id): Response
+    #[Route('/game/{id}', name: 'app_game', requirements: ['id' => '\d+|new'])]
+    public function index(Request $request, $id): Response
     {
+        if ($id === 'new') {
+            return $this->render('game_new/index.html.twig');
+        }
+
+        $id = (int) $id;
         $game = $this->entityManager->getRepository(GameTypeX01::class)->find($id);
 
         if ($game) {

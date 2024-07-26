@@ -1,8 +1,29 @@
 <template>
-  <h1 id="headline" >Player Management</h1>
+<!--  <h5 style="padding-top: 10px">Manage Player</h5>-->
+
+  <div class="row" style="margin-top: 15px">
+    <!-- Add Player -->
+    <div class="col-md-6">
+      <div class="card shadow" style="padding: 20px">
+        <form @submit.prevent="submitForm" :class="{ 'was-validated': fromIsValid }" id="player-form" class="row g-3 needs-validation" novalidate="">
+          <div class="col-8">
+            <input v-model="newPlayerName" type="text" class="form-control" id="newPlayerName" required="" placeholder="Player name">
+          </div>
+
+          <div class="col-4">
+            <button class="btn btn-success w-100" type="submit">Add</button>
+          </div>
+
+          <div style="display: flex; justify-content: center; margin: 0px">
+            <VueSpinnerDots v-if="isLoadingPostPlayer" size="40" color="black" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
   <!-- Table to display player before -->
-  <div class="card shadow" style="padding: 20px; margin-bottom: 25px">
+  <div class="card shadow" style="padding: 20px; margin-bottom: 25px; margin-top: 10px">
     <input
         type="text"
         class="form-control"
@@ -15,16 +36,16 @@
     <table class="table">
       <thead>
       <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Player Name</th>
-        <th scope="col" class="text-end">Actions</th>
+        <th scope="col" style="color: white;">ID</th>
+        <th scope="col" style="color: white;">Player Name</th>
+        <th scope="col" style="color: white;" class="text-end">Actions</th>
       </tr>
       </thead>
       <tbody>
       <tr v-for="player in paginatedPlayers" :key="player.id">
-        <td>{{ player.id }}</td>
-        <td>{{ player.name }}</td>
-        <td class="text-end">
+        <td style="color: white;">{{ player.id }}</td>
+        <td style="color: white;">{{ player.name }}</td>
+        <td  style="color: white;" class="text-end">
           <button v-if="!isAdmin(player)" @click="deletePlayer(player.id)" class="btn btn-danger">
             <i class="bi bi-trash"></i>
           </button>
@@ -47,7 +68,7 @@
           @click="goToPreviousPage">
         <i class="bi bi-chevron-left"></i>
       </button>
-      <span> Page {{ currentPage }} of {{ totalPages }} </span>
+      <span style="color: white"> Page {{ currentPage }} of {{ totalPages }} </span>
       <button
           class="btn btn-secondary"
           :disabled="currentPage === totalPages"
@@ -55,27 +76,6 @@
           @click="goToNextPage">
         <i class="bi bi-chevron-right"></i>
       </button>
-    </div>
-  </div>
-
-  <div class="row">
-    <!-- Add Player -->
-    <div class="col-md-6">
-      <div class="card shadow" style="padding: 20px">
-        <form @submit.prevent="submitForm" :class="{ 'was-validated': fromIsValid }" id="player-form" class="row g-3 needs-validation" novalidate="">
-          <div class="col-8">
-            <input v-model="newPlayerName" type="text" class="form-control" id="newPlayerName" required="" placeholder="Player name">
-          </div>
-
-          <div class="col-4">
-            <button id="custom-btn" class="btn btn-primary w-100" type="submit">Add</button>
-          </div>
-
-          <div style="display: flex; justify-content: center">
-            <VueSpinnerDots v-if="isLoadingPostPlayer" size="40" color="black" />
-          </div>
-        </form>
-      </div>
     </div>
   </div>
 

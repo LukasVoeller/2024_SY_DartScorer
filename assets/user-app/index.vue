@@ -1,8 +1,8 @@
 <template>
-  <h1 id="headline">User Management</h1>
+<!--  <h5 style="padding-top: 10px">Manage User</h5>-->
 
   <!-- Table to display user before -->
-  <div class="card shadow h-100" style="padding: 20px; margin-bottom: 25px">
+  <div class="card shadow h-100" style="padding: 20px; margin-top: 15px;">
     <input
         type="text"
         class="form-control"
@@ -15,18 +15,18 @@
     <table class="table">
       <thead>
       <tr>
-        <th scope="col">Username</th>
-        <th scope="col">Player</th>
-        <th scope="col">Role</th>
-        <th scope="col" class="text-end">Actions</th>
+        <th scope="col" style="color: white;">Username</th>
+        <th scope="col" style="color: white;">Player</th>
+        <th scope="col" style="color: white;">Role</th>
+        <th scope="col" style="color: white;" class="text-end">Actions</th>
       </tr>
       </thead>
       <tbody>
       <tr v-for="user in paginatedUsers" :key="user.id">
-        <td>{{ user.username }}</td>
-        <td>{{ user.player ? user.player.name : "None" }}</td>
-        <td>{{ determineRole(user) }}</td>
-        <td class="text-end">
+        <td style="color: white;">{{ user.username }}</td>
+        <td style="color: white;">{{ user.player ? user.player.name : "None" }}</td>
+        <td style="color: white;">{{ determineRole(user) }}</td>
+        <td style="color: white;" class="text-end">
           <button @click="deleteUser(user.id)" class="btn btn-danger">
             <i class="bi bi-trash"></i>
           </button>
@@ -50,7 +50,7 @@
       >
         <i class="bi bi-chevron-left"></i>
       </button>
-      <span> Page {{ currentPage }} of {{ totalPages }} </span>
+      <span style="color: white"> Page {{ currentPage }} of {{ totalPages }} </span>
       <button
           class="btn btn-secondary"
           :disabled="currentPage === totalPages"
@@ -62,8 +62,8 @@
     </div>
   </div>
 
-  <div class="row d-flex">
-    <div class="col-md-6" style="margin-bottom: 25px">
+  <div class="row d-flex" style="padding-top: 10px">
+    <div class="col-md-6" style="margin-bottom: 10px">
       <div class="card shadow h-100" style="padding: 20px;">
         <form @submit.prevent="submitForm" :class="{ 'was-validated': formNeedsValidation }" novalidate="">
           <div class="row">
@@ -94,7 +94,7 @@
             </div>
 
             <div class="col-4">
-              <button id="custom-btn" type="submit" class="btn btn-primary w-100">Add</button>
+              <button type="submit" class="btn btn-success w-100">Add</button>
             </div>
 
             <div style="display: flex; justify-content: center">
@@ -110,26 +110,26 @@
         <table class="table">
           <thead>
           <tr>
-            <th scope="col">Role</th>
-            <th scope="col">Manage User</th>
-            <th scope="col">Manage Player</th>
+            <th scope="col" style="color: white;">Role</th>
+            <th scope="col" style="color: white;">Manage User</th>
+            <th scope="col" style="color: white;">Manage Player</th>
           </tr>
           </thead>
           <tbody>
           <tr>
-            <td>Admin</td>
-            <td>Yes</td>
-            <td>Yes</td>
+            <td style="color: white;">Admin</td>
+            <td style="color: white;">Yes</td>
+            <td style="color: white;">Yes</td>
           </tr>
           <tr>
-            <td>Associate</td>
-            <td>No</td>
-            <td>Yes</td>
+            <td style="color: white;">Associate</td>
+            <td style="color: white;">No</td>
+            <td style="color: white;">Yes</td>
           </tr>
           <tr>
-            <td>Player</td>
-            <td>No</td>
-            <td>No</td>
+            <td style="color: white;">Player</td>
+            <td style="color: white;">No</td>
+            <td style="color: white;">No</td>
           </tr>
           </tbody>
         </table>
@@ -309,7 +309,7 @@ export default {
 
       if (confirmed) {
         // Make an API request to delete the user
-        axios.delete(`/api/user/${userId}`)
+        axios.delete(`/api/user/id/${userId}`)
             .then(() => {
               // Remove the user from the users array
               this.users = this.users.filter(user => user.id !== userId);

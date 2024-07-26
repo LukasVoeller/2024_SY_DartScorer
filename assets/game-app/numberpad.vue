@@ -1,7 +1,7 @@
 <template>
   <div class="row px-1">
     <div class="col p-1">
-      <button id="btn-undo" type="button" class="btn btn-light custom-btn-score-row" :disabled="disableThrowButton">
+      <button id="btn-undo" type="button" class="btn custom-btn-score-row" :disabled="disableThrowButton" style="font-size: 14pt">
         <i class="bi bi-arrow-counterclockwise"></i>
         {{ undoButtonText }}
       </button>
@@ -10,7 +10,7 @@
       <input id="scoreInput" class="form-control text-center" :class="{'exceeds-limit': exceedsLimit}" type="text" readonly>
     </div>
     <div class="col p-1">
-      <button id="btn-left" type="button" class="btn btn-light custom-btn-score-row">
+      <button id="btn-left" type="button" class="btn custom-btn-score-row" style="font-size: 14pt">
         <i class="bi bi-chevron-bar-down"></i>
         {{ leftButtonText }}
       </button>
@@ -21,35 +21,35 @@
   <div class="px-1">
     <div class="row">
       <div class="col p-1">
-        <button id="btn-1" type="button" class="btn btn-dark custom-btn-number">1</button>
+        <button id="btn-1" type="button" class="btn custom-btn-number">1</button>
       </div>
       <div class="col p-1">
-        <button id="btn-2" type="button" class="btn btn-dark custom-btn-number">2</button>
+        <button id="btn-2" type="button" class="btn custom-btn-number">2</button>
       </div>
       <div class="col p-1">
-        <button id="btn-3" type="button" class="btn btn-dark custom-btn-number">3</button>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col p-1">
-        <button id="btn-4" type="button" class="btn btn-dark custom-btn-number">4</button>
-      </div>
-      <div class="col p-1">
-        <button id="btn-5" type="button" class="btn btn-dark custom-btn-number">5</button>
-      </div>
-      <div class="col p-1">
-        <button id="btn-6" type="button" class="btn btn-dark custom-btn-number">6</button>
+        <button id="btn-3" type="button" class="btn custom-btn-number">3</button>
       </div>
     </div>
     <div class="row">
       <div class="col p-1">
-        <button id="btn-7" type="button" class="btn btn-dark custom-btn-number">7</button>
+        <button id="btn-4" type="button" class="btn custom-btn-number">4</button>
       </div>
       <div class="col p-1">
-        <button id="btn-8" type="button" class="btn btn-dark custom-btn-number">8</button>
+        <button id="btn-5" type="button" class="btn custom-btn-number">5</button>
       </div>
       <div class="col p-1">
-        <button id="btn-9" type="button" class="btn btn-dark custom-btn-number">9</button>
+        <button id="btn-6" type="button" class="btn custom-btn-number">6</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col p-1">
+        <button id="btn-7" type="button" class="btn custom-btn-number">7</button>
+      </div>
+      <div class="col p-1">
+        <button id="btn-8" type="button" class="btn custom-btn-number">8</button>
+      </div>
+      <div class="col p-1">
+        <button id="btn-9" type="button" class="btn custom-btn-number">9</button>
       </div>
     </div>
     <div class="row" style="padding-bottom: 5px;">
@@ -57,7 +57,7 @@
         <button id="btn-clr" type="button" class="btn btn-danger custom-btn-clear">Clear</button>
       </div>
       <div class="col p-1">
-        <button id="btn-0" type="button" class="btn btn-dark custom-btn-number">0</button>
+        <button id="btn-0" type="button" class="btn custom-btn-number">0</button>
       </div>
       <div class="col p-1">
         <button id="btn-ok" type="button" class="btn btn-success custom-btn-ok">{{ okButtonText }}</button>

@@ -1,0 +1,26 @@
+/* ------------------------------ CARD ------------------------------ */
+
+.card {
+    background-color: #3C3C3C;
+    /*border: 0.5px solid white; !* Add white border *!*/
+}
+
+.card-header {
+    background-color: #323232;
+}
+
+.list-group-item {
+    background-color: #3C3C3C;
+}
+
+/* ------------------------------ TABLE ------------------------------ */
+
+.table thead th {
+    background-color: #3C3C3C;
+    color: white;
+}
+
+.table tbody td {
+    background-color: #3C3C3C;
+    color: white;
+}

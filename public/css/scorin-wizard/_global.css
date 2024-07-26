@@ -1,0 +1,60 @@
+body {
+    background-color: #282828;
+}
+
+#header {
+    background-color: #141414;
+}
+
+#navbar-top {
+    background-color: #131313;
+}
+
+.offcanvas-header {
+    background-color: #131313;
+}
+
+.offcanvas-body {
+    background-color: #131313;
+}
+
+/* ------------------------------ LINKS ------------------------------ */
+
+a {
+    color: #8CF0FF;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #24BCD9;
+    text-decoration: none;
+}
+
+/* ------------------------------ SELECT RADIO ------------------------------ */
+
+.btn-check:checked + .btn-outline-success {
+    background-color: #2CAB73;
+    color: white;
+
+}
+
+.btn-outline-success {
+    background-color: #505050;
+    color: white;
+}
+
+.btn-check:disabled + label {
+    background-color: #282828; /* Optional: change background color */
+}
+
+/* ------------------------------ PRIMARY BUTTON ------------------------------ */
+
+.btn-success {
+    background-color: #2CAB73;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #2CAB73;
+    color: white;
+}

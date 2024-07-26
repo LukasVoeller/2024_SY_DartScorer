@@ -1,0 +1,56 @@
+/* ------------------------------ CARD ------------------------------ */
+
+.card {
+    background-color: #3C3C3C;
+    /*border: 0.5px solid white; !* Add white border *!*/
+}
+
+.card-header {
+    background-color: #323232;
+}
+
+.list-group-item {
+    background-color: #3C3C3C;
+}
+
+#headline {
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.filter-option-inner-inner {
+    color: white;
+}
+
+.dropdown-menu li a:focus{
+    background-color: #2CAB73 !important;
+    color: #fff !important;
+}
+
+/* Overlay Alert Style */
+.overlay-alert {
+    position: fixed;
+    top: 25px; /* Initial top position */
+    right: -110px;
+    width: 210px;
+    transform: translateX(-50%); /* Center horizontally */
+    z-index: 1050;
+    animation: slideInAndUp 3s ease-out forwards; /* Animation details */
+}
+
+/* Keyframes for the alert animation */
+@keyframes slideInAndUp {
+    0% {
+        transform: translateX(100%); /* Start from the right offscreen */
+    }
+    10% {
+        transform: translateX(-50%); /* Move to the center horizontally */
+    }
+    90% {
+        transform: translateX(-50%); /* Hold in the center */
+    }
+    100% {
+        transform: translateX(-50%) translateY(-150%); /* Move upwards */
+    }
+}

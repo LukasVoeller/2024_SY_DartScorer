@@ -37,7 +37,7 @@ class UserController extends AbstractController
         $this->serializer = $serializer;
     }
 
-    #[Route('/user', name: 'user')]
+    #[Route('/user', name: 'app_user')]
     public function index(): Response
     {
         return $this->render('user/index.html.twig');

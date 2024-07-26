@@ -33,7 +33,7 @@ class PlayerController extends AbstractController
         $this->serializer = $serializer;
     }
 
-    #[Route('/player', name: 'player')]
+    #[Route('/player', name: 'app_player')]
     public function index(): Response
     {
         return $this->render('player/index.html.twig');

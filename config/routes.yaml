@@ -1,39 +1,39 @@
-app_mercure:
-  path: '/mercure'
-  controller: 'App\Controller\MercureController::index'
-
-publish_event:
-  path: '/publish'
-  controller: 'App\Controller\PublishController::publish'
-
 ############### Routes for displaying pages ###############
 
-home:
+app_home:
   path: '/'
   controller: 'App\Controller\HomeController::index'
 
-darts:
+app_login:
+  path: '/login'
+  controller: 'App\Controller\LoginController::index'
+
+app_player:
+  path: '/player'
+  controller: 'App\Controller\PlayerController::index'
+
+app_user:
+  path: '/user'
+  controller: 'App\Controller\UserController::index'
+
+app_darts:
   path: '/darts'
   controller: 'App\Controller\DartsController::index'
 
-new-game:
-  path: '/new-game'
-  controller: 'App\Controller\NewGameController::index'
+app_games:
+  path: '/games'
+  controller: 'App\Controller\GameListController::index'
 
-game:
+app_game:
   path: '/game/{id}'
   controller: 'App\Controller\GameController::index'
 #  methods: [ 'GET' ]
 #  requirements:
 #    id: '\d+' # Ensure that the id parameter is a digit
 
-player:
-  path: '/player'
-  controller: 'App\Controller\PlayerController::index'
-
-user:
-  path: '/user'
-  controller: 'App\Controller\UserController::index'
+app_game_new:
+  path: '/game/new'
+  controller: 'App\Controller\GameNewController::index'
 
 settings:
   path: '/settings'
@@ -43,14 +43,8 @@ profile:
   path: '/profile'
   controller: 'App\Controller\ProfileController::index'
 
-login:
-  path: '/login'
-  controller: 'App\Controller\LoginController::index'
-
 logout:
   path: '/logout'
-
-
 
 ######################## API Routes #######################
 
@@ -155,7 +149,7 @@ api_get_game_by_id:
 
 api_game_create:
   path: '/api/game/create'
-  controller: 'App\Controller\NewGameController::createGame'
+  controller: 'App\Controller\GameNewController::createGame'
   methods: ['POST']
 
 api_save_game:

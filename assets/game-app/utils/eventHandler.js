@@ -42,7 +42,7 @@ export const handleGameShutModalConfirmed = () => {
 };
 
 export const handleGameShutModalResumed = () => {
-    window.location.href = `/new-game`;
+    window.location.href = `/game/new`;
 };
 
 export const handleGameShutModalHome = () => {
