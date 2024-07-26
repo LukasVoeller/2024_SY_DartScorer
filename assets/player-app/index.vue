@@ -1,7 +1,7 @@
 <template>
 <!--  <h5 style="padding-top: 10px">Manage Player</h5>-->
 
-  <div class="row" style="margin-top: 10px">
+  <div class="row" style="margin-top: 15px">
     <!-- Add Player -->
     <div class="col-md-6">
       <div class="card shadow" style="padding: 20px">

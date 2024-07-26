@@ -1,7 +1,7 @@
 <template>
 <!--  <h5 style="padding-top: 10px">New Game</h5>-->
 
-    <div class="card shadow" style="padding: 20px; margin-top: 10px">
+    <div class="card shadow" style="padding: 20px; margin-top: 15px">
       <form @submit.prevent="submitForm">
 
         <PlayerSelection

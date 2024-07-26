@@ -1,9 +1,9 @@
 <template>
-  <div class="card shadow" style="margin-top: 10px; height: 575px">
+  <div class="card shadow" style="margin-top: 15px; height: 575px">
 <!--    <h5 style="color: black; align-self: center; color: white; margin-top: 20px">Displayed: {{ filteredGamesCount }}</h5>-->
 <!--    <p style="padding-top: 10px">Played ({{ filteredGamesCount }})</p>-->
 
-    <div class="row" style="margin-bottom: 10px; padding-left: 20px; padding-right: 20px; padding-top: 10px">
+    <div class="row" style="margin-bottom: 10px; padding-left: 20px; padding-right: 20px; padding-top: 20px">
       <div class="col-9 pe-1">
         <input
             type="text"
