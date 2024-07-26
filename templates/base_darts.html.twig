@@ -61,13 +61,16 @@
         </header><!-- End Sidebar -->
 
         <!-- ======= Header ======= -->
-        <nav id="navbar-top" class="navbar navbar-dark fixed-top d-xl-none">
+        <nav id="navbar-top" class="navbar navbar-dark fixed-top">
             <div class="container-fluid">
 
                 <div class="d-flex align-items-center" style="flex-grow: 1;">
                     {% if app.user %}
-                        <p style="color: white; text-align: left; margin: 0;">
-{#                            Welcome, {{ app.user.username }}! <a href="{{ path('logout') }}">Logout</a>#}
+{#                        <img src="/homepage/assets/img/Logo-Scorin-Wizard_edit.png" alt="" style="width: 40px; align-self: center">#}
+                        <p style="color: white; text-align: left; margin: 0; padding-left: 5px">
+{#                            Scorin Wizard#}
+{#                            {{ dump(app.user) }}#}
+{#                            <a href="{{ path('logout') }}">Logout</a>#}
 
                             {% if app.request.pathinfo starts with '/new-game' %}
                                 New Game
@@ -75,14 +78,19 @@
                                 Manage Player
                             {% elseif app.request.pathinfo starts with '/user' %}
                                 Manage User
+                            {% elseif app.request.pathinfo starts with '/games' %}
+                                Games
+                            {% elseif app.request.pathinfo starts with '/game/new' %}
+                                New Game
                             {% else %}
-                                Welcome, {{ app.user.username }}! <a href="{{ path('logout') }}">Logout</a>
+                                Welcome, {{ app.user.username }}!
+{#                                <a href="{{ path('logout') }}">Logout</a>#}
                             {% endif %}
                         </p>
                     {% endif %}
                 </div>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
+                <button class="navbar-toggler d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 

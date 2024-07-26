@@ -1,27 +1,27 @@
 <template>
   <!--  <h1 style="padding-top: 10px">Welcome!</h1>-->
 
-  <br>
-
   <!-- Call to action -->
-  <div class="row">
-    <div class="col-4">
-      <button type="button" @click="navigateToNewGame" style="height: 90px" class="btn btn-success w-100">
-        <i class="bi bi-play-circle"></i><br>
-        Match
-      </button>
-    </div>
-    <div class="col-4">
-      <button type="button" style="height: 90px" class="btn btn-success w-100">
-        <i class="bi bi-cone"></i><br>
-        Training
-      </button>
-    </div>
-    <div class="col-4">
-      <button type="button" style="height: 90px" class="btn btn-success w-100">
-        <i class="bi bi-graph-up"></i><br>
-        Statistics
-      </button>
+  <div class="card shadow" style="padding: 10px; margin-top: 15px">
+    <div class="row">
+      <div class="col-4 pe-1">
+        <button type="button" @click="navigateToNewGame" style="height: 90px" class="btn btn-success w-100">
+          <i class="bi bi-play-circle"></i><br>
+          Match
+        </button>
+      </div>
+      <div class="col-4 px-2">
+        <button type="button" style="height: 90px" class="btn btn-success w-100">
+          <i class="bi bi-cone"></i><br>
+          Training
+        </button>
+      </div>
+      <div class="col-4 ps-1">
+        <button type="button" style="height: 90px" class="btn btn-success w-100">
+          <i class="bi bi-graph-up"></i><br>
+          Statistics
+        </button>
+      </div>
     </div>
   </div>
 
@@ -90,7 +90,7 @@
         </tr>
 
         <tr>
-          <td colspan="5" style="padding: 0px; background-color: #3C3D43">
+          <td colspan="5" style="padding: 0px;">
             <div :id="'collapse' + game.id" class="collapse">
 
               <div style="padding: 10px;">
@@ -125,7 +125,7 @@
   <!-- Statistic -->
   <div class="row">
     <div class="col-4">
-      <div class="card h-100" style="display: flex; text-align: center; color: white">
+      <div class="card shadow h-100" style="display: flex; text-align: center; color: white">
         <div class="card-header">
           <div style="padding: 10px 0;">
             <i class="bi bi-trophy-fill" style="color: goldenrod"></i>
@@ -142,7 +142,7 @@
       </div>
     </div>
     <div class="col-4">
-      <div class="card h-100" style="display: flex; text-align: center; color: white">
+      <div class="card shadow h-100" style="display: flex; text-align: center; color: white">
         <div class="card-header">
           <div style="text-align: center; padding: 10px 0;">
             <i class="bi bi-trophy-fill" style="color: goldenrod"></i>
@@ -159,7 +159,7 @@
       </div>
     </div>
     <div class="col-4">
-      <div class="card h-100" style="display: flex; text-align: center; color: white">
+      <div class="card shadow h-100" style="display: flex; text-align: center; color: white">
         <div class="card-header">
           <div style="text-align: center; padding: 10px 0;">
             <i class="bi bi-trophy-fill" style="color: goldenrod"></i>

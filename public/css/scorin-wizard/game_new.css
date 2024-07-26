@@ -1,19 +1,17 @@
 /* ------------------------------ CARD ------------------------------ */
 
 .card {
-    background-color: #3C3D43;
+    background-color: #3C3C3C;
     /*border: 0.5px solid white; !* Add white border *!*/
 }
 
 .card-header {
-    background-color: #32343A;
+    background-color: #323232;
 }
 
 .list-group-item {
-    background-color: #3C3D43;
+    background-color: #3C3C3C;
 }
-
-
 
 #headline {
     color: white;
@@ -29,19 +27,6 @@
     background-color: #2CAB73 !important;
     color: #fff !important;
 }
-
-/*
-#custom-btn {
-    background: #8CF0FF;
-    border: 0;
-    color: black;
-}
-
-#custom-btn:hover {
-    background: #24BCD9;
-    color: white;
-}
-*/
 
 /* Overlay Alert Style */
 .overlay-alert {
@@ -69,33 +54,3 @@
         transform: translateX(-50%) translateY(-150%); /* Move upwards */
     }
 }
-
-
-/* Overlay Alert Style
-.overlay-alert {
-    position: fixed;
-    top: 25px;
-    right: -10px;
-    width: 210px;
-    transform: translate(-50%, 0);
-    z-index: 1050;
-    animation: slideInAndUp 3s ease-out forwards;
-}
-
-
-
-@keyframes slideInAndUp {
-    0% {
-        transform: translate(100%, 0);
-    }
-    10% {
-        transform: translate(0%, 0);
-    }
-    90% {
-        transform: translate(0%, 0);
-    }
-    100% {
-        transform: translate(0%, -150%);
-    }
-}
-*/

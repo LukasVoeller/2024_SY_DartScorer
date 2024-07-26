@@ -23,17 +23,18 @@
 
   <!-- To throw and add player row" -->
   <div class="row">
-    <div class="col-6">
+    <div class="col-9">
       <select class="selectpicker" data-width="100%" data-style="btn-success" data-size="5" title="To Throw first" v-model="selectedPlayerStartingId" :disabled="!selectedPlayer1Id" @change="emitPlayerStartingId" required>
-        <option :style="isSelectedPlayer1(player.id) ? 'background: #4FBE96; color: #fff;' : ''" v-for="player in startingPlayerOptions" :key="player.id" :value="player.id">{{ player.name }} begins</option>
+        <option :style="isSelectedPlayer1(player.id) ? 'background: #4FBE96; color: #fff;' : ''" v-for="player in startingPlayerOptions" :key="player.id" :value="player.id">{{ player.name }} to throw first</option>
       </select>
     </div>
 
-    <div class="col-6">
+    <div class="col-3">
       <button class="btn btn-success w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
         <!-- <i class="bi bi-plus-lg"></i> -->
         <!-- <i class="bi bi-chevron-down"></i> -->
-        New Player
+<!--        New Player-->
+        <i class="bi bi-person-plus-fill"></i>
       </button>
     </div>
   </div>
@@ -44,13 +45,15 @@
   <div class="collapse" id="collapseExample">
     <form @submit.prevent="submitNewPlayer" id="player-form">
       <div class="row">
-        <div class="col-6">
+        <div class="col-9">
           <input v-model="newPlayerName" type="text" class="form-control" id="newPlayerName"
                  placeholder="Player name">
         </div>
 
-        <div class="col-6">
-          <button id="custom-btn" class="btn btn-success w-100" type="submit">Add</button>
+        <div class="col-3">
+          <button id="custom-btn" class="btn btn-success w-100" type="submit">
+            <i class="bi bi-plus-lg"></i>
+          </button>
         </div>
       </div>
     </form>
@@ -75,9 +78,9 @@ export default defineComponent({
   data() {
     return {
       players: [] as Player[],
-      selectedPlayer1Id: 1 as Number,
-      selectedPlayer2Id: 2 as Number,
-      selectedPlayerStartingId: 1 as Number,
+      selectedPlayer1Id: 0 as Number,
+      selectedPlayer2Id: 0 as Number,
+      selectedPlayerStartingId: 0 as Number,
       newPlayerName: '' as String,
       alertShow: false as Boolean,
       alertMessage: '' as String,

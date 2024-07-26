@@ -2,7 +2,7 @@
 
 #scoreInput {
     padding-top: 15px;
-    background-color: #3C3D43;
+    background-color: #3C3C3C;
     height: 55px;
     font-size: 40px;
     color: white;
@@ -17,46 +17,98 @@
 }
 
 .custom-btn-score-row {
-    /*background-color: #4E4F54;*/
+    background-color: #3C3C3C;
     width: 100%;
     height: 55px;
     font-size: 20px;
+    color: white;
+}
+
+.custom-btn-score-row:hover {
+    background: #646464; /* Color when hovered */
+    color: white;
+}
+
+.custom-btn-score-row:active {
+    background: #3C3C3C; /* Color when pressed */
+    color: white; /* Optional text color change when pressed */
 }
 
 .custom-btn-score-row-tablet {
-    /*width: 100%;*/
-    /*height: 100px;*/
+    background-color: #3C3C3C;
+    width: 100%;
+    height: 55px;
+    color: white;
     font-size: 25px;
+}
+
+.custom-btn-score-row-tablet:hover {
+    background: #646464; /* Color when hovered */
+    color: white;
+}
+
+.custom-btn-score-row-tablet:active {
+    background: #3C3C3C; /* Color when pressed */
+    color: white; /* Optional text color change when pressed */
 }
 
 /* ------------------------------ NUMBERS ------------------------------ */
 
 .custom-btn-number {
-    background: #3C3D43;
+    background: #505050;
     width: 100%;
     height: 55px;
     font-size: 25px;
+    color: white;
     /*border: 0.25px solid white;*/
+    /*border-radius: 8px;*/
 }
 
 .custom-btn-number:hover {
-    background: #1B2130;
+    background: #646464; /* Color when hovered */
     color: white;
 }
 
+.custom-btn-number:active {
+    background: #3C3C3C; /* Color when pressed */
+    color: white; /* Optional text color change when pressed */
+}
+
 .custom-btn-number-tablet {
-    background: #3C3D43;
+    background: #505050;
     width: 100%;
     /*height: 85px;*/
     height: 100px;
     font-size: 35px;
+    color: white;
 }
 
 .custom-btn-number-tablet-scores {
-    background: #32343A;
+    background: #3C3C3C;
     width: 100%;
     height: 100px;
     font-size: 35px;
+    color: white;
+}
+
+.custom-btn-number-tablet:hover {
+    background: #646464; /* Color when hovered */
+    color: white;
+}
+
+.custom-btn-number-tablet:active {
+    background: #3C3C3C; /* Color when pressed */
+    color: white; /* Optional text color change when pressed */
+}
+
+.custom-btn-number-tablet-scores:hover {
+    background: #646464; /* Color when hovered */
+    color: white;
+}
+
+.custom-btn-number-tablet-scores:active {
+    background: #3C3C3C; /* Color when pressed */
+    color: white; /* Optional text color change when pressed */
 }
 
 /* ------------------------------ CLEAR ------------------------------ */

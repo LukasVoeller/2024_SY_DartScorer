@@ -1,8 +1,9 @@
 <template>
-  <div class="card shadow" style="margin-top: 15px; padding: 20px;">
-    <h3 style="color: black; align-self: center; color: white; margin-bottom: 10px">Games ({{ filteredGamesCount }})</h3>
+  <div class="card shadow" style="margin-top: 10px; height: 575px">
+<!--    <h5 style="color: black; align-self: center; color: white; margin-top: 20px">Displayed: {{ filteredGamesCount }}</h5>-->
+<!--    <p style="padding-top: 10px">Played ({{ filteredGamesCount }})</p>-->
 
-    <div class="row" style="margin-bottom: 10px">
+    <div class="row" style="margin-bottom: 10px; padding-left: 20px; padding-right: 20px; padding-top: 10px">
       <div class="col-9 pe-1">
         <input
             type="text"
@@ -20,7 +21,7 @@
       </div>
     </div>
 
-    <div class="row" style="margin-bottom: 10px">
+    <div class="row" style="margin-bottom: 10px; padding-left: 20px; padding-right: 20px;">
       <div class="col-6 pe-1 d-flex align-items-end">
         <Datepicker v-model="startDate" class="w-100 rounded" style="padding-left: 15px; border: none; height: 30px;" placeholder="Start" :format="customFormatter"/>
       </div>
@@ -32,7 +33,7 @@
       </div>
     </div>
 
-    <div class="row mb-3">
+    <div class="row mb-3" style="padding-left: 20px; padding-right: 20px;">
       <div class="col-6 pe-1 d-flex align-items-end">
         <Datepicker v-model="endDate" class="w-100 rounded" style="padding-left: 15px; border: none; height: 30px;" placeholder="End" :format="customFormatter"/>
       </div>
@@ -44,22 +45,20 @@
       </div>
     </div>
 
-
     <table v-if="paginatedGames.length > 0" class="table table-hover">
       <thead class="table">
       <tr>
         <th style="color: white;">Date</th>
-        <th style="color: white;">M</th>
         <th style="color: white;">Player 1</th>
         <th style="color: white;">Player 2</th>
         <th style="color: white;"></th>
+        <th style="color: white;">{{ filteredGamesCount }}</th>
       </tr>
       </thead>
       <tbody>
       <template v-for="game in paginatedGames" :key="game.id">
         <tr data-bs-toggle="collapse" :data-bs-target="'#collapse' + game.id">
           <td style="color: white;">{{ formatDate(game.date) }}</td>
-          <td style="color: white;">{{ game.gameMode }}</td>
           <td
               :style="{
             color: game.winnerPlayerId === game.player1Id ? '#50BE96' : 'white',
@@ -82,6 +81,7 @@
           >
             {{ getPlayerName(game.player2Id) }}
           </td>
+          <td style="color: white;">{{ game.gameMode }}</td>
           <td>
             <i v-if="game.state === 'Live'" style="color: #FF5E5E" class="bi bi-record-circle"></i>
             <i v-else-if="game.state === 'Finished'" style="color: #50BE96" class="bi bi-check-circle"></i>
@@ -118,7 +118,6 @@
       </tbody>
     </table>
 
-
     <div v-if="error">An error occurred while fetching game data.</div>
     <div style="display: flex; justify-content: center">
       <VueSpinnerDots v-if="loading" size="40" color="white" />
@@ -128,7 +127,7 @@
       No games found.
     </div>
 
-    <div style="text-align: center;">
+    <div style="text-align: center; margin-top: auto; padding-bottom: 15px;">
       <button
           class="btn btn-secondary"
           :disabled="currentPage === 1"
@@ -198,7 +197,7 @@ export default defineComponent({
       loading: true,
       error: false,
       currentPage: 1,
-      pageSize: 6,
+      pageSize: 7,
       searchTerm: '',
       startDate: null as Date | null,
       endDate: null as Date | null,

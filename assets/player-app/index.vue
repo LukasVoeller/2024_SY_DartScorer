@@ -1,4 +1,5 @@
 <template>
+<!--  <h5 style="padding-top: 10px">Manage Player</h5>-->
 
   <div class="row" style="margin-top: 10px">
     <!-- Add Player -->

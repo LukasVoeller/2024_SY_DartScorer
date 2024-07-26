@@ -1,9 +1,7 @@
 <template>
-  <div class="container p-0" style="margin-top: 10px">
+<!--  <h5 style="padding-top: 10px">New Game</h5>-->
 
-<!--    <h2 style="padding-top: 15px">New Game</h2>-->
-
-    <div class="card shadow" style="padding: 20px;">
+    <div class="card shadow" style="padding: 20px; margin-top: 10px">
       <form @submit.prevent="submitForm">
 
         <PlayerSelection
@@ -32,7 +30,6 @@
       </form>
     </div>
 
-  </div>
 </template>
 
 <script lang="ts">
@@ -68,9 +65,9 @@ export default defineComponent({
   data() {
     return {
       // PlayerSelection
-      selectedPlayer1Id: 1 as Number,
-      selectedPlayer2Id: 2 as Number,
-      selectedPlayerStartingId: 1 as Number,
+      selectedPlayer1Id: 0 as Number,
+      selectedPlayer2Id: 0 as Number,
+      selectedPlayerStartingId: 0 as Number,
 
       // Game Selection
       selectedGameMode: "X01" as String,

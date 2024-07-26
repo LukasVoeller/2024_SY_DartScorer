@@ -1,28 +1,21 @@
-/*body {*/
-/*    background-color: #1B2130;*/
-/*}*/
-
 body {
-    background-color: #23252A;
-}
-
-/*#navbar-top {*/
-/*    background-color: #010314;*/
-/*}*/
-
-#navbar-top {
-    background-color: #1B1D21;
-}
-
-
-/* ------------------------------ NAV BAR SLIDE IN ------------------------------ */
-
-#offcanvasDarkNavbar {
-    background-color: #1B1D21;
+    background-color: #282828;
 }
 
 #header {
-    background-color: #1B1D21;
+    background-color: #141414;
+}
+
+#navbar-top {
+    background-color: #131313;
+}
+
+.offcanvas-header {
+    background-color: #131313;
+}
+
+.offcanvas-body {
+    background-color: #131313;
 }
 
 /* ------------------------------ LINKS ------------------------------ */
@@ -42,22 +35,17 @@ a:hover {
 .btn-check:checked + .btn-outline-success {
     background-color: #2CAB73;
     color: white;
+
 }
 
 .btn-outline-success {
-    background-color: white;
-    color: black;
+    background-color: #505050;
+    color: white;
 }
 
-/*.btn-outline-success:hover {*/
-/*    background-color: #2CAB73;*/
-/*    color: white;*/
-/*}*/
-
-/*.btn-outline-success {*/
-/*    color: black;*/
-/*    border-color: #2CAB73;*/
-/*}*/
+.btn-check:disabled + label {
+    background-color: #282828; /* Optional: change background color */
+}
 
 /* ------------------------------ PRIMARY BUTTON ------------------------------ */
 

@@ -3,7 +3,7 @@
   <div class="px-1 d-flex flex-column flex-grow-1">
     <div class="row d-flex flex-row flex-grow-1">
       <div class="col p-1 pt-0 d-flex flex-column">
-        <button id="btn-undo" type="button" class="btn btn-light custom-btn-score-row-tablet flex-grow-1" :disabled="disableThrowButton">
+        <button id="btn-undo" type="button" class="btn custom-btn-score-row-tablet flex-grow-1" :disabled="disableThrowButton">
           <i class="bi bi-arrow-counterclockwise"></i>
           {{ undoButtonText }}
         </button>
@@ -12,7 +12,7 @@
         <input id="scoreInput" style="height: 100px; font-size: 50pt" class="form-control text-center flex-grow-1" :class="{'exceeds-limit': exceedsLimit}" type="text" readonly>
       </div>
       <div class="col p-1 pt-0 d-flex flex-column">
-        <button id="btn-left" type="button" class="btn btn-light custom-btn-score-row-tablet flex-grow-1">
+        <button id="btn-left" type="button" class="btn custom-btn-score-row-tablet flex-grow-1">
           <i class="bi bi-chevron-bar-down"></i>
           {{ leftButtonText }}
         </button>
@@ -21,55 +21,55 @@
 
     <div class="row flex-grow-1">
       <div class="col p-1 d-flex flex-column">
-        <button id="btn-1" type="button" class="btn btn-dark custom-btn-number-tablet-scores flex-grow-1">26</button>
+        <button id="btn-1" type="button" class="btn custom-btn-number-tablet-scores flex-grow-1">26</button>
       </div>
       <div class="col p-1 d-flex flex-column">
-        <button id="btn-1" type="button" class="btn btn-dark custom-btn-number-tablet flex-grow-1">1</button>
+        <button id="btn-1" type="button" class="btn custom-btn-number-tablet flex-grow-1">1</button>
       </div>
       <div class="col p-1 d-flex flex-column">
-        <button id="btn-2" type="button" class="btn btn-dark custom-btn-number-tablet flex-grow-1">2</button>
+        <button id="btn-2" type="button" class="btn custom-btn-number-tablet flex-grow-1">2</button>
       </div>
       <div class="col p-1 d-flex flex-column">
-        <button id="btn-3" type="button" class="btn btn-dark custom-btn-number-tablet flex-grow-1">3</button>
+        <button id="btn-3" type="button" class="btn custom-btn-number-tablet flex-grow-1">3</button>
       </div>
       <div class="col p-1 d-flex flex-column">
-        <button id="btn-3" type="button" class="btn btn-dark custom-btn-number-tablet-scores flex-grow-1">60</button>
-      </div>
-    </div>
-
-    <div class="row flex-grow-1">
-      <div class="col p-1 d-flex flex-column">
-        <button id="btn-4" type="button" class="btn btn-dark custom-btn-number-tablet-scores flex-grow-1">41</button>
-      </div>
-      <div class="col p-1 d-flex flex-column">
-        <button id="btn-4" type="button" class="btn btn-dark custom-btn-number-tablet flex-grow-1">4</button>
-      </div>
-      <div class="col p-1 d-flex flex-column">
-        <button id="btn-5" type="button" class="btn btn-dark custom-btn-number-tablet flex-grow-1">5</button>
-      </div>
-      <div class="col p-1 d-flex flex-column">
-        <button id="btn-6" type="button" class="btn btn-dark custom-btn-number-tablet flex-grow-1">6</button>
-      </div>
-      <div class="col p-1 d-flex flex-column">
-        <button id="btn-6" type="button" class="btn btn-dark custom-btn-number-tablet-scores flex-grow-1">80</button>
+        <button id="btn-3" type="button" class="btn custom-btn-number-tablet-scores flex-grow-1">60</button>
       </div>
     </div>
 
     <div class="row flex-grow-1">
       <div class="col p-1 d-flex flex-column">
-        <button id="btn-7" type="button" class="btn btn-dark custom-btn-number-tablet-scores flex-grow-1">45</button>
+        <button id="btn-4" type="button" class="btn custom-btn-number-tablet-scores flex-grow-1">41</button>
       </div>
       <div class="col p-1 d-flex flex-column">
-        <button id="btn-7" type="button" class="btn btn-dark custom-btn-number-tablet flex-grow-1">7</button>
+        <button id="btn-4" type="button" class="btn custom-btn-number-tablet flex-grow-1">4</button>
       </div>
       <div class="col p-1 d-flex flex-column">
-        <button id="btn-8" type="button" class="btn btn-dark custom-btn-number-tablet flex-grow-1">8</button>
+        <button id="btn-5" type="button" class="btn custom-btn-number-tablet flex-grow-1">5</button>
       </div>
       <div class="col p-1 d-flex flex-column">
-        <button id="btn-9" type="button" class="btn btn-dark custom-btn-number-tablet flex-grow-1">9</button>
+        <button id="btn-6" type="button" class="btn custom-btn-number-tablet flex-grow-1">6</button>
       </div>
       <div class="col p-1 d-flex flex-column">
-        <button id="btn-6" type="button" class="btn btn-dark custom-btn-number-tablet-scores flex-grow-1">100</button>
+        <button id="btn-6" type="button" class="btn custom-btn-number-tablet-scores flex-grow-1">80</button>
+      </div>
+    </div>
+
+    <div class="row flex-grow-1">
+      <div class="col p-1 d-flex flex-column">
+        <button id="btn-7" type="button" class="btn custom-btn-number-tablet-scores flex-grow-1">45</button>
+      </div>
+      <div class="col p-1 d-flex flex-column">
+        <button id="btn-7" type="button" class="btn custom-btn-number-tablet flex-grow-1">7</button>
+      </div>
+      <div class="col p-1 d-flex flex-column">
+        <button id="btn-8" type="button" class="btn custom-btn-number-tablet flex-grow-1">8</button>
+      </div>
+      <div class="col p-1 d-flex flex-column">
+        <button id="btn-9" type="button" class="btn custom-btn-number-tablet flex-grow-1">9</button>
+      </div>
+      <div class="col p-1 d-flex flex-column">
+        <button id="btn-6" type="button" class="btn custom-btn-number-tablet-scores flex-grow-1">100</button>
       </div>
     </div>
 
@@ -78,7 +78,7 @@
         <button id="btn-clr" type="button" class="btn btn-danger custom-btn-clear-tablet flex-grow-1">Clear</button>
       </div>
       <div class="col p-1 d-flex flex-column">
-        <button id="btn-0" type="button" class="btn btn-dark custom-btn-number-tablet flex-grow-1">0</button>
+        <button id="btn-0" type="button" class="btn custom-btn-number-tablet flex-grow-1">0</button>
       </div>
       <div class="col p-1 d-flex flex-column">
         <button id="btn-ok" type="button" class="btn btn-success custom-btn-ok-tablet flex-grow-1">{{ okButtonText }}</button>
