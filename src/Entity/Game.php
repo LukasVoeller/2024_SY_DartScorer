@@ -35,64 +35,75 @@ abstract class Game
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['game'])]
+    #[Groups(['api_game_plain', 'api_game_full'])]
     private ?int $id = null;
 
-    #[ORM\Column(nullable: false)]
-    #[Groups(['game'])]
-    private ?int $player1Id;
-
-    #[ORM\Column(nullable: false)]
-    #[Groups(['game'])]
-    private ?int $player2Id;
-
     #[ORM\Column(nullable: true)]
-    #[Groups(['game'])]
+    #[Groups(['api_game_plain', 'api_game_full'])]
     private ?int $winnerPlayerId = null;
 
     #[ORM\Column(length: 32, nullable: true)]
-    #[Groups(['game'])]
+    #[Groups(['api_game_plain', 'api_game_full'])]
     private ?string $state = null;
 
     #[ORM\Column(length: 32, nullable: true)]
-    #[Groups(['game'])]
+    #[Groups(['api_game_plain', 'api_game_full'])]
     private ?string $type = null;
 
     #[ORM\Column(length: 32, nullable: false)]
-    #[Groups(['game'])]
+    #[Groups(['api_game_plain', 'api_game_full'])]
     private ?string $matchMode;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['game'])]
+    #[Groups(['api_game_plain', 'api_game_full'])]
     private ?int $matchModeSetsNeeded = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['game'])]
+    #[Groups(['api_game_plain', 'api_game_full'])]
     private ?int $matchModeLegsNeeded = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['api_game_plain', 'api_game_full'])]
+    private ?\DateTimeInterface $date = null;
+
+    #[ORM\ManyToOne(targetEntity: Player::class)]
+    #[Groups(['api_player_plain'])]
+    #[ORM\JoinColumn(name: 'player1_id', referencedColumnName: 'id')]
+    private ?Player $player1 = null;
+
+    #[ORM\ManyToOne(targetEntity: Player::class)]
+    #[Groups(['api_player_plain'])]
+    #[ORM\JoinColumn(name: 'player2_id', referencedColumnName: 'id')]
+    private ?Player $player2 = null;
+
+    /**
+     * @var Collection<int, GameTally>
+     */
+    #[Groups(['api_game_full'])]
+    #[ORM\OneToMany(targetEntity: GameTally::class, mappedBy: 'game', orphanRemoval: true)]
+    private Collection $tally;
 
     /**
      * @var Collection<int, GameSet>
      */
     #[ORM\OneToMany(targetEntity: GameSet::class, mappedBy: 'relatedGame', orphanRemoval: true)]
-    #[Groups(['game'])]
+    #[Groups(['api_game_full'])]
     private Collection $sets;
 
     /**
      * @var Collection<int, GameLeg>
      */
     #[ORM\OneToMany(targetEntity: GameLeg::class, mappedBy: 'relatedGame', orphanRemoval: true)]
-    #[Groups(['game'])]
+    #[Groups(['api_game_full'])]
     private Collection $legs;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['game'])]
-    private ?\DateTimeInterface $date = null;
-
-    /**
-     * @var Collection<int, GameTally>
-     */
-    #[ORM\OneToMany(targetEntity: GameTally::class, mappedBy: 'game', orphanRemoval: true)]
-    private Collection $tally;
+//    #[ORM\Column(nullable: false)]
+//    #[Groups(['game'])]
+//    private ?int $player1Id;
+//
+//    #[ORM\Column(nullable: false)]
+//    #[Groups(['game'])]
+//    private ?int $player2Id;
 
     public function __construct()
     {
@@ -119,27 +130,49 @@ abstract class Game
         return $this;
     }
 
-    public function getPlayer1Id(): ?int
+//    public function getPlayer1Id(): ?int
+//    {
+//        return $this->player1Id;
+//    }
+//
+//    public function setPlayer1Id(int $player1Id): static
+//    {
+//        $this->player1Id = $player1Id;
+//
+//        return $this;
+//    }
+//
+//    public function getPlayer2Id(): ?int
+//    {
+//        return $this->player2Id;
+//    }
+//
+//    public function setPlayer2Id(int $player2Id): static
+//    {
+//        $this->player2Id = $player2Id;
+//
+//        return $this;
+//    }
+
+    public function getPlayer1(): ?Player
     {
-        return $this->player1Id;
+        return $this->player1;
     }
 
-    public function setPlayer1Id(int $player1Id): static
+    public function setPlayer1(?Player $player): static
     {
-        $this->player1Id = $player1Id;
-
+        $this->player1 = $player;
         return $this;
     }
 
-    public function getPlayer2Id(): ?int
+    public function getPlayer2(): ?Player
     {
-        return $this->player2Id;
+        return $this->player2;
     }
 
-    public function setPlayer2Id(int $player2Id): static
+    public function setPlayer2(?Player $player): static
     {
-        $this->player2Id = $player2Id;
-
+        $this->player2 = $player;
         return $this;
     }
 
@@ -276,7 +309,7 @@ abstract class Game
         return $this;
     }
 
-    #[Groups(['game'])]
+    #[Groups(['api_player_plain', 'api_player_full'])]
     public function getGameMode(): string
     {
         static $mode = null;

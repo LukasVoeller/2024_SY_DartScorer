@@ -106,7 +106,7 @@ class ScoreController extends AbstractController
         $currentLegId = $tally->getLegId();
 
         $scores = $scoreRepository->findLastScoresByPlayerIdAndLegId($data['playerId'], $currentLegId);
-        $serializedScores = $this->serializer->serialize($scores, 'json', ['groups' => ['score']]);
+        $serializedScores = $this->serializer->serialize($scores, 'json', ['groups' => ['api_score_plain']]);
 
         return new JsonResponse($serializedScores, Response::HTTP_OK, [], true);
     }

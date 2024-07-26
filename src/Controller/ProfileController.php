@@ -16,14 +16,34 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ProfileController extends AbstractController
 {
+//    #[Route('/profile', name: 'app_profile')]
+//    public function index(): Response
+//    {
+//        return $this->render('profile/index.html.twig', [
+//            'controller_name' => 'ProfileController',
+//        ]);
+//    }
+
     #[Route('/profile', name: 'app_profile')]
-    public function index(): Response
+    public function index(SerializerInterface $serializer): Response
     {
+        $user = $this->getUser();
+
+        // Serialize the user object to JSON
+        $userData = $serializer->serialize($user, 'json', ['groups' => ['api_user']]);
+
         return $this->render('profile/index.html.twig', [
             'controller_name' => 'ProfileController',
+            'userData' => $userData,
+            'totalGamesPlayed' => $user->getPlayer() ? $user->getPlayer()->getTotalGamesPlayed() : 0,
+            'totalGamesWon' => $user->getPlayer() ? $user->getPlayer()->getTotalGamesWon() : 0,
+            'totalGamesLost' => $user->getPlayer() ? $user->getPlayer()->getTotalGamesLost() : 0,
+            'liveGamesCount' => $user->getPlayer() ? $user->getPlayer()->getLiveGamesCount() : 0,
+            'finishedGamesCount' => $user->getPlayer() ? $user->getPlayer()->getFinishedGamesCount() : 0,
         ]);
     }
 }

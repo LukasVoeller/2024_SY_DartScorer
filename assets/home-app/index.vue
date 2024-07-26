@@ -47,9 +47,9 @@
       <thead class="table">
       <tr>
         <th>Date</th>
-        <th>Mode</th>
         <th>Player 1</th>
         <th>Player 2</th>
+        <th></th>
         <th></th>
       </tr>
       </thead>
@@ -60,7 +60,6 @@
       <template v-for="game in games.slice(0, 3)">
         <tr data-bs-toggle="collapse" :data-bs-target="'#collapse' + game.id">
           <td>{{ formatDate(game.date) }}</td>
-          <td>{{ game.gameMode }}</td>
           <td
                   :style="{
             color: game.winnerPlayerId === game.player1Id ? '#50BE96' : 'white',
@@ -70,7 +69,7 @@
             textOverflow: 'ellipsis'
           }"
           >
-            {{ getPlayerName(game.player1Id) }}
+            {{ game.player1.name }}
           </td>
           <td
                   :style="{
@@ -81,10 +80,11 @@
             textOverflow: 'ellipsis'
           }"
           >
-            {{ getPlayerName(game.player2Id) }}
+            {{ game.player2.name }}
           </td>
+          <td>{{ game.gameMode }}</td>
           <td>
-            <i v-if="game.state === 'Live'" style="color: #FF5E5E" class="bi bi-record-circle"></i>
+            <i v-if="game.state === 'Live'" style="color: #24BCD9" class="bi bi-record-circle"></i>
             <i v-else-if="game.state === 'Finished'" style="color: #50BE96" class="bi bi-check-circle"></i>
           </td>
         </tr>
@@ -222,7 +222,7 @@ export default defineComponent({
 
   mounted() {
     this.fetchLatestFiveGames();
-    this.fetchPlayers();
+    // this.fetchPlayers();
   },
 
   methods: {
@@ -247,8 +247,11 @@ export default defineComponent({
     },
 
     fetchLatestFiveGames() {
-      axios.get('/api/game/latest-five/')
+      axios.get('/api/game/latest-three')
           .then(response => {
+            // console.log("response.data");
+            // console.log(response.data);
+
             this.games = response.data;
             this.loading = false;
           })
@@ -259,21 +262,21 @@ export default defineComponent({
           });
     },
 
-    fetchPlayers() {
-      this.loading = true;
-      // Fetch players from the API
-      axios.get('/api/player')
-          .then(response => {
-            this.loading = false;
-            // Sort players alphabetically by name
-            this.players = response.data
-            console.log("PLAYER DATA: ", response.data)
-          })
-          .catch(error => {
-            this.loading = false;
-            console.error('Error fetching players:', error);
-          });
-    },
+    // fetchPlayers() {
+    //   this.loading = true;
+    //   // Fetch players from the API
+    //   axios.get('/api/player')
+    //       .then(response => {
+    //         this.loading = false;
+    //         // Sort players alphabetically by name
+    //         this.players = response.data
+    //         console.log("PLAYER DATA: ", response.data)
+    //       })
+    //       .catch(error => {
+    //         this.loading = false;
+    //         console.error('Error fetching players:', error);
+    //       });
+    // },
 
     getPlayerName(playerId: Number) {
       const player = this.players.find((player: Player) => player.id === playerId);

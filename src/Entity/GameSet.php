@@ -25,7 +25,7 @@ class GameSet
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['set'])]
+    #[Groups(['api_game_full'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'sets')]
@@ -33,7 +33,7 @@ class GameSet
     private ?Game $relatedGame = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['set'])]
+    #[Groups(['api_game_full'])]
     private ?int $winnerPlayerId = null;
 
     #[ORM\Column]
@@ -44,7 +44,7 @@ class GameSet
      * @var Collection<int, GameLeg>
      */
     #[ORM\OneToMany(targetEntity: GameLeg::class, mappedBy: 'relatedSet')]
-    #[Groups(['set'])]
+    #[Groups(['api_game_full'])]
     private Collection $legs;
 
     public function __construct()

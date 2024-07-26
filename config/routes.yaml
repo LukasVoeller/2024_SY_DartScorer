@@ -39,7 +39,7 @@ settings:
   path: '/settings'
   controller: 'App\Controller\SettingsController::index'
 
-profile:
+app_profile:
   path: '/profile'
   controller: 'App\Controller\ProfileController::index'
 
@@ -136,7 +136,7 @@ api_game_update_state:
     id: '\d+'
 
 api_get_game_latest_five:
-  path: '/api/game/latest-five'
+  path: '/api/game/latest-three'
   controller: 'App\Controller\GameController::getGamesLatestFive'
   methods: [ 'GET' ]
 

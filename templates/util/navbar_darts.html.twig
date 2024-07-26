@@ -1,24 +1,27 @@
 <nav id="navbar" class="nav-menu navbar" style="padding-top: 0px">
-    <ul>
+    <ul style="width: 275px">
         {% if 'ROLE_ADMIN' in app.user.roles %}
-                <li><a href="{{ path('app_darts') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_darts' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>
-                <li><a href="{{ path('app_game_new') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_game' %}active{% endif %}"><i class="bx bx-play-circle"></i> <span>New Game</span></a></li>
-                <li><a href="{{ path('app_games') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_games' %}active{% endif %}"><i class="bx bx-library"></i> <span>Games</span></a></li>
-                <li><a href="{{ path('app_player') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_player' %}active{% endif %}"><i class="bx bx-user"></i> <span>Manage Player</span></a></li>
-                <li><a href="{{ path('app_user') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_user' %}active{% endif %}"><i class="bx bx-user-circle"></i> <span>Manage User</span></a></li>
+            <li><a style="margin: 0px" href="{{ path('app_darts') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_darts' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>
+            <li><a style="margin: 0px" href="{{ path('app_profile') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_profile' %}active{% endif %}"><i class='bx bxs-user-rectangle'></i> <span>Profile</span></a></li>
+            <li><a style="margin: 0px" href="{{ path('app_game_new') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_game' %}active{% endif %}"><i class="bx bx-play-circle"></i> <span>New Game</span></a></li>
+            <li><a style="margin: 0px" href="{{ path('app_games') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_games' %}active{% endif %}"><i class="bx bx-library"></i> <span>Games</span></a></li>
+            <li><a style="margin: 0px" href="{{ path('app_player') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_player' %}active{% endif %}"><i class='bx bxs-user-plus' ></i> <span>Manage Player</span></a></li>
+            <li><a style="margin: 0px" href="{{ path('app_user') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_user' %}active{% endif %}"><i class='bx bxs-user-plus' ></i> <span>Manage User</span></a></li>
         {% endif %}
 
         {% if 'ROLE_ASSOCIATE' in app.user.roles %}
-                <li><a href="{{ path('app_darts') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_darts' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>
-                <li><a href="{{ path('app_game_new') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_game' %}active{% endif %}"><i class="bx bx-play-circle"></i> <span>New Game</span></a></li>
-                <li><a href="{{ path('app_games') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_games' %}active{% endif %}"><i class="bx bx-library"></i> <span>Games</span></a></li>
-                <li><a href="{{ path('app_player') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_player' %}active{% endif %}"><i class="bx bx-user"></i> <span>Manage Player</span></a></li>
+            <li><a style="margin: 0px" href="{{ path('app_darts') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_darts' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>
+            <li><a style="margin: 0px" href="{{ path('app_profile') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_profile' %}active{% endif %}"><i class='bx bxs-user-rectangle'></i> <span>Profile</span></a></li>
+            <li><a style="margin: 0px" href="{{ path('app_game_new') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_game' %}active{% endif %}"><i class="bx bx-play-circle"></i> <span>New Game</span></a></li>
+            <li><a style="margin: 0px" href="{{ path('app_games') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_games' %}active{% endif %}"><i class="bx bx-library"></i> <span>Games</span></a></li>
+            <li><a style="margin: 0px" href="{{ path('app_player') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_player' %}active{% endif %}"><i class='bx bxs-user-plus' ></i> <span>Manage Player</span></a></li>
         {% endif %}
 
         {% if 'ROLE_PLAYER' in app.user.roles %}
-                <li><a href="{{ path('app_darts') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_darts' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>
-                <li><a href="{{ path('app_game_new') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_game' %}active{% endif %}"><i class="bx bx-play-circle"></i> <span>New Game</span></a></li>
-                <li><a href="{{ path('app_games') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_games' %}active{% endif %}"><i class="bx bx-library"></i> <span>Games</span></a></li>
+            <li><a style="margin: 0px" href="{{ path('app_darts') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_darts' %}active{% endif %}"><i class="bx bx-home"></i> <span>Home</span></a></li>
+            <li><a style="margin: 0px" href="{{ path('app_profile') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_profile' %}active{% endif %}"><i class='bx bxs-user-rectangle'></i> <span>Profile</span></a></li>
+            <li><a style="margin: 0px" href="{{ path('app_game_new') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_game' %}active{% endif %}"><i class="bx bx-play-circle"></i> <span>New Game</span></a></li>
+            <li><a style="margin: 0px" href="{{ path('app_games') }}" class="nav-link {% if app.request.attributes.get('_route') == 'app_games' %}active{% endif %}"><i class="bx bx-library"></i> <span>Games</span></a></li>
         {% endif %}
     </ul>
 </nav>

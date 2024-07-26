@@ -17,6 +17,7 @@ use App\Entity\GameLeg;
 use App\Entity\GameSet;
 use App\Entity\GameTally;
 use App\Entity\GameTypeX01;
+use App\Entity\Player;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,8 +58,13 @@ class GameNewController extends AbstractController
         $game->setMatchMode($data['matchMode']);
         $game->setMatchModeSetsNeeded($data['matchModeSetsNeeded']);
         $game->setMatchModeLegsNeeded($data['matchModeLegsNeeded']);
-        $game->setPlayer1Id($data['player1Id']);
-        $game->setPlayer2Id($data['player2Id']);
+
+        $player1 = $this->entityManager->getRepository(Player::class)->find($data['player1Id']);
+        $player2 = $this->entityManager->getRepository(Player::class)->find($data['player2Id']);
+
+        $game->setPlayer1($player1);
+        $game->setPlayer2($player2);
+
         //$game->setStartingPlayerId($data['playerStartingId']);
         //$game->setToThrowPlayerId($data['playerStartingId']);
         $game->setState("Live");

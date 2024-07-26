@@ -9,8 +9,8 @@ export const apiFetchTally = (context, gameId, playerId) => {
 
     return axios.post('/api/tally', postData)
         .then(response => {
-            //console.log("tally.response.data")
-            //console.log(response.data)
+            console.log("tally.response.data")
+            console.log(response.data)
 
             const responseData = response.data;
             context.setPlayerScore(playerId, responseData.score);

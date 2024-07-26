@@ -35,7 +35,6 @@ class TallyController extends AbstractController
         $this->serializer = $serializer;
     }
 
-    // TODO: Rename to /api/tally
     #[Route('/api/tally', name: 'api_tally')]
     public function getTally(Request $request): Response
     {
@@ -45,7 +44,7 @@ class TallyController extends AbstractController
         $playerId = $data['playerId'];
 
         $tally = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $playerId);
-        $serializedTally = $this->serializer->serialize($tally, 'json', ['groups' => ['tally']]);
+        $serializedTally = $this->serializer->serialize($tally, 'json', ['groups' => ['api_tally_plain']]);
         return new JsonResponse($serializedTally, Response::HTTP_OK, [], true);
     }
 
@@ -102,8 +101,8 @@ class TallyController extends AbstractController
         $gameId = $data['gameId'];
         $game = $this->entityManager->getRepository(Game::class)->find($gameId);
 
-        $player1Id = $game->getPlayer1Id();
-        $player2Id = $game->getPlayer2Id();
+        $player1Id = $game->getPlayer1()->getId();
+        $player2Id = $game->getPlayer2()->getId();
 
         $tallyPlayer1 = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $player1Id);
         $tallyPlayer2 = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $player2Id);
