@@ -13,6 +13,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ScoreRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -29,12 +30,16 @@ class ProfileController extends AbstractController
 //    }
 
     #[Route('/profile', name: 'app_profile')]
-    public function index(SerializerInterface $serializer): Response
+    public function index(SerializerInterface $serializer, ScoreRepository $scoreRepository): Response
     {
         $user = $this->getUser();
 
         // Serialize the user object to JSON
         $userData = $serializer->serialize($user, 'json', ['groups' => ['api_user']]);
+
+        // Get scores thrown by the player
+        $scores = $user->getPlayer() ? $scoreRepository->findScoresByPlayerId($user->getPlayer()->getId()) : [];
+        $serializedScores = $serializer->serialize($scores, 'json', ['groups' => ['api_score_plain']]);
 
         return $this->render('profile/index.html.twig', [
             'controller_name' => 'ProfileController',
@@ -44,6 +49,8 @@ class ProfileController extends AbstractController
             'totalGamesLost' => $user->getPlayer() ? $user->getPlayer()->getTotalGamesLost() : 0,
             'liveGamesCount' => $user->getPlayer() ? $user->getPlayer()->getLiveGamesCount() : 0,
             'finishedGamesCount' => $user->getPlayer() ? $user->getPlayer()->getFinishedGamesCount() : 0,
+            'scores' => $serializedScores,
+            'scoresRaw' => $scores,
         ]);
     }
 }

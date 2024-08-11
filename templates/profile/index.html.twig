@@ -14,6 +14,7 @@
 {% block body %}
     <div class="container px-3">
 {#        <pre>{{ dump(app.user) }}</pre>#}
+{#        <pre>{{ dump(scoresRaw) }}</pre>#}
 
         <div id="profile-app">
             <script>
@@ -23,6 +24,7 @@
                 window.totalGamesLost = {{ totalGamesLost|json_encode|raw }};
                 window.liveGamesCount = {{ liveGamesCount|json_encode|raw }};
                 window.finishedGamesCount = {{ finishedGamesCount|json_encode|raw }};
+                window.scores = {{ scores|json_encode|raw }};
             </script>
         </div>
     </div>

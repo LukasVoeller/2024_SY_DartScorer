@@ -56,6 +56,15 @@ class ScoreRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    public function findScoresByPlayerId(int $playerId): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.playerId = :playerId')
+            ->setParameter('playerId', $playerId)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Score[] Returns an array of Score objects
     //     */

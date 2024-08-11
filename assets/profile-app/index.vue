@@ -4,12 +4,12 @@
 
       <div class="card shadow">
         <div class="card-header" >
-          <h5 style="padding-top: 5px; color: white; margin: 0;">{{ this.user.username }}</h5>
+          <h5 style="padding-top: 5px; color: white; margin: 0;">{{ user.username }}</h5>
         </div>
 
         <div class="card-body">
-          <p>Player: {{ this.user.player.name }}</p>
-          <p>User since: {{ formatDate(this.user.date) }}</p>
+          <p>Player: {{ user.player.name }}</p>
+          <p>User since: {{ formatDate(user.date) }}</p>
         </div>
       </div>
 
@@ -21,15 +21,15 @@
 
       <div class="card shadow">
         <div class="card-header" >
-          <h5 style="padding-top: 5px; color: white; margin: 0;">Games ({{this.totalGamesPlayed}})</h5>
+          <h6 style="padding-top: 5px; color: white; margin: 0;">Games ({{totalGamesPlayed}})</h6>
         </div>
 
         <div class="card-body" >
-          <p>Won: {{this.totalGamesWon}}</p>
-          <p>Lost: {{this.totalGamesLost}}</p>
-          <p>Open: {{this.liveGamesCount}}</p>
-          <p>Finished: {{this.finishedGamesCount}}</p>
-          <p>Winning: </p>
+          <p>Won: {{totalGamesWon}}</p>
+          <p>Lost: {{totalGamesLost}}</p>
+          <p>Open: {{liveGamesCount}}</p>
+          <p>Finished: {{finishedGamesCount}}</p>
+          <p>Winning: {{winningChance}}%</p>
         </div>
       </div>
 
@@ -39,12 +39,12 @@
 
       <div class="card shadow">
         <div class="card-header" >
-          <h5 style="padding-top: 5px; color: white; margin: 0;">Darts</h5>
+          <h6 style="padding-top: 5px; color: white; margin: 0;">Darts ({{totalDartsThrown}})</h6>
         </div>
 
         <div class="card-body" >
-          <p>Sample text</p>
-          <p>Sample text</p>
+          <p>Sum scores: {{totalScore}}</p>
+          <p>Scores thrown: {{scoreCount}}</p>
         </div>
       </div>
 
@@ -56,12 +56,11 @@
 
       <div class="card shadow">
         <div class="card-header" >
-          <h5 style="padding-top: 5px; color: white; margin: 0;">Averages</h5>
+          <h6 style="padding-top: 5px; color: white; margin: 0;">Averages</h6>
         </div>
 
         <div class="card-body" >
-          <p>Sample text</p>
-          <p>Sample text</p>
+          <p>Average score: {{averageScore}}</p>
         </div>
       </div>
 
@@ -71,12 +70,14 @@
 
       <div class="card shadow">
         <div class="card-header" >
-          <h5 style="padding-top: 5px; color: white; margin: 0;">Checkouts</h5>
+          <h6 style="padding-top: 5px; color: white; margin: 0;">Checkouts ({{checkoutCount}})</h6>
         </div>
 
         <div class="card-body" >
-          <p>Sample text</p>
-          <p>Sample text</p>
+          <p>Highest CO: {{highestCheckoutScore}}</p>
+          <p>1 Dart COs: {{ checkout1DartCount }}</p>
+          <p>2 Dart COs: {{ checkout2DartCount }}</p>
+          <p>3 Dart COs: {{ checkout3DartCount }}</p>
         </div>
       </div>
 
@@ -114,6 +115,7 @@ export default {
       totalGamesLost: window.totalGamesLost || 0,
       liveGamesCount: window.liveGamesCount || 0,
       finishedGamesCount: window.finishedGamesCount || 0,
+      scores: JSON.parse(window.scores),
     };
   },
 
@@ -123,7 +125,92 @@ export default {
   },
 
   computed: {
+    totalScore() {
+      // Calculate the sum of all the score values
+      return this.scores.reduce((sum, score) => sum + score.value, 0);
+    },
 
+    scoreCount() {
+      // Check if scores is indeed an array and return its length
+      if (Array.isArray(this.scores)) {
+        return this.scores.length;
+      }
+      return 0;
+    },
+
+    totalDartsThrown() {
+      // Calculate the total number of darts thrown
+      if (Array.isArray(this.scores)) {
+        return this.scores.reduce((total, score) => {
+          return total + (score.dartsThrown || 0);
+        }, 0);
+      }
+      return 0;
+    },
+
+    averageScore() {
+      // Calculate the average score based on all entries
+      if (Array.isArray(this.scores) && this.scores.length > 0) {
+        const totalValue = this.scores.reduce((total, score) => {
+          return total + (score.value || 0);
+        }, 0);
+        return (totalValue / this.scores.length).toFixed(2);
+      }
+      return 0;
+    },
+
+    checkoutCount() {
+      // Count the number of scores with checkout set to true
+      if (Array.isArray(this.scores)) {
+        return this.scores.filter(score => score.checkout === true).length;
+      }
+      return 0;
+    },
+
+    highestCheckoutScore() {
+      // Find the highest score among those where checkout is true
+      if (Array.isArray(this.scores)) {
+        return this.scores
+            .filter(score => score.checkout === true)
+            .reduce((max, score) => {
+              return score.value > max ? score.value : max;
+            }, 0);
+      }
+      return 0;
+    },
+
+    winningChance() {
+      // Calculate the winning percentage based on games won and lost
+      const totalGames = this.totalGamesWon + this.totalGamesLost;
+      if (totalGames > 0) {
+        return ((this.totalGamesWon / totalGames) * 100).toFixed(2);
+      }
+      return 0;
+    },
+
+    checkout1DartCount() {
+      // Count the number of checkouts with exactly 1 dart
+      if (Array.isArray(this.scores)) {
+        return this.scores.filter(score => score.checkout === true && score.dartsThrown === 1).length;
+      }
+      return 0;
+    },
+
+    checkout2DartCount() {
+      // Count the number of checkouts with exactly 2 darts
+      if (Array.isArray(this.scores)) {
+        return this.scores.filter(score => score.checkout === true && score.dartsThrown === 2).length;
+      }
+      return 0;
+    },
+
+    checkout3DartCount() {
+      // Count the number of checkouts with exactly 3 darts
+      if (Array.isArray(this.scores)) {
+        return this.scores.filter(score => score.checkout === true && score.dartsThrown === 3).length;
+      }
+      return 0;
+    },
   },
 
   methods: {

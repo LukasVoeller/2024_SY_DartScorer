@@ -12,7 +12,7 @@
         <template v-if="startingPlayerLeg && startingPlayerSet">
           <div class="col-6 p-0 d-flex align-items-center">
           <span  :style="{
-            color: toThrow ? 'white' : 'black',
+            color: toThrow ? 'white' : 'white',
             'white-space': 'nowrap',
             'padding-left': '8px',
             'font-size': '15pt'
@@ -22,16 +22,12 @@
           </div>
 
           <div class="col-4 p-0 d-flex align-items-center text-end">
-            <span class="text-end" style="width: 100%; font-size: 15pt">
+            <span class="text-end" style="width: 100%; font-size: 15pt; color: white">
               {{ dartsThrown }}
               <img
                   src="/homepage/assets/img/dart-arrow-32px.png"
                   alt="dart arrow"
-                  style="max-width: 28px;"
-                  :style="{
-                filter: toThrow ? 'invert(100%)' : 'none',
-                'padding-right': '8px'
-              }"
+                  style="max-width: 28px; filter: invert(100%); padding-right: 8px;"
               >
             </span>
           </div>
@@ -57,7 +53,7 @@
         <template v-else-if="startingPlayerLeg || startingPlayerSet">
           <div class="col-6 p-0 d-flex align-items-center">
           <span  :style="{
-            color: toThrow ? 'white' : 'black',
+            color: toThrow ? 'white' : 'white',
             'white-space': 'nowrap',
             'padding-left': '8px',
             'font-size': '15pt'
@@ -67,16 +63,12 @@
           </div>
 
           <div class="col-4 p-0 d-flex align-items-center text-end">
-            <span class="text-end" style="width: 100%; font-size: 15pt">
+            <span class="text-end" style="width: 100%; font-size: 15pt; color: white">
               {{ dartsThrown }}
               <img
                   src="/homepage/assets/img/dart-arrow-32px.png"
                   alt="dart arrow"
-                  style="max-width: 28px;"
-                  :style="{
-                filter: toThrow ? 'invert(100%)' : 'none',
-                'padding-right': '8px'
-              }"
+                  style="max-width: 28px; filter: invert(100%); padding-right: 8px;"
               >
             </span>
           </div>
@@ -106,7 +98,7 @@
         <template v-else-if="!startingPlayerLeg && !startingPlayerSet">
           <div class="col-8 p-0 d-flex align-items-center">
           <span  :style="{
-            color: toThrow ? 'white' : 'black',
+            color: toThrow ? 'white' : 'white',
             'white-space': 'nowrap',
             'padding-left': '8px',
             'font-size': '15pt'
@@ -116,16 +108,12 @@
           </div>
 
           <div class="col-4 p-0 d-flex align-items-center text-end">
-            <span class="text-end" style="width: 100%; font-size: 15pt">
+            <span class="text-end" style="width: 100%; font-size: 15pt; color: white">
               {{ dartsThrown }}
               <img
                   src="/homepage/assets/img/dart-arrow-32px.png"
                   alt="dart arrow"
-                  style="max-width: 28px;"
-                  :style="{
-                filter: toThrow ? 'invert(100%)' : 'none',
-                'padding-right': '8px'
-              }"
+                  style="max-width: 28px; filter: invert(100%); padding-right: 8px;"
               >
             </span>
           </div>
@@ -146,7 +134,7 @@
               lineHeight: '1',
               paddingTop: dynamicPadding,
               margin: '0px',
-              color: isBogey(playerScore) ? '#FF5E5E' : 'black'}">
+              color: isBogey(playerScore) ? '#FF5E5E' : 'white'}">
               <strong>{{ displayScore }}</strong>
             </h1>
           </div>
@@ -206,22 +194,22 @@
 
         <div class="row">
           <div class="col" style="padding-right: 0;">
-            <h1 class="info-text" style="font-size: 20px; margin: 0px;">Leg:</h1>
-            <h1 class="info-text" style="font-size: 20px; margin: 0px;">&empty; {{ legAverage }}</h1>
+            <h1 class="info-text" style="font-size: 20px; margin: 0px; color: white">Leg:</h1>
+            <h1 class="info-text" style="font-size: 20px; margin: 0px; color: white">&empty; {{ legAverage }}</h1>
           </div>
           <div class="col">
-            <h1 class="info-text" style="font-size: 20px; margin: 0px;">Game:</h1>
-            <h1 class="info-text" style="font-size: 20px; margin: 0px;">&empty; {{ gameAverage }}</h1>
+            <h1 class="info-text" style="font-size: 20px; margin: 0px; color: white">Game:</h1>
+            <h1 class="info-text" style="font-size: 20px; margin: 0px; color: white">&empty; {{ gameAverage }}</h1>
           </div>
         </div>
 
       </li>
       <li class="list-group-item">
         <div class="row">
-          <div v-if="matchMode === 'FirstToSets'" class="col" style="font-size: 18pt">
+          <div v-if="matchMode === 'FirstToSets'" class="col" style="font-size: 18pt; color: white">
             Sets: {{ sets }}
           </div>
-          <div class="col text-center" style="font-size: 18pt">
+          <div class="col text-center" style="font-size: 18pt; color: white">
             Legs: {{ legs }}
           </div>
         </div>

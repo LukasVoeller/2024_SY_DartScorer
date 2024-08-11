@@ -190,6 +190,8 @@ interface Game {
   gameMode: string;
   // player1Id: number;
   // player2Id: number;
+  player1: Player; // Add player1
+  player2: Player; // Add player2
   winnerPlayerId: number;
   state: string;
   startScore: number;
