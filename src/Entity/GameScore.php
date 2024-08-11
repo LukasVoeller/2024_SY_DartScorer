@@ -27,22 +27,22 @@ class GameScore
     private ?int $id = null;
 
     #[ORM\Column(nullable: false)]
-    #[Groups(['score'])]
+    #[Groups(['api_score_plain'])]
     private ?int $playerId;
 
     #[ORM\ManyToOne(inversedBy: 'scores')]
     private ?GameLeg $relatedLeg = null;
 
     #[ORM\Column(nullable: false)]
-    #[Groups(['score'])]
+    #[Groups(['api_score_plain', 'api_game_full'])]
     private ?int $value;
 
     #[ORM\Column(nullable: false)]
-    #[Groups(['score'])]
+    #[Groups(['api_score_plain'])]
     private ?int $dartsThrown;
 
     #[ORM\Column(nullable: false)]
-    #[Groups(['score'])]
+    #[Groups(['api_score_plain'])]
     private ?bool $checkout = false;
 
     #[ORM\Column(nullable: true)]

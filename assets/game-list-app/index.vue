@@ -4,19 +4,32 @@
 <!--    <p style="padding-top: 10px">Played ({{ filteredGamesCount }})</p>-->
 
     <div class="row" style="margin-bottom: 10px; padding-left: 20px; padding-right: 20px; padding-top: 20px">
-      <div class="col-9 pe-1">
+      <div class="col-6 pe-1">
         <input
             type="text"
             class="form-control"
-            placeholder="Search by player name"
+            placeholder="Player name"
             v-model="searchTerm"
             @input="resetToFirstPage"
+            style="height: 30px;"
         />
       </div>
 
-      <div class="col-3 ps-1">
-        <button class="btn btn-success w-100" style="height: 40px;" @click="resetFilters">
+      <div class="col-2 ps-1">
+        <button class="btn btn-success w-100 d-flex justify-content-center align-items-center" style="height: 30px;" @click="resetFilters">
           <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="col-2">
+        <button class="btn btn-success w-100 d-flex justify-content-center align-items-center" style="height: 30px;" @click="filterFinished">
+          <i style="color: white" class="bi bi-check-circle"></i>
+        </button>
+      </div>
+
+      <div class="col-2">
+        <button class="btn btn-success w-100 d-flex justify-content-center align-items-center" style="height: 30px;" @click="filterLive">
+          <i style="color: white" class="bi bi-record-circle"></i>
         </button>
       </div>
     </div>
@@ -45,6 +58,8 @@
       </div>
     </div>
 
+    <p style="color: white; padding-left: 20px">Count: {{ filteredGamesCount }}</p>
+
     <table v-if="paginatedGames.length > 0" class="table table-hover">
       <thead class="table">
       <tr>
@@ -52,7 +67,7 @@
         <th style="color: white;">Player 1</th>
         <th style="color: white;">Player 2</th>
         <th style="color: white;"></th>
-        <th style="color: white;">{{ filteredGamesCount }}</th>
+        <th style="color: white;"></th>
       </tr>
       </thead>
       <tbody>
@@ -61,29 +76,29 @@
           <td style="color: white;">{{ formatDate(game.date) }}</td>
           <td
               :style="{
-            color: game.winnerPlayerId === game.player1Id ? '#50BE96' : 'white',
+            color: game.winnerPlayerId === game.player1.id ? '#50BE96' : 'white',
             maxWidth: '70px',
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis'
           }"
           >
-            {{ getPlayerName(game.player1Id) }}
+            {{ game.player1.name }}
           </td>
           <td
               :style="{
-            color: game.winnerPlayerId === game.player2Id ? '#50BE96' : 'white',
+            color: game.winnerPlayerId === game.player2.id ? '#50BE96' : 'white',
             maxWidth: '70px',
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis'
           }"
           >
-            {{ getPlayerName(game.player2Id) }}
+            {{ game.player2.name }}
           </td>
           <td style="color: white;">{{ game.gameMode }}</td>
           <td>
-            <i v-if="game.state === 'Live'" style="color: #FF5E5E" class="bi bi-record-circle"></i>
+            <i v-if="game.state === 'Live'" style="color: #24BCD9" class="bi bi-record-circle"></i>
             <i v-else-if="game.state === 'Finished'" style="color: #50BE96" class="bi bi-check-circle"></i>
           </td>
         </tr>
@@ -173,8 +188,10 @@ interface Game {
   id: number;
   date: string;
   gameMode: string;
-  player1Id: number;
-  player2Id: number;
+  // player1Id: number;
+  // player2Id: number;
+  player1: Player; // Add player1
+  player2: Player; // Add player2
   winnerPlayerId: number;
   state: string;
   startScore: number;
@@ -197,24 +214,39 @@ export default defineComponent({
       loading: true,
       error: false,
       currentPage: 1,
-      pageSize: 7,
+      pageSize: 6,
       searchTerm: '',
       startDate: null as Date | null,
       endDate: null as Date | null,
       lastYear: 0,
+      filterState: null as string | null, // New property
     };
   },
 
   computed: {
+    // filteredGames() {
+    //   const lowerSearchTerm = this.searchTerm.trim().toLowerCase();
+    //   return this.games.filter(game => {
+    //     const gameDate = new Date(game.date);
+    //     const inDateRange = (!this.startDate || gameDate >= this.startDate) && (!this.endDate || gameDate <= this.endDate);
+    //     const matchesSearchTerm = !this.searchTerm.trim() ||
+    //         game.player1.name.toLowerCase().includes(lowerSearchTerm) ||
+    //         game.player2.name.toLowerCase().includes(lowerSearchTerm);
+    //     return inDateRange && matchesSearchTerm;
+    //   }).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    // },
+
     filteredGames() {
       const lowerSearchTerm = this.searchTerm.trim().toLowerCase();
       return this.games.filter(game => {
         const gameDate = new Date(game.date);
         const inDateRange = (!this.startDate || gameDate >= this.startDate) && (!this.endDate || gameDate <= this.endDate);
         const matchesSearchTerm = !this.searchTerm.trim() ||
-            this.getPlayerName(game.player1Id).toLowerCase().includes(lowerSearchTerm) ||
-            this.getPlayerName(game.player2Id).toLowerCase().includes(lowerSearchTerm);
-        return inDateRange && matchesSearchTerm;
+            game.player1.name.toLowerCase().includes(lowerSearchTerm) ||
+            game.player2.name.toLowerCase().includes(lowerSearchTerm);
+        const matchesStateFilter = this.filterState === null || game.state === this.filterState;
+
+        return inDateRange && matchesSearchTerm && matchesStateFilter;
       }).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     },
 
@@ -237,7 +269,7 @@ export default defineComponent({
     this.lastYear = new Date().getFullYear() - 1;
 
     this.fetchGames();
-    this.fetchPlayers();
+    // this.fetchPlayers();
   },
 
   methods: {
@@ -254,7 +286,7 @@ export default defineComponent({
     },
 
     fetchGames() {
-      axios.get('/api/game/')
+      axios.get('/api/game')
           .then(response => {
             this.games = response.data;
             this.loading = false;
@@ -263,19 +295,6 @@ export default defineComponent({
             console.error('Error fetching game data:', error);
             this.error = true;
             this.loading = false;
-          });
-    },
-
-    fetchPlayers() {
-      this.loading = true;
-      axios.get('/api/player')
-          .then(response => {
-            this.players = response.data;
-            this.loading = false;
-          })
-          .catch(error => {
-            this.loading = false;
-            console.error('Error fetching players:', error);
           });
     },
 
@@ -311,6 +330,17 @@ export default defineComponent({
       this.startDate = null;
       this.endDate = null;
       this.searchTerm = ''; // Clear the search input
+      this.filterState = null; // Reset filter state
+      this.resetToFirstPage();
+    },
+
+    filterLive() {
+      this.filterState = 'Live';
+      this.resetToFirstPage();
+    },
+
+    filterFinished() {
+      this.filterState = 'Finished';
       this.resetToFirstPage();
     },
 

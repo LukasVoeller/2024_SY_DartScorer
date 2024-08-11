@@ -35,6 +35,7 @@ Encore
     .addEntry('homeApp', './assets/home-app.ts')
     .addEntry('loginApp', './assets/login-app.ts')
     .addEntry('playerApp', './assets/player-app.ts')
+    .addEntry('profileApp', './assets/profile-app.ts')
     .addEntry('userApp', './assets/user-app.ts')
 
     // Enable vue plugins

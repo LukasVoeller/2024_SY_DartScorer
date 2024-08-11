@@ -32,11 +32,11 @@ class GameRepository extends ServiceEntityRepository
         parent::__construct($registry, Game::class);
     }
 
-    public function findLatestFiveGames()
+    public function findLatestThreeGames()
     {
         return $this->createQueryBuilder('g')
             ->orderBy('g.date', 'DESC') // Assuming 'createdAt' is a datetime field you can sort by
-            ->setMaxResults(5)
+            ->setMaxResults(3)
             ->getQuery()
             ->getResult();
     }

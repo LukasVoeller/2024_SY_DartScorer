@@ -13,7 +13,9 @@ export const apiConfirmScore = (gameId, playerId, thrownScore, thrownDarts, swit
     };
 
     //console.log("confirmScore POSTING: ", postData)
-    EventBus.emit('play-score-sound', thrownScore);
+    if (!isCheckout) {
+        EventBus.emit('play-score-sound', thrownScore);
+    }
 
     axios.post('/api/score/confirm', postData)
         .then(response => {

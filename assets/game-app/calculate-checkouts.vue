@@ -4,7 +4,7 @@
       <div class="col-12 text-center">
         <p v-if="calculate_checkouts(score).length > 0"
            :style="{ fontSize: isTablet ? '20px' : '18px' }"
-           style="margin: 0px; white-space: nowrap;">
+           style="margin: 0px; white-space: nowrap; color: white">
           {{
             stringify_checkout(calculate_checkouts(score)[0][0], calculate_checkouts(score)[0][1], calculate_checkouts(score)[0][2])
           }}
@@ -13,7 +13,7 @@
       <div class="col-12 text-center">
         <p v-if="calculate_checkouts(score).length > 1"
            :style="{ fontSize: isTablet ? '20px' : '18px' }"
-           style="margin: 0px; white-space: nowrap;">
+           style="margin: 0px; white-space: nowrap; color: white">
           {{
             stringify_checkout(calculate_checkouts(score)[1][0], calculate_checkouts(score)[1][1], calculate_checkouts(score)[1][2])
           }}

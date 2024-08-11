@@ -82,6 +82,8 @@
                                 Games
                             {% elseif app.request.pathinfo starts with '/game/new' %}
                                 New Game
+                            {% elseif app.request.pathinfo starts with '/profile' %}
+                                Profile
                             {% else %}
                                 Welcome, {{ app.user.username }}!
 {#                                <a href="{{ path('logout') }}">Logout</a>#}

@@ -43,7 +43,7 @@ class PlayerController extends AbstractController
     public function getPlayers(Request $request): JsonResponse
     {
         $players = $this->entityManager->getRepository(Player::class)->findAll();
-        $data = $this->serializer->serialize($players, 'json', ['groups' => 'api_player']);
+        $data = $this->serializer->serialize($players, 'json', ['groups' => 'api_player_plain']);
         return new JsonResponse($data, Response::HTTP_OK, [], true);
     }
 

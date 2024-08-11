@@ -25,7 +25,7 @@ class GameTally
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['tally'])]
+    #[Groups(['api_tally_plain'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'tally')]
@@ -34,39 +34,39 @@ class GameTally
     private ?Game $game = null;
 
     #[ORM\Column]
-    #[Groups(['tally'])]
+    #[Groups(['api_tally_plain'])]
     private ?int $playerId = null;
 
     #[ORM\Column]
-    #[Groups(['tally'])]
+    #[Groups(['api_tally_plain'])]
     private ?int $score = null;
 
     #[ORM\Column]
-    #[Groups(['tally'])]
+    #[Groups(['api_tally_plain'])]
     private ?int $legId = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['tally'])]
+    #[Groups(['api_tally_plain'])]
     private ?int $setId = null;
 
     #[ORM\Column(nullable: false)]
-    #[Groups(['tally'])]
+    #[Groups(['api_tally_plain'])]
     private ?int $legsWon = 0;
 
     #[ORM\Column(nullable: false)]
-    #[Groups(['tally'])]
+    #[Groups(['api_tally_plain'])]
     private ?int $setsWon = 0;
 
     #[ORM\Column(nullable: false)]
-    #[Groups(['tally'])]
+    #[Groups(['api_tally_plain'])]
     private ?bool $startedLeg = false;
 
     #[ORM\Column(nullable: false)]
-    #[Groups(['tally'])]
+    #[Groups(['api_tally_plain'])]
     private ?bool $startedSet = false;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['tally'])]
+    #[Groups(['api_tally_plain'])]
     private ?bool $toThrow = false;
 
     public function getId(): ?int

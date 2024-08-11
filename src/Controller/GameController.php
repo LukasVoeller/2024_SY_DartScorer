@@ -72,15 +72,17 @@ class GameController extends AbstractController
     public function getGames(Request $request): JsonResponse
     {
         $games = $this->entityManager->getRepository(Game::class)->findAll();
-        $serializedGames = $this->serializer->serialize($games, 'json', ['groups' => ['game', 'set', 'leg', 'score']]);
+//        $serializedGames = $this->serializer->serialize($games, 'json', ['groups' => ['game', 'set', 'leg', 'score', 'api_player']]);
+        $serializedGames = $this->serializer->serialize($games, 'json', ['groups' => ['api_game_plain', 'api_player_plain']]);
         return new JsonResponse($serializedGames, Response::HTTP_OK, [], true);
     }
 
-    #[Route('/api/game/latest-five', name: 'api_get_game_latest_five', methods: ['GET'])]
+    #[Route('/api/game/latest-three', name: 'api_get_game_latest_five', methods: ['GET'])]
     public function getGamesLatestFive(Request $request): JsonResponse
     {
-        $games = $this->entityManager->getRepository(Game::class)->findLatestFiveGames();
-        $serializedGames = $this->serializer->serialize($games, 'json', ['groups' => ['game', 'set', 'leg', 'score']]);
+        $games = $this->entityManager->getRepository(Game::class)->findLatestThreeGames();
+//        $serializedGames = $this->serializer->serialize($games, 'json', ['groups' => ['game', 'set', 'leg', 'score', 'api_player']]);
+        $serializedGames = $this->serializer->serialize($games, 'json', ['groups' => ['api_game_plain', 'api_player_plain']]);
         return new JsonResponse($serializedGames, Response::HTTP_OK, [], true);
     }
 
@@ -88,7 +90,8 @@ class GameController extends AbstractController
     public function getGameById(int $id): JsonResponse
     {
         $game = $this->entityManager->getRepository(Game::class)->find($id);
-        $serializedGame = $this->serializer->serialize($game, 'json', ['groups' => ['game', 'set', 'leg', 'score']]);
+//        $serializedGame = $this->serializer->serialize($game, 'json', ['groups' => ['game', 'set', 'leg', 'score', 'api_player']]);
+        $serializedGame = $this->serializer->serialize($game, 'json', ['groups' => ['api_game_plain', 'api_player_plain']]);
         return new JsonResponse($serializedGame, Response::HTTP_OK, [], true);
     }
 
@@ -119,106 +122,4 @@ class GameController extends AbstractController
         // Return a JSON response indicating success
         return new JsonResponse(['success' => true, 'message' => 'Game state updated successfully.'], Response::HTTP_OK);
     }
-
-/*
-    private function saveGameX01($data): bool
-    {
-        $game = $this->entityManager->getRepository(Game::class)->find($data['gameId']);
-        if (!$game) {
-            return false;
-        }
-
-        $setsNeeded = $game->getMatchModeSetsNeeded();
-        $legsNeeded = $game->getMatchModeLegsNeeded();
-        $legsPerSetPlayed = $data['legsPerSetPlayed'];
-
-        if ($game->getMatchMode() == "FirstToSets") {
-            for ($setIndex = 0; $setIndex < $setsNeeded; $setIndex++) {
-                $set = new GameSet();
-                $set->setRelatedGame($game);
-                $set->setWinnerPlayerId($data['setWinnerPlayerIds'][$setIndex]);
-                $set->setMatchModeLegsNeeded($legsNeeded);
-                $this->entityManager->persist($set);
-
-                $legsInThisSet = $legsPerSetPlayed[$setIndex];
-                for ($legIndex = 0; $legIndex < $legsInThisSet; $legIndex++) {
-                    $leg = new GameLeg();
-                    $leg->setRelatedSet($set);
-                    $globalLegIndex = array_sum(array_slice($legsPerSetPlayed, 0, $setIndex)) + $legIndex;
-                    $leg->setWinnerPlayerId($data['legWinnerPlayerIds'][$globalLegIndex]);
-                    $this->entityManager->persist($leg);
-
-                    // Handle scores for Player 1
-                    $this->createPlayerScores(
-                        $leg,
-                        $data['player1Id'],
-                        $data['player1TotalScores'][$globalLegIndex],
-                        $data['player1DartsThrown'][$globalLegIndex] ?? []
-                    );
-
-                    // Handle scores for Player 2
-                    $this->createPlayerScores(
-                        $leg,
-                        $data['player2Id'],
-                        $data['player2TotalScores'][$globalLegIndex],
-                        $data['player2DartsThrown'][$globalLegIndex] ?? []
-                    );
-                }
-            }
-        } else if ($game->getMatchMode() == "FirstToLegs") {
-            $numLegs = count($data['legWinnerPlayerIds']);
-
-            for ($legIndex = 0; $legIndex < $numLegs; $legIndex++) {
-                $leg = new GameLeg();
-                $leg->setRelatedGame($game);
-                $leg->setWinnerPlayerId($data['legWinnerPlayerIds'][$legIndex]);
-                $this->entityManager->persist($leg);
-
-                // Handle scores for Player 1
-                $this->createPlayerScores(
-                    $leg,
-                    $data['player1Id'],
-                    $data['player1TotalScores'][$legIndex],
-                    $data['player1DartsThrown'][$legIndex] ?? []
-                );
-
-                // Handle scores for Player 2
-                $this->createPlayerScores(
-                    $leg,
-                    $data['player2Id'],
-                    $data['player2TotalScores'][$legIndex],
-                    $data['player2DartsThrown'][$legIndex] ?? []
-                );
-            }
-        }
-
-        $game->setState($data['gameState']);
-        $game->setWinnerPlayerId($data['gameWinnerPlayerId']);
-
-        $this->entityManager->persist($game);
-        $this->entityManager->flush();
-        return true;
-    }
-*/
-/*
-    private function createPlayerScores(GameLeg $leg, int $playerId, array $scores, array $dartsThrown): void
-    {
-        foreach ($scores as $scoreIndex => $score) {
-            $darts = $dartsThrown[$scoreIndex] ?? 0; // Default to 0 if no darts data
-            $this->createScore($leg, $playerId, $score, $darts);
-        }
-    }
-*/
-/*
-    private function createScore(GameLeg $leg, int $playerId, int $score, int $dartsThrown): void
-    {
-        $gameScore = new GameScore();
-        $gameScore->setRelatedLeg($leg);
-        $gameScore->setPlayerId($playerId);
-        $gameScore->setValue($score);
-        $gameScore->setDartsThrown($dartsThrown);
-
-        $this->entityManager->persist($gameScore);
-    }
-*/
 }

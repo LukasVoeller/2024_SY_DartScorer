@@ -20,11 +20,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class GameTypeX01 extends Game
 {
     #[ORM\Column(type: "integer", nullable: false)]
-    #[Groups(['game'])]
+    #[Groups(['api_player_plain', 'api_game_full'])]
     private ?int $startScore;
 
     #[ORM\Column(type: "string", nullable: false)]
-    #[Groups(['game'])]
+    #[Groups(['api_player_plain', 'api_game_full'])]
     private ?string $finishType;
 
     public function getStartScore(): ?int
