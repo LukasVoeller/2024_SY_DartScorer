@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <!-- Numberpad rows -->q
+    <!-- Numberpad rows -->
     <div class="row flex-grow-1 px-1">
       <div class="col p-1">
         <button id="btn-1" type="button" class="btn custom-btn-number w-100 h-100" style="font-size: 3vh;">1</button>
