@@ -45,7 +45,7 @@
 
   <!-- Smartphone view -->
   <!-- <div class="d-md-none"> -->
-  <div class="container-fluid d-flex flex-column" style="height: 80vh;">
+  <div class="container-fluid d-flex flex-column" style="height: 82vh;">
     <div class="row flex-grow-1 d-flex" style="">
       <div id="player1" class="col p-1 flex-grow-1 d-flex">
         <PlayerCardComponent v-if="game && !loading && !isTablet" class="flex-grow-1" :playerName="player1.name" :playerScore="player1.displayScore"
