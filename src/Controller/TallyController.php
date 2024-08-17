@@ -127,8 +127,8 @@ class TallyController extends AbstractController
         $gameId = $data['gameId'];
         $game = $this->entityManager->getRepository(Game::class)->find($gameId);
 
-        $player1Id = $game->getPlayer1Id();
-        $player2Id = $game->getPlayer2Id();
+        $player1Id = $game->getPlayer1()->getId();
+        $player2Id = $game->getPlayer2()->getId();
 
         $tallyPlayer1 = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $player1Id);
         $tallyPlayer2 = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $player2Id);
@@ -153,8 +153,8 @@ class TallyController extends AbstractController
         $gameId = $data['gameId'];
         $game = $this->entityManager->getRepository(Game::class)->find($gameId);
 
-        $player1Id = $game->getPlayer1Id();
-        $player2Id = $game->getPlayer2Id();
+        $player1Id = $game->getPlayer1()->getId();
+        $player2Id = $game->getPlayer2()->getId();
 
         $tallyPlayer1 = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $player1Id);
         $tallyPlayer2 = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $player2Id);

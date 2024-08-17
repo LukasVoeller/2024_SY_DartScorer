@@ -18,20 +18,36 @@
         <th scope="col" style="color: white;">Username</th>
         <th scope="col" style="color: white;">Player</th>
         <th scope="col" style="color: white;">Role</th>
-        <th scope="col" style="color: white;" class="text-end">Actions</th>
       </tr>
       </thead>
       <tbody>
-      <tr v-for="user in paginatedUsers" :key="user.id">
-        <td style="color: white;">{{ user.username }}</td>
-        <td style="color: white;">{{ user.player ? user.player.name : "None" }}</td>
-        <td style="color: white;">{{ determineRole(user) }}</td>
-        <td style="color: white;" class="text-end">
-          <button @click="deleteUser(user.id)" class="btn btn-danger">
-            <i class="bi bi-trash"></i>
-          </button>
-        </td>
-      </tr>
+      <template v-for="user in paginatedUsers" :key="user.id">
+        <tr data-bs-toggle="collapse" :data-bs-target="'#collapse' + user.id">
+          <td style="color: white;">{{ user.username }}</td>
+          <td style="color: white;">{{ user.player ? user.player.name : "None" }}</td>
+          <td style="color: white;">{{ determineRole(user) }}</td>
+        </tr>
+        <tr>
+          <td colspan="4" style="padding: 0px;">
+            <div :id="'collapse' + user.id" class="collapse">
+              <div style="padding: 10px;">
+                <div class="row">
+                  <div class="col-8" style="color: white;">
+                    <p style="margin-bottom: 5px">ID: {{ user.id }}</p>
+                    <p style="margin-bottom: 5px">Email: {{ user.email }}</p>
+                    <p style="margin-bottom: 5px">Created At: {{ formatDate(user.date) }}</p>
+                  </div>
+                  <div class="col-4 d-flex flex-column align-items-end align-items-bottom">
+                    <button @click="deleteUser(user.id)" class="btn btn-danger">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </template>
       </tbody>
     </table>
 
@@ -62,8 +78,8 @@
     </div>
   </div>
 
-  <div class="row d-flex" style="padding-top: 10px">
-    <div class="col-md-6" style="margin-bottom: 10px">
+  <div class="row d-flex" style="">
+    <div class="col-md-6" style="margin-top: 10px">
       <div class="card shadow h-100" style="padding: 20px;">
         <form @submit.prevent="submitForm" :class="{ 'was-validated': formNeedsValidation }" novalidate="">
           <div class="row">
@@ -106,7 +122,7 @@
     </div>
 
     <div class="col-md-6 h-100">
-      <div class="card shadow h-100" style="padding: 20px; margin-bottom: 25px">
+      <div class="card shadow h-100" style="padding: 20px; margin-top: 10px">
         <table class="table">
           <thead>
           <tr>
@@ -206,6 +222,14 @@ export default {
   },
 
   methods: {
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = String(date.getFullYear()).slice(-2);
+      return `${day}.${month}.${year}`;
+    },
+
     resetToFirstPage() {
       this.currentPage = 1; // When the search term changes, go back to the first page
     },

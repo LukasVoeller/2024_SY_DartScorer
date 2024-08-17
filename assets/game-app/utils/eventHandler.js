@@ -5,6 +5,7 @@ import {
 import {
     apiConfirmScore,
 } from '../services/apiScoreService';
+import {apiSwitchToStartLeg} from "../services/apiTallyService";
 
 export const handleLegShutModalConfirmed = (context, checkoutScore, checkoutDartCount, checkoutAverage, winnerPlayerId, looserPlayerId) => {
     const winnerPlayer = context.getPlayerById(winnerPlayerId);
@@ -17,9 +18,14 @@ export const handleLegShutModalConfirmed = (context, checkoutScore, checkoutDart
     if (context.toThrowPlayerId !== context.startingLegPlayerId) {
         console.log("apiConfirmScore - BREAK LEG")
         context.startingLegPlayerId = context.toThrowPlayerId;
-        apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, false, true);
-    } else {
 
+        if (winnerPlayer.legs !== context.game.matchModeLegsNeeded) {
+            apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, false, true);
+            apiSwitchToStartLeg(context.game.id);
+        } else {
+            apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, true, true);
+        }
+    } else {
         // Don't switch to throw if break of throw sets
         if (context.game.matchMode === "FirstToSets" && winnerPlayer.legs === context.game.matchModeLegsNeeded && context.toThrowPlayerId !== context.startingSetPlayerId) {
             console.log("apiConfirmScore - BREAK SET")
@@ -28,6 +34,7 @@ export const handleLegShutModalConfirmed = (context, checkoutScore, checkoutDart
         } else {
             console.log("apiConfirmScore - NO BREAK")
             apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, true, true);
+            apiSwitchToStartLeg(context.game.id);
         }
     }
 };
