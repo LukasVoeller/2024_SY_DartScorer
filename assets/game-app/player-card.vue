@@ -125,7 +125,7 @@
             <h1 :style="{
               fontSize: '45pt',
               lineHeight: '1',
-              paddingTop: '2vh',
+              paddingTop: '1vh',
               margin: '0px',
               color: isBogey(playerScore) ? '#FF5E5E' : 'white'}">
               <strong>{{ displayScore }}</strong>
