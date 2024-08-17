@@ -47,7 +47,7 @@
   <!-- <div class="d-md-none"> -->
   <div class="container-fluid d-flex flex-column ps-1 pe-1" style="height: 82vh;">
     <div class="row flex-grow-1 d-flex" style="">
-      <div id="player1" class="col p-1 flex-grow-1 d-flex">
+      <div id="player1" class="col-6 p-1 flex-grow-1 d-flex">
         <PlayerCardComponent v-if="game && !loading && !isTablet" class="flex-grow-1" :playerName="player1.name" :playerScore="player1.displayScore"
                              :startingPlayerLeg="player1.id === startingLegPlayerId" :startingPlayerSet="player1.id === startingSetPlayerId"
                              :toThrow="toThrowPlayerId === player1.id" :lastThrows="player1.lastScores.join(', ')"
@@ -55,7 +55,7 @@
                              :legAverage="player1LegAverage" :gameAverage="player1.gameAverage"
                              :scoreBusted="player1.scoreBusted"/>
       </div>
-      <div id="player2" class="col p-1 flex-grow-1 d-flex">
+      <div id="player2" class="col-6 p-1 flex-grow-1 d-flex">
         <PlayerCardComponent v-if="game && !loading && !isTablet" class="flex-grow-1" :playerName="player2.name" :playerScore="player2.displayScore"
                              :startingPlayerLeg="player2.id === startingLegPlayerId" :startingPlayerSet="player2.id === startingSetPlayerId"
                              :toThrow="toThrowPlayerId === player2.id" :lastThrows="player2.lastScores.join(', ')"
