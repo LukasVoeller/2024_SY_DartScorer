@@ -4,7 +4,7 @@
     <div class="row flex-grow-1 px-1">
       <div class="col p-1">
         <button id="btn-undo" type="button" class="btn custom-btn-score-row w-100 h-100"
-                :disabled="disableThrowButton" style="font-size: 3vh;">
+                :disabled="disableThrowButton" style="font-size: 14pt;">
           {{ undoButtonText }}
         </button>
       </div>
@@ -14,7 +14,7 @@
       </div>
       <div class="col p-1">
         <button id="btn-left" type="button" class="btn custom-btn-score-row w-100 h-100"
-                style="font-size: 3vh;">
+                style="font-size: 14pt;s">
           {{ leftButtonText }}
         </button>
       </div>

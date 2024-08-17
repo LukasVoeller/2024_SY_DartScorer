@@ -1,10 +1,10 @@
 <template>
-  <div id="player" class="card flex-grow-1 d-flex flex-column" style="height: 100%;">
+  <div id="player" class="card flex-grow-1 d-flex flex-column" style="height: 100%">
     <!-- Card Header -->
     <div class="card-header p-0" :style="{
       backgroundColor: toThrow ? '#2CAB73' : '#282828',
       color: toThrow ? 'white' : 'black',
-      height: '8vh', /* Adjusted to scale with viewport height */
+      height: '40px',
       border: '1px solid grey'
     }">
       <div class="row h-100" style="padding-left: 12px; padding-right: 12px">
@@ -26,7 +26,7 @@
               <img
                   src="/homepage/assets/img/dart-arrow-32px.png"
                   alt="dart arrow"
-                  style="max-width: 4vh; filter: invert(100%); padding-right: 8px;"
+                  style="max-width: 20pt; filter: invert(100%); padding-right: 8px;"
               >
             </span>
           </div>
@@ -65,7 +65,7 @@
               <img
                   src="/homepage/assets/img/dart-arrow-32px.png"
                   alt="dart arrow"
-                  style="max-width: 4vh; filter: invert(100%); padding-right: 8px;"
+                  style="max-width: 20pt; filter: invert(100%); padding-right: 8px;"
               >
             </span>
           </div>
@@ -108,7 +108,7 @@
               <img
                   src="/homepage/assets/img/dart-arrow-32px.png"
                   alt="dart arrow"
-                  style="max-width: 4vh; filter: invert(100%); padding-right: 8px;"
+                  style="max-width: 20pt; filter: invert(100%); padding-right: 8px;"
               >
             </span>
           </div>
@@ -118,14 +118,14 @@
     </div>
 
     <!-- Main Score Display -->
-    <div class="list-group-flush flex-grow-1 d-flex flex-column" style="border-left: 1px solid gray; border-right: 1px solid gray;">
+    <div class="list-group-flush flex-grow-1 d-flex flex-column" style="border-left: 1px solid gray; border-right: 1px solid gray; min-height: 130px;">
       <li class="list-group-item p-0 flex-grow-1 d-flex flex-column justify-content-center">
         <div class="row justify-content-center">
           <div class="col-auto">
             <h1 :style="{
-              fontSize: '8vh',
+              fontSize: '45pt',
               lineHeight: '1',
-              paddingTop: '1vh',
+              paddingTop: '2vh',
               margin: '0px',
               color: isBogey(playerScore) ? '#FF5E5E' : 'white'}">
               <strong>{{ displayScore }}</strong>
@@ -142,26 +142,26 @@
     <!-- Footer Information -->
     <ul class="list-group list-group-flush" style="border-left: 1px solid gray; border-right: 1px solid gray;">
       <li class="list-group-item">
-        <h1 class="info-text" style="font-size: 2vh; white-space: nowrap; overflow: hidden; color: white">Last: {{ lastThrows }}</h1>
+        <h1 class="info-text" style="font-size: 10pt; white-space: nowrap; overflow: hidden; color: white">Last: {{ lastThrows }}</h1>
 
         <div class="row">
           <div class="col" style="padding-right: 0;">
-            <h1 class="info-text" style="font-size: 2vh; margin: 0px; color: white">Leg:</h1>
-            <h1 class="info-text" style="font-size: 2vh; margin: 0px; color: white">&empty; {{ legAverage }}</h1>
+            <h1 class="info-text" style="font-size: 10pt; margin: 0px; color: white">Leg:</h1>
+            <h1 class="info-text" style="font-size: 10pt; margin: 0px; color: white">&empty; {{ legAverage }}</h1>
           </div>
           <div class="col">
-            <h1 class="info-text" style="font-size: 2vh; margin: 0px; color: white">Game:</h1>
-            <h1 class="info-text" style="font-size: 2vh; margin: 0px; color: white">&empty; {{ gameAverage }}</h1>
+            <h1 class="info-text" style="font-size: 10pt; margin: 0px; color: white">Game:</h1>
+            <h1 class="info-text" style="font-size: 10pt; margin: 0px; color: white">&empty; {{ gameAverage }}</h1>
           </div>
         </div>
 
       </li>
       <li class="list-group-item" style="border-bottom: 1px solid gray;">
         <div class="row">
-          <div class="col" style="color: white">
+          <div class="col pe-0" style="color: white">
             Sets: {{ sets }}
           </div>
-          <div class="col" style="color: white">
+          <div class="col p-0" style="color: white">
             Legs: {{ legs }}
           </div>
         </div>
