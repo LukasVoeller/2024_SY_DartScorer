@@ -5,6 +5,7 @@
       <div class="col p-1">
         <button id="btn-undo" type="button" class="btn custom-btn-score-row w-100 h-100"
                 :disabled="disableThrowButton" style="font-size: 14pt;">
+          <i class="bi bi-arrow-counterclockwise"></i>
           {{ undoButtonText }}
         </button>
       </div>
@@ -14,12 +15,13 @@
       </div>
       <div class="col p-1">
         <button id="btn-left" type="button" class="btn custom-btn-score-row w-100 h-100"
-                style="font-size: 14pt;">
+                :disabled="isLeftButtonDisabled" style="font-size: 14pt;">
+          <i v-if="leftButtonText === 'Left'" class="bi bi-chevron-bar-down"></i>
+          <i v-else-if="leftButtonText === 'Check'" class="bi bi-check-lg"></i>
           {{ leftButtonText }}
         </button>
       </div>
     </div>
-
 
     <!-- Numberpad rows -->
     <div class="row flex-grow-1 p-0">
@@ -65,7 +67,8 @@
         <button id="btn-0" type="button" class="btn custom-btn-number w-100 h-100" style="font-size: 3vh;">0</button>
       </div>
       <div class="col p-1">
-        <button id="btn-ok" type="button" class="btn btn-success custom-btn-ok w-100 h-100" style="font-size: 14pt;">
+        <button id="btn-ok" type="button" class="btn btn-success custom-btn-ok w-100 h-100" style="font-size: 14pt;"
+                :disabled="exceedsLimit">
           {{ okButtonText }}
         </button>
       </div>
@@ -116,7 +119,7 @@ export default {
       try {
         window.navigator.vibrate([100]);
       } catch (error) {
-        console.warn("Your device doesn't support vibration.");
+        console.info("Your device doesn't support vibration.");
       }
 
       if (this.player1ToThrow) {
@@ -191,7 +194,6 @@ export default {
     },
 
     leftButtonText() {
-      // Change the button text based on player1ToThrow and whether player1Score is bogey
       if (this.player1ToThrow && this.scoreIsCheckable(this.player1Score) && this.currentInput < 1 ||
           this.player2ToThrow && this.scoreIsCheckable(this.player2Score) && this.currentInput < 1) {
         return "Check";
@@ -201,7 +203,6 @@ export default {
     },
 
     undoButtonText() {
-      // Change the button text based on player1ToThrow and whether player1Score is bogey
       if (this.player1LastScores.length === 0 && this.player2LastScores.length === 0) {
         return "Throw";
       } else {
@@ -236,6 +237,14 @@ export default {
         return "No Score";
       }
     },
+
+    isLeftButtonDisabled() {
+      if (this.player1ToThrow) {
+        return this.scoreIsImpossible(this.player1Score - this.currentInput);
+      } else if (this.player2ToThrow) {
+        return this.scoreIsImpossible(this.player2Score - this.currentInput);
+      }
+    }
   },
 
   methods: {
@@ -255,9 +264,6 @@ export default {
       }
 
       this.currentInput = scoreInput.value;
-
-      //console.log("CurrentInput: ", this.currentInput)
-      //console.log("true: ", scoreInput.value);
     },
 
     scoreIsCheckable(score) {

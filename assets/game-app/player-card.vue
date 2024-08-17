@@ -123,9 +123,9 @@
         <div class="row justify-content-center">
           <div class="col-auto">
             <h1 :style="{
-              fontSize: '45pt',
+              fontSize: dynamicFontSize,
               lineHeight: '1',
-              paddingTop: '1vh',
+              paddingTop: dynamicPadding,
               margin: '0px',
               color: isBogey(playerScore) ? '#FF5E5E' : 'white'}">
               <strong>{{ displayScore }}</strong>
@@ -195,7 +195,7 @@ export default {
   },
   data() {
     return {
-      possibleCheckouts: null // Initialize with null or appropriate default value
+      possibleCheckouts: null, // Initialize with null or appropriate default value
     };
   },
   methods: {
@@ -206,7 +206,7 @@ export default {
 
     calculatedCheckouts(checkouts) {
       this.possibleCheckouts = checkouts;
-    }
+    },
   },
 
   computed: {
@@ -220,15 +220,15 @@ export default {
 
     dynamicPadding() {
       if (this.displayScore === "bust"){
-        return '30px';
+        return '25px';
       }
 
       if (this.possibleCheckouts === 0) {
-        return '25px'; // Font size when there are checkouts
+        return '20px';
       } else if (this.possibleCheckouts === 1) {
-        return '18px'; // Font size when there are no checkouts
+        return '5px';
       } else if (this.possibleCheckouts === 2 || this.possibleCheckouts === 3) {
-        return '17px'; // Font size when there are no checkouts
+        return '10px';
       }
     },
 
@@ -245,7 +245,7 @@ export default {
         return '45px'; // Font size when there are no checkouts
       }
     }
-  }
+  },
 };
 </script>
 

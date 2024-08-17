@@ -330,12 +330,13 @@ export default {
 
   methods: {
     checkScreenSize() {
-      // Update isTablet based on current screen size
       this.isTablet = window.innerWidth >= 768; // Adjust breakpoint as needed
       console.log("Is Tablet: ", this.isTablet);
     },
 
     confirmScore(score) {
+      this.player1.scoreBusted = false;
+      this.player2.scoreBusted = false;
       confirmScoreAction(this, score);
     },
 
@@ -419,11 +420,6 @@ export default {
             } else {
               // Game finished
             }
-
-            //console.log("-----")
-            //console.log(data)
-
-            //apiSwitchToStartLeg(this.game.id);
 
             if (data.switchToTrow) {
               apiSwitchToThrow(this.game.id);
