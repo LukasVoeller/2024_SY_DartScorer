@@ -45,8 +45,8 @@
 
   <!-- Smartphone view -->
   <!-- <div class="d-md-none"> -->
-  <div class="container-fluid d-flex flex-column" style="height: 92vh;">
-    <div class="row flex-grow-1 d-flex" style="height: 45%;">
+  <div class="container-fluid d-flex flex-column" style="height: 85vh;">
+    <div class="row flex-grow-1 d-flex" style="">
       <div id="player1" class="col p-1 flex-grow-1 d-flex">
         <PlayerCardComponent v-if="game && !loading && !isTablet" class="flex-grow-1" :playerName="player1.name" :playerScore="player1.displayScore"
                              :startingPlayerLeg="player1.id === startingLegPlayerId" :startingPlayerSet="player1.id === startingSetPlayerId"
@@ -65,7 +65,7 @@
       </div>
     </div>
 
-    <div class="container-fluid flex-grow-1 p-0 d-flex" style="height: 45%;">
+    <div class="container-fluid flex-grow-1 p-0 d-flex" style="">
       <NumberpadComponent v-if="game && !loading && !isTablet" class="flex-grow-1 d-flex flex-column" @score-entered="processScore" @score-cleared="clearScore"
                           @score-confirmed="confirmScore" @score-undo="undoScore" @score-left="leftScore"
                           :player1Score="this.player1.totalScore" :player2Score="this.player2.totalScore"
