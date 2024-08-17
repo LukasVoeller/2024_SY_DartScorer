@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid d-flex flex-column p-0 flex-grow-1" style="height: 100%;">
     <!-- First Row with Undo, Score Input, and Left Button -->
-    <div class="row flex-grow-1 px-1">
+    <div class="row flex-grow-1 p-0">
       <div class="col p-1">
         <button id="btn-undo" type="button" class="btn custom-btn-score-row w-100 h-100"
                 :disabled="disableThrowButton" style="font-size: 14pt;">
@@ -9,19 +9,20 @@
         </button>
       </div>
       <div class="col p-1">
-        <input id="scoreInput" class="form-control text-center w-100 h-100"
+        <input id="scoreInput" class="form-control text-center w-100 h-100 p-0" style="font-size: 25pt; padding-top: 8px !important;"
                :class="{'exceeds-limit': exceedsLimit}" type="text" readonly>
       </div>
       <div class="col p-1">
         <button id="btn-left" type="button" class="btn custom-btn-score-row w-100 h-100"
-                style="font-size: 14pt;s">
+                style="font-size: 14pt;">
           {{ leftButtonText }}
         </button>
       </div>
     </div>
 
+
     <!-- Numberpad rows -->
-    <div class="row flex-grow-1 px-1">
+    <div class="row flex-grow-1 p-0">
       <div class="col p-1">
         <button id="btn-1" type="button" class="btn custom-btn-number w-100 h-100" style="font-size: 3vh;">1</button>
       </div>
@@ -32,7 +33,7 @@
         <button id="btn-3" type="button" class="btn custom-btn-number w-100 h-100" style="font-size: 3vh;">3</button>
       </div>
     </div>
-    <div class="row flex-grow-1 px-1">
+    <div class="row flex-grow-1 p-0">
       <div class="col p-1">
         <button id="btn-4" type="button" class="btn custom-btn-number w-100 h-100" style="font-size: 3vh;">4</button>
       </div>
@@ -43,7 +44,7 @@
         <button id="btn-6" type="button" class="btn custom-btn-number w-100 h-100" style="font-size: 3vh;">6</button>
       </div>
     </div>
-    <div class="row flex-grow-1 px-1">
+    <div class="row flex-grow-1 p-0">
       <div class="col p-1">
         <button id="btn-7" type="button" class="btn custom-btn-number w-100 h-100" style="font-size: 3vh;">7</button>
       </div>
@@ -54,7 +55,7 @@
         <button id="btn-9" type="button" class="btn custom-btn-number w-100 h-100" style="font-size: 3vh;">9</button>
       </div>
     </div>
-    <div class="row flex-grow-1 px-1" style="padding-bottom: 5px;">
+    <div class="row flex-grow-1 p-0" style="padding-bottom: 5px;">
       <div class="col p-1">
         <button id="btn-clr" type="button" class="btn btn-danger custom-btn-clear w-100 h-100" style="font-size: 14pt;">
           Clear

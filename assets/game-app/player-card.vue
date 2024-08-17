@@ -38,7 +38,7 @@
                   LEG
                 </span>
                         </div>
-                        <div class="col-12 text-center p-0" style="display: flex; align-items: center; justify-content: center; flex: 1; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc; background-color: #3C3C3C">
+                        <div class="col-12 text-center p-0" style="display: flex; align-items: center; justify-content: center; flex: 1; border-left: 1px solid #ccc; background-color: #3C3C3C">
                 <span v-if="startingPlayerSet" style="font-size: 7pt; color: white;">
                   SET
                 </span>
