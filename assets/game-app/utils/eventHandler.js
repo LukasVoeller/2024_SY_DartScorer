@@ -1,8 +1,4 @@
 import {
-    apiUpdateLeg
-} from '../services/apiLegService';
-
-import {
     apiConfirmScore,
 } from '../services/apiScoreService';
 

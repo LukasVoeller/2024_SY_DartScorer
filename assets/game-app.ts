@@ -5,8 +5,8 @@ import PlayerCardTabletComponent from './game-app/player-card-tablet.vue';
 import NumberpadComponent from './game-app/numberpad.vue';
 import NumberpadTabletComponent from './game-app/numberpad-tablet.vue';
 import CalculateCheckouts from './game-app/calculate-checkouts.vue';
-import LegShutModalComponent from './game-app/leg-shut-modal.vue';
-import GameShutModalComponent from './game-app/game-shut-modal.vue';
+import LegShutModalComponent from './game-app/modal/leg-shut.vue';
+import GameShutModalComponent from './game-app/modal/game-shut.vue';
 
 const app = createApp(App);
 

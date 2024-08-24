@@ -48,7 +48,9 @@ a:hover {
 }
 
 .btn-check:disabled + label {
+    /*background-color: #282828; */
     background-color: #282828; /* Optional: change background color */
+    color: white;
 }
 
 /* ------------------------------ PRIMARY BUTTON ------------------------------ */

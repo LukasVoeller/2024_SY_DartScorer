@@ -11,13 +11,13 @@
         </button>
       </div>
       <div class="col-4 px-2">
-        <button type="button" style="height: 90px" class="btn btn-success w-100">
+        <button type="button" style="height: 90px" class="btn btn-success w-100" disabled>
           <i class="bi bi-cone"></i><br>
           Training
         </button>
       </div>
       <div class="col-4 ps-1">
-        <button type="button" style="height: 90px" class="btn btn-success w-100">
+        <button type="button" style="height: 90px" class="btn btn-success w-100" disabled>
           <i class="bi bi-graph-up"></i><br>
           Statistics
         </button>
@@ -30,7 +30,7 @@
   <!-- Latest 3 -->
   <div class="card shadow" style="">
     <div class="card-header" style="display: flex; justify-content: space-between">
-      <h5 style="padding-top: 5px; color: white; margin: 0;">Latest 3</h5>
+      <h5 style="padding-top: 5px; color: white; margin: 0;">Latest</h5>
       <button class="btn btn-secondary" @click="navigateToAllGames"
               style="height: 30px; display: flex; align-items: center; justify-content: center;">
         <i class="bx bx-library" style="font-size: 14pt;"></i>

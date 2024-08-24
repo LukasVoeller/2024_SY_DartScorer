@@ -1,6 +1,5 @@
 <template>
   <div class="pyro" v-if="winner === 1">
-    <link type="text/css" href="/css/scorin-wizard/firework.css" rel="stylesheet"/>
     <div class="before"></div>
     <div class="after"></div>
   </div>
@@ -36,7 +35,7 @@
 </template>
 
 <script>
-import {EventBus} from '../event-bus';
+import {EventBus} from '../../event-bus';
 
 export default {
   name: 'GameShutModalComponent',
