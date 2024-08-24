@@ -53,6 +53,8 @@ export const apiSwitchToStartLeg = (gameId) => {
         gameId: gameId,
     };
 
+    console.log("---> apiSwitchToStartLeg")
+
     axios.post('/api/tally/switch-to-start-leg', postData)
         .then(response => {
 

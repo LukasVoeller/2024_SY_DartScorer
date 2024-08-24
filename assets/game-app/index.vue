@@ -44,18 +44,19 @@
   </div>
 
   <!-- Smartphone view -->
-  <div class="d-md-none">
-    <div class="row px-1">
-      <div class="col p-1" style="max-width: 50%;">
-        <PlayerCardComponent v-if="game && !loading && !isTablet" :playerName="player1.name" :playerScore="player1.displayScore"
+  <!-- <div class="d-md-none"> -->
+  <div class="container-fluid d-flex flex-column ps-1 pe-1" style="height: 82vh;">
+    <div class="row flex-grow-1 d-flex" style="">
+      <div id="player1" class="col-6 p-1 flex-grow-1 d-flex">
+        <PlayerCardComponent v-if="game && !loading && !isTablet" class="flex-grow-1" :playerName="player1.name" :playerScore="player1.displayScore"
                              :startingPlayerLeg="player1.id === startingLegPlayerId" :startingPlayerSet="player1.id === startingSetPlayerId"
                              :toThrow="toThrowPlayerId === player1.id" :lastThrows="player1.lastScores.join(', ')"
                              :dartsThrown="calculateDartsThrownSum(player1)" :sets="player1.sets" :legs="player1.legs/*calculateRemainingLegs(player1)*/"
                              :legAverage="player1LegAverage" :gameAverage="player1.gameAverage"
                              :scoreBusted="player1.scoreBusted"/>
       </div>
-      <div class="col p-1" style="max-width: 50%;">
-        <PlayerCardComponent v-if="game && !loading && !isTablet" :playerName="player2.name" :playerScore="player2.displayScore"
+      <div id="player2" class="col-6 p-1 flex-grow-1 d-flex">
+        <PlayerCardComponent v-if="game && !loading && !isTablet" class="flex-grow-1" :playerName="player2.name" :playerScore="player2.displayScore"
                              :startingPlayerLeg="player2.id === startingLegPlayerId" :startingPlayerSet="player2.id === startingSetPlayerId"
                              :toThrow="toThrowPlayerId === player2.id" :lastThrows="player2.lastScores.join(', ')"
                              :dartsThrown="calculateDartsThrownSum(player2)" :sets="player2.sets" :legs="player2.legs/*calculateRemainingLegs(player2)*/"
@@ -64,14 +65,16 @@
       </div>
     </div>
 
-    <NumberpadComponent v-if="game && !loading && !isTablet" @score-entered="processScore" @score-cleared="clearScore"
-                        @score-confirmed="confirmScore" @score-undo="undoScore" @score-left="leftScore"
-                        :player1Score="this.player1.totalScore" :player2Score="this.player2.totalScore"
-                        :player1ToThrow="toThrowPlayerId === player1.id"
-                        :player2ToThrow="toThrowPlayerId === player2.id"
-                        :player1LastScores="this.player1.lastScores"
-                        :player2LastScores="this.player2.lastScores"
-                        :disableThrowButton="disableThrowButton"/>
+    <div class="container-fluid flex-grow-1 p-0 d-flex" style="">
+      <NumberpadComponent v-if="game && !loading && !isTablet" class="flex-grow-1 d-flex flex-column" @score-entered="processScore" @score-cleared="clearScore"
+                          @score-confirmed="confirmScore" @score-undo="undoScore" @score-left="leftScore"
+                          :player1Score="this.player1.totalScore" :player2Score="this.player2.totalScore"
+                          :player1ToThrow="toThrowPlayerId === player1.id"
+                          :player2ToThrow="toThrowPlayerId === player2.id"
+                          :player1LastScores="this.player1.lastScores"
+                          :player2LastScores="this.player2.lastScores"
+                          :disableThrowButton="disableThrowButton"/>
+    </div>
   </div>
 
   <LegShutModalComponent/>
@@ -327,12 +330,13 @@ export default {
 
   methods: {
     checkScreenSize() {
-      // Update isTablet based on current screen size
       this.isTablet = window.innerWidth >= 768; // Adjust breakpoint as needed
       console.log("Is Tablet: ", this.isTablet);
     },
 
     confirmScore(score) {
+      this.player1.scoreBusted = false;
+      this.player2.scoreBusted = false;
       confirmScoreAction(this, score);
     },
 
@@ -416,8 +420,6 @@ export default {
             } else {
               // Game finished
             }
-
-            apiSwitchToStartLeg(this.game.id);
 
             if (data.switchToTrow) {
               apiSwitchToThrow(this.game.id);

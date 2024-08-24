@@ -1,23 +1,23 @@
 <template>
-  <div id="player" class="card">
+  <div id="player" class="card flex-grow-1 d-flex flex-column" style="height: 100%">
+    <!-- Card Header -->
     <div class="card-header p-0" :style="{
-      backgroundColor: toThrow ? '#2CAB73' : '',
+      backgroundColor: toThrow ? '#2CAB73' : '#282828',
       color: toThrow ? 'white' : 'black',
-      height: '40px'
-    }"> <!-- 40px --->
+      height: '40px',
+      border: '1px solid grey'
+    }">
       <div class="row h-100" style="padding-left: 12px; padding-right: 12px">
-
-        <!-- TODO: Make Leg/Set-Start-Component -->
-
+        <!-- Starting Player Leg and Set Indicator -->
         <template v-if="startingPlayerLeg && startingPlayerSet">
           <div class="col-6 p-0 d-flex align-items-center">
-          <span  :style="{
-            color: toThrow ? 'white' : 'white',
-            'white-space': 'nowrap',
-            'padding-left': '8px'
-          }">
-            {{ playerName }}
-          </span>&nbsp;
+            <span :style="{
+              color: toThrow ? 'white' : 'white',
+              'white-space': 'nowrap',
+              'padding-left': '8px'
+            }">
+              {{ playerName }}
+            </span>&nbsp;
           </div>
 
           <div class="col-4 p-0 d-flex align-items-center text-end">
@@ -26,20 +26,20 @@
               <img
                   src="/homepage/assets/img/dart-arrow-32px.png"
                   alt="dart arrow"
-                  style="max-width: 28px; filter: invert(100%); padding-right: 8px;"
+                  style="max-width: 20pt; filter: invert(100%); padding-right: 8px;"
               >
             </span>
           </div>
 
           <div class="col-2">
-            <div class="row" style="background-color: white; border-top-right-radius: 0.25rem;">
-              <div class="col-12 text-center p-0" style="height: 20px; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc; border-top-right-radius: 0.3rem; background-color: #536379">
-                <span v-if="startingPlayerLeg" style="font-size: 7pt; vertical-align: 2px; color: white">
-                 LEG
+            <div class="row h-100" style="flex-direction: column; background-color: #2CAB73; border-top-right-radius: 0.25rem;">
+              <div class="col-12 text-center p-0" style="display: flex; align-items: center; justify-content: center; flex: 1; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc; border-top-right-radius: 0.3rem; background-color: #505050">
+                <span v-if="startingPlayerLeg" style="font-size: 7pt; color: white">
+                  LEG
                 </span>
-              </div>
-              <div class="col-12 text-center p-0" style="height: 20px; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc; background-color: #343E4C">
-                <span v-if="startingPlayerSet" style="font-size: 7pt; vertical-align: 2px; color: white;">
+                        </div>
+                        <div class="col-12 text-center p-0" style="display: flex; align-items: center; justify-content: center; flex: 1; border-left: 1px solid #ccc; background-color: #3C3C3C">
+                <span v-if="startingPlayerSet" style="font-size: 7pt; color: white;">
                   SET
                 </span>
               </div>
@@ -47,17 +47,16 @@
           </div>
         </template>
 
-
-
+        <!-- Other Conditions for Player Indicators -->
         <template v-else-if="startingPlayerLeg || startingPlayerSet">
           <div class="col-6 p-0 d-flex align-items-center">
-          <span  :style="{
-            color: toThrow ? 'white' : 'white',
-            'white-space': 'nowrap',
-            'padding-left': '8px'
-          }">
-            {{ playerName }}
-          </span>&nbsp;
+            <span :style="{
+              color: toThrow ? 'white' : 'white',
+              'white-space': 'nowrap',
+              'padding-left': '8px'
+            }">
+              {{ playerName }}
+            </span>&nbsp;
           </div>
 
           <div class="col-4 p-0 d-flex align-items-center text-end">
@@ -66,42 +65,41 @@
               <img
                   src="/homepage/assets/img/dart-arrow-32px.png"
                   alt="dart arrow"
-                  style="max-width: 28px; filter: invert(100%); padding-right: 8px;"
+                  style="max-width: 20pt; filter: invert(100%); padding-right: 8px;"
               >
             </span>
           </div>
 
           <div class="col-2">
-            <div class="row h-100" style="background-color: white; border-top-right-radius: 0.25rem;">
+            <div class="row h-100" style="background-color: #2CAB73; border-top-right-radius: 0.25rem;">
               <template v-if="startingPlayerLeg">
-              <div class="col-12 text-center p-0" style="border-left: 1px solid #ccc; border-top-right-radius: 0.3rem; background-color: #536379">
-                <span v-if="startingPlayerLeg" style="font-size: 7pt; vertical-align: -6px; color: white">
-                 LEG
-                </span>
-              </div>
+                <div class="col-12 text-center p-0" style="display: flex; align-items: center; justify-content: center; flex: 1; border-left: 1px solid gray; border-top-right-radius: 0.3rem; background-color: #505050">
+                  <span v-if="startingPlayerLeg" style="font-size: 7pt; color: white">
+                    LEG
+                  </span>
+                </div>
               </template>
               <template v-else-if="startingPlayerSet">
-              <div class="col-12 text-center p-0" style="border-left: 1px solid #ccc; border-top-right-radius: 0.3rem; background-color: #343E4C">
-                <span v-if="startingPlayerSet" style="font-size: 7pt; vertical-align: -6px; color: white;">
-                  SET
-                </span>
-              </div>
+                <div class="col-12 text-center p-0" style="display: flex; align-items: center; justify-content: center; flex: 1; border-left: 1px solid gray; background-color: #3C3C3C">
+                  <span v-if="startingPlayerSet" style="font-size: 7pt; color: white;">
+                    SET
+                  </span>
+                </div>
               </template>
             </div>
           </div>
         </template>
 
-
-
+        <!-- No Starting Player Leg or Set -->
         <template v-else-if="!startingPlayerLeg && !startingPlayerSet">
           <div class="col-8 p-0 d-flex align-items-center">
-          <span  :style="{
-            color: toThrow ? 'white' : 'white',
-            'white-space': 'nowrap',
-            'padding-left': '8px',
-          }">
-            {{ playerName }}
-          </span>&nbsp;
+            <span :style="{
+              color: toThrow ? 'white' : 'white',
+              'white-space': 'nowrap',
+              'padding-left': '8px',
+            }">
+              {{ playerName }}
+            </span>&nbsp;
           </div>
 
           <div class="col-4 p-0 d-flex align-items-center text-end">
@@ -110,20 +108,18 @@
               <img
                   src="/homepage/assets/img/dart-arrow-32px.png"
                   alt="dart arrow"
-                  style="max-width: 28px; filter: invert(100%); padding-right: 8px;"
+                  style="max-width: 20pt; filter: invert(100%); padding-right: 8px;"
               >
             </span>
           </div>
         </template>
-
-
-
 
       </div>
     </div>
 
-    <ul class="list-group list-group-flush" style="height: 120px;">
-      <li class="list-group-item p-0">
+    <!-- Main Score Display -->
+    <div class="list-group-flush flex-grow-1 d-flex flex-column" style="border-left: 1px solid gray; border-right: 1px solid gray; min-height: 130px;">
+      <li class="list-group-item p-0 flex-grow-1 d-flex flex-column justify-content-center">
         <div class="row justify-content-center">
           <div class="col-auto">
             <h1 :style="{
@@ -137,42 +133,43 @@
           </div>
         </div>
 
-        <!-- <CalculateCheckouts :score="playerScore" @checkouts-calculated="calculatedCheckouts"/> -->
+        <!-- Calculate Checkouts Component -->
         <CalculateCheckouts v-if="!scoreBusted" :score="playerScore" @checkouts-calculated="calculatedCheckouts" />
 
       </li>
-    </ul>
+    </div>
 
-    <ul class="list-group list-group-flush" style="margin-top: auto;">
+    <!-- Footer Information -->
+    <ul class="list-group list-group-flush" style="border-left: 1px solid gray; border-right: 1px solid gray;">
       <li class="list-group-item">
-        <h1 class="info-text" style="font-size: 15px; white-space: nowrap; overflow: hidden; color: white">Last: {{ lastThrows }}</h1>
+        <h1 class="info-text" style="font-size: 10pt; white-space: nowrap; overflow: hidden; color: white">Last: {{ lastThrows }}</h1>
 
         <div class="row">
           <div class="col" style="padding-right: 0;">
-            <h1 class="info-text" style="font-size: 15px; margin: 0px; color: white">Leg:</h1>
-            <h1 class="info-text" style="font-size: 15px; margin: 0px; color: white">&empty; {{ legAverage }}</h1>
+            <h1 class="info-text" style="font-size: 10pt; margin: 0px; color: white">Leg:</h1>
+            <h1 class="info-text" style="font-size: 10pt; margin: 0px; color: white">&empty; {{ legAverage }}</h1>
           </div>
           <div class="col">
-            <h1 class="info-text" style="font-size: 15px; margin: 0px; color: white">Game:</h1>
-            <h1 class="info-text" style="font-size: 15px; margin: 0px; color: white">&empty; {{ gameAverage }}</h1>
+            <h1 class="info-text" style="font-size: 10pt; margin: 0px; color: white">Game:</h1>
+            <h1 class="info-text" style="font-size: 10pt; margin: 0px; color: white">&empty; {{ gameAverage }}</h1>
           </div>
         </div>
 
       </li>
-      <li class="list-group-item">
+      <li class="list-group-item" style="border-bottom: 1px solid gray;">
         <div class="row">
-          <div class="col" style="color: white">
+          <div class="col pe-0" style="color: white">
             Sets: {{ sets }}
           </div>
-          <div class="col" style="color: white">
+          <div class="col p-0" style="color: white">
             Legs: {{ legs }}
           </div>
         </div>
       </li>
     </ul>
   </div>
-
 </template>
+
 
 <script>
 import CalculateCheckouts from './calculate-checkouts.vue';
@@ -198,7 +195,7 @@ export default {
   },
   data() {
     return {
-      possibleCheckouts: null // Initialize with null or appropriate default value
+      possibleCheckouts: null, // Initialize with null or appropriate default value
     };
   },
   methods: {
@@ -209,7 +206,7 @@ export default {
 
     calculatedCheckouts(checkouts) {
       this.possibleCheckouts = checkouts;
-    }
+    },
   },
 
   computed: {
@@ -223,15 +220,15 @@ export default {
 
     dynamicPadding() {
       if (this.displayScore === "bust"){
-        return '30px';
+        return '25px';
       }
 
       if (this.possibleCheckouts === 0) {
-        return '25px'; // Font size when there are checkouts
+        return '20px';
       } else if (this.possibleCheckouts === 1) {
-        return '18px'; // Font size when there are no checkouts
+        return '5px';
       } else if (this.possibleCheckouts === 2 || this.possibleCheckouts === 3) {
-        return '17px'; // Font size when there are no checkouts
+        return '10px';
       }
     },
 
@@ -248,7 +245,7 @@ export default {
         return '45px'; // Font size when there are no checkouts
       }
     }
-  }
+  },
 };
 </script>
 

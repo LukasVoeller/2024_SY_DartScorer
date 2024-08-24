@@ -91,7 +91,7 @@ class GameController extends AbstractController
     {
         $game = $this->entityManager->getRepository(Game::class)->find($id);
 //        $serializedGame = $this->serializer->serialize($game, 'json', ['groups' => ['game', 'set', 'leg', 'score', 'api_player']]);
-        $serializedGame = $this->serializer->serialize($game, 'json', ['groups' => ['api_game_plain', 'api_player_plain']]);
+        $serializedGame = $this->serializer->serialize($game, 'json', ['groups' => ['api_game_full', 'api_player_plain']]);
         return new JsonResponse($serializedGame, Response::HTTP_OK, [], true);
     }
 
