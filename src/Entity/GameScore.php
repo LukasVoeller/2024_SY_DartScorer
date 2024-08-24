@@ -27,7 +27,7 @@ class GameScore
     private ?int $id = null;
 
     #[ORM\Column(nullable: false)]
-    #[Groups(['api_score_plain'])]
+    #[Groups(['api_score_plain', 'api_game_full'])]
     private ?int $playerId;
 
     #[ORM\ManyToOne(inversedBy: 'scores')]
@@ -38,7 +38,7 @@ class GameScore
     private ?int $value;
 
     #[ORM\Column(nullable: false)]
-    #[Groups(['api_score_plain'])]
+    #[Groups(['api_score_plain', 'api_game_full'])]
     private ?int $dartsThrown;
 
     #[ORM\Column(nullable: false)]

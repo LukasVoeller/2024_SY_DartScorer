@@ -64,7 +64,7 @@ class PlayerController extends AbstractController
             ->getQuery()
             ->getResult();
 
-        $data = $this->serializer->serialize($players, 'json', ['groups' => 'api_player']);
+        $data = $this->serializer->serialize($players, 'json', ['groups' => 'api_player_plain']);
         return new JsonResponse($data, Response::HTTP_OK, [], true);
     }
 

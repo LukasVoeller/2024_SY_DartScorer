@@ -1,9 +1,10 @@
 <template>
-  <div id="player" class="card" style="height: 550px">
+  <div id="player" class="card" style="height: 550px;">
     <div class="card-header p-0" :style="{
-      backgroundColor: toThrow ? '#2CAB73' : '',
+      backgroundColor: toThrow ? '#2CAB73' : '#282828',
       color: toThrow ? 'white' : 'black',
-      height: '50px'
+      height: '50px',
+      border: '1px solid grey'
     }"> <!-- 40px --->
       <div class="row h-100" style="padding-left: 12px; padding-right: 12px">
 
@@ -126,7 +127,7 @@
     </div>
 
     <ul class="list-group list-group-flush" style="height: 175px;">
-      <li class="list-group-item p-0">
+      <li class="list-group-item p-0" style="border-left: 1px solid gray; border-right: 1px solid gray;">
         <div class="row justify-content-center">
           <div class="col-auto">
             <h1 :style="{
@@ -147,8 +148,8 @@
     </ul>
 
     <!-- Scrollable table for last throws -->
-    <div class="list-group-item" style="height: 250px; overflow-y: auto; white-space: nowrap; scrollbar-width: none;" ref="scoreTableContainer">
-      <table class="table table-bordered table-striped" style="margin: 0px">
+    <div class="list-group-item" style="border-left: 1px solid gray; border-right: 1px solid gray; height: 250px; overflow-y: auto; white-space: nowrap; scrollbar-width: none;" ref="scoreTableContainer">
+      <table class="table table-bordered table-striped" style="margin: 0px; border: 1px solid gray;">
         <thead>
         <tr style="font-size: 16pt;">
           <th style="position: sticky; top: 0; text-align: left">Score</th>
@@ -165,7 +166,7 @@
     </div>
 
 
-    <ul class="list-group list-group-flush" style="margin-top: auto;">
+    <ul class="list-group list-group-flush" style="margin-top: auto; border: 1px solid gray;">
       <li class="list-group-item">
 
         <!-- Display lastThrows in a table -->
