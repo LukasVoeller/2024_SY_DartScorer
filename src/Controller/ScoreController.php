@@ -50,6 +50,7 @@ class ScoreController extends AbstractController
         $thrownDarts = $data['thrownDarts'];
         $switchToTrow = $data['switchToTrow'];
         $isCheckout = $data['isCheckout'];
+        $gameShot = $data['gameShot'];
 
         $game = $this->entityManager->getRepository(Game::class)->find($gameId);
         $tally = $this->entityManager->getRepository(GameTally::class)->findByGameIdAndPlayerId($gameId, $playerId);
@@ -67,12 +68,21 @@ class ScoreController extends AbstractController
         if ($currentScore - $thrownScore >= 2){
             $newTotalScore = $currentScore - $thrownScore;
             $tally->setScore($newTotalScore);
-            $this->sendUpdate($gameId, $playerId, $thrownScore, $newTotalScore, $switchToTrow, 'confirm', $hub);
+            $this->sendUpdate($gameId, $playerId, $thrownScore, $newTotalScore, $switchToTrow, false, 'confirm', $hub);
         } elseif ($currentScore - $thrownScore == 0){
-            $newTotalScore = $currentScore - $thrownScore;
-            //$startScore = $game->getStartScore();
-            //$tally->setScore($startScore);
-            $this->sendUpdate($gameId, $playerId, $thrownScore, $newTotalScore, $switchToTrow, 'checkout', $hub);
+
+            if ($gameShot) {
+                $newTotalScore = $currentScore - $thrownScore;
+                //$startScore = $game->getStartScore();
+                //$tally->setScore($startScore);
+                $this->sendUpdate($gameId, $playerId, $thrownScore, $newTotalScore, $switchToTrow, true, 'finished', $hub);
+            } else {
+                $newTotalScore = $currentScore - $thrownScore;
+                //$startScore = $game->getStartScore();
+                //$tally->setScore($startScore);
+                $this->sendUpdate($gameId, $playerId, $thrownScore, $newTotalScore, $switchToTrow, false, 'checkout', $hub);
+            }
+
         }
 
         $this->entityManager->persist($score);
@@ -80,7 +90,7 @@ class ScoreController extends AbstractController
         return $this->json($data);
     }
 
-    function sendUpdate($gameId, $playerId, $thrownScore, $newTotalScore, $switchToTrow, $type, $hub) {
+    function sendUpdate($gameId, $playerId, $thrownScore, $newTotalScore, $switchToTrow, $gameFinished, $type, $hub) {
         $updateUrl = 'https://vllr.lu/game/' . $gameId;
         $update = new Update(
             $updateUrl,
@@ -90,6 +100,7 @@ class ScoreController extends AbstractController
                 'thrownScore' => $thrownScore,
                 'newTotalScore' => $newTotalScore,
                 'switchToTrow' => $switchToTrow,
+                'gameFinished' => $gameFinished,
             ])
         );
         $hub->publish($update);

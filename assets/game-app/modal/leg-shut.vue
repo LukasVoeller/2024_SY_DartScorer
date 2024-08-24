@@ -6,24 +6,24 @@
 
         <div class="modal-header">
           <div class="modal-title-wrapper">
-            <h1 style="color: black" class="modal-title fs-5">{{ checkoutScore }} Checkout!</h1>
-            <p style="color: black; margin: 0px">Average: {{ checkoutAverage }}</p>
-            <p style="color: black; margin: 0px">Darts: {{ darts }}</p>
+            <h1 class="modal-title fs-5">{{ checkoutScore }} Checkout!</h1>
+            <p style="margin: 0px">Average: {{ checkoutAverage }}</p>
+            <p style="margin: 0px">Darts: {{ darts }}</p>
           </div>
         </div>
 
         <div class="modal-body">
-          <p style="color: black">How many darts were needed?</p>
+          <p>How many darts were needed?</p>
 
           <div class="btn-group" role="group" aria-label="Basic radio toggle button group" style="width: 100%">
             <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" v-model="checkoutDartCount" :disabled="oneDartCheckoutDisabled" value="1">
-            <label class="btn btn-outline-dark" for="btnradio1">1</label>
+            <label class="btn btn-outline-success" for="btnradio1">1</label>
 
             <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" v-model="checkoutDartCount" :disabled="threeDartsNeeded" value="2">
-            <label class="btn btn-outline-dark" for="btnradio2">2</label>
+            <label class="btn btn-outline-success" for="btnradio2">2</label>
 
             <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" v-model="checkoutDartCount" value="3" checked>
-            <label class="btn btn-outline-dark" for="btnradio3">3</label>
+            <label class="btn btn-outline-success" for="btnradio3">3</label>
           </div>
         </div>
 

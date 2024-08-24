@@ -10,26 +10,45 @@ export const handleLegShutModalConfirmed = (context, checkoutScore, checkoutDart
     context.processCheckout(winnerPlayer);
     context.processPlayerAverages(winnerPlayer, looserPlayer, checkoutDartCount, checkoutAverage);
 
+    // TODO: Maybe make the gameState a callback from processCheckout()?
+    const gameState = context.game.state;
+
     // Don't switch to throw if break of throw in legs
     if (context.toThrowPlayerId !== context.startingLegPlayerId) {
         console.log("apiConfirmScore - BREAK LEG")
         context.startingLegPlayerId = context.toThrowPlayerId;
 
         if (winnerPlayer.legs !== context.game.matchModeLegsNeeded) {
-            apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, false, true);
+            if (gameState === "Finished") {
+                apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, false, true, true);
+            } else {
+                apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, false, true, false);
+            }
             apiSwitchToStartLeg(context.game.id);
         } else {
-            apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, true, true);
+            if (gameState === "Finished") {
+                apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, true, true, true);
+            } else {
+                apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, true, true, false);
+            }
         }
     } else {
         // Don't switch to throw if break of throw sets
         if (context.game.matchMode === "FirstToSets" && winnerPlayer.legs === context.game.matchModeLegsNeeded && context.toThrowPlayerId !== context.startingSetPlayerId) {
             console.log("apiConfirmScore - BREAK SET")
             context.startingLegPlayerId = context.toThrowPlayerId;
-            apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, false, true);
+            if (gameState === "Finished") {
+                apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, false, true, true);
+            } else {
+                apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, false, true, false);
+            }
         } else {
             console.log("apiConfirmScore - NO BREAK")
-            apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, true, true);
+            if (gameState === "Finished") {
+                apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, true, true, true);
+            } else {
+                apiConfirmScore(context.game.id, context.toThrowPlayerId, checkoutScore, checkoutDartCount, true, true, false);
+            }
             apiSwitchToStartLeg(context.game.id);
         }
     }

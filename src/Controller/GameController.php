@@ -104,7 +104,7 @@ class GameController extends AbstractController
     }
 
     #[Route('/api/game/id/{id}', name: 'api_game_update_state', methods: ['PUT'])]
-    public function updateGameShot(int $id, Request $request): JsonResponse
+    public function updateGameShot(int $id, Request $request, HubInterface $hub): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $game = $this->entityManager->getRepository(Game::class)->find($id);
@@ -119,7 +119,21 @@ class GameController extends AbstractController
         $this->entityManager->persist($game);
         $this->entityManager->flush();
 
+        $gameId = $game->getId();
+        //$this->sendUpdate($gameId, 'finished', $hub);
+
         // Return a JSON response indicating success
         return new JsonResponse(['success' => true, 'message' => 'Game state updated successfully.'], Response::HTTP_OK);
+    }
+
+    function sendUpdate($gameId, $type, $hub) {
+        $updateUrl = 'https://vllr.lu/game/' . $gameId;
+        $update = new Update(
+            $updateUrl,
+            json_encode([
+                'eventType' => $type,
+            ])
+        );
+        $hub->publish($update);
     }
 }

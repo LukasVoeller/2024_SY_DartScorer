@@ -11,7 +11,7 @@
 
         <div class="modal-header">
           <div class="modal-title-wrapper">
-            <h1 style="color: black" class="modal-title fs-5">Game shot and the match!</h1>
+            <h1 class="modal-title fs-5">Game shot and the match!</h1>
           </div>
         </div>
 

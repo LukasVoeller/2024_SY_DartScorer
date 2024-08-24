@@ -379,7 +379,8 @@ export default {
 
         switch (data.eventType) {
           case 'checkout':
-            //console.log("PUBLISH RECEIVED - CHECKOUT: ", data);
+            console.log("PUBLISH RECEIVED - CHECKOUT: ", data);
+
             if (this.game.state !== "Finished") {
 
               if (this.game.matchMode === "FirstToLegs") {
@@ -447,6 +448,10 @@ export default {
               this.switchToThrow();
             }
             break;
+          case 'finished':
+            console.log("PUBLISH RECEIVED - GAME FINISHED: ", data);
+            EventBus.emit('show-game-shut-modal', this.gameWinnerPlayerId);
+            break;
         }
       };
     },
@@ -490,6 +495,8 @@ export default {
     },
 
     processCheckout(player) {
+      console.log("processCheckout()")
+
       if (this.game.matchMode === "FirstToSets") {
         //console.log("FirstToSets - Leg shut");
         //this.legsPlayed += 1;
@@ -521,7 +528,7 @@ export default {
             this.game.winnerPlayerId = player.id;
             this.game.state = "Finished";
             apiUpdateGameShot(this.game.id, this.game.winnerPlayerId, this.game.state);
-            EventBus.emit('show-game-shut-modal', this.gameWinnerPlayerId);
+            //EventBus.emit('show-game-shut-modal', this.gameWinnerPlayerId);
           }
         }
 
@@ -547,7 +554,7 @@ export default {
           this.game.winnerPlayerId = player.id;
           this.game.state = "Finished";
           apiUpdateGameShot(this.game.id, this.game.winnerPlayerId, this.game.state);
-          EventBus.emit('show-game-shut-modal', this.gameWinnerPlayerId);
+          //EventBus.emit('show-game-shut-modal', this.gameWinnerPlayerId);
         }
 
         //apiUpdateTallyScore(this.game.id, this.player1.id, this.player1.startScore, this.player1.legs, this.player1.sets);

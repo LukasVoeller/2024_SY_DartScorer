@@ -1,0 +1,26 @@
+/* --------------------------------- MODAL ---------------------------------- */
+
+.modal-content {
+    background-color: #3C3C3C;
+    color: white;
+}
+
+/* ------------------------------ SELECT RADIO ------------------------------ */
+
+.btn-check:checked + .btn-outline-success {
+    background-color: #2CAB73;
+    color: white;
+
+}
+
+.btn-outline-success {
+    background-color: #505050;
+    color: white;
+}
+
+.btn-check:disabled + label {
+    /*background-color: #282828; */
+    background-color: #282828; /* Optional: change background color */
+    color: white;
+}
+

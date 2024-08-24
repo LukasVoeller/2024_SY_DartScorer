@@ -36,6 +36,7 @@ export const apiFetchGameData = (context, gameId) => {
 };
 
 export const apiUpdateGameShot = (gameId, winnerPlayerId, gameState) => {
+    console.log("apiUpdateGameShot()")
     const postData = {
         winnerPlayerId: winnerPlayerId,
         gameState: gameState,

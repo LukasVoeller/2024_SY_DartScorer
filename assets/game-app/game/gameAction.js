@@ -6,6 +6,7 @@ import {scoreIsImpossible} from "./gameHelper";
 export const confirmScore = (context, score) => {
     const player = context.getPlayerById(context.toThrowPlayerId);
     const opponentPlayer = context.getOpponentPlayerById(context.toThrowPlayerId);
+    const gameState = context.game.state;
 
     score = parseInt(score.replace(/^0+/, ''), 10);
     if (isNaN(score)) {
@@ -18,7 +19,7 @@ export const confirmScore = (context, score) => {
         //console.log("PLAYER 1 DISPLAY SCORE: ", context.player1.displayScore)
         //console.log("PLAYER 2 DISPLAY SCORE: ", context.player2.displayScore)
     } else {
-        apiConfirmScore(context.game.id, context.toThrowPlayerId, score, 3, true, false);
+        apiConfirmScore(context.game.id, context.toThrowPlayerId, score, 3, true, false, false);
     }
 };
 

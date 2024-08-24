@@ -2,14 +2,15 @@ import axios from "axios";
 import {formatScores} from "../game/gameHelper";
 import {EventBus} from "../../event-bus";
 
-export const apiConfirmScore = (gameId, playerId, thrownScore, thrownDarts, switchToTrow, isCheckout) => {
+export const apiConfirmScore = (gameId, playerId, thrownScore, thrownDarts, switchToTrow, isCheckout, gameShot) => {
     const postData = {
         gameId: gameId,
         playerId: playerId,
         thrownScore: thrownScore,
         thrownDarts: thrownDarts,
         switchToTrow: switchToTrow,
-        isCheckout: isCheckout
+        isCheckout: isCheckout,
+        gameShot: gameShot
     };
 
     //console.log("confirmScore POSTING: ", postData)
