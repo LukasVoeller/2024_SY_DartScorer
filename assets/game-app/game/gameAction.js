@@ -80,7 +80,7 @@ export const leftScore = (context, inputScore) => {
         EventBus.emit('play-score-sound', thrownScore);
         player.currentDartsThrown.unshift(3);
         if (context.eventSourceState === 1) {
-            apiConfirmScore(context.game.id, player.id, thrownScore, 3, true, false);
+            apiConfirmScore(context.game.id, player.id, thrownScore, 3, true, false, false);
         }
         context.setPlayerScore(context, player.id, score);
     }
